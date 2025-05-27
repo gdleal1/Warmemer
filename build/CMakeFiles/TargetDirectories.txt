@@ -1,0 +1,4 @@
+/home/gabiru/Documents/trab-FCG/GameEngine/build/CMakeFiles/main.dir
+/home/gabiru/Documents/trab-FCG/GameEngine/build/CMakeFiles/run.dir
+/home/gabiru/Documents/trab-FCG/GameEngine/build/CMakeFiles/edit_cache.dir
+/home/gabiru/Documents/trab-FCG/GameEngine/build/CMakeFiles/rebuild_cache.dir
