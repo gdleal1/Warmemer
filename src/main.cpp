@@ -1026,7 +1026,7 @@ void CursorPosCallback(GLFWwindow* window, double xpos, double ypos)
 
     // Deslocamento do cursor do mouse em x e y de coordenadas de tela!
     float dx = xpos - g_LastCursorPosX;
-    float dy = ypos - g_LastCursorPosY;
+    float dy = -(ypos - g_LastCursorPosY);
 
     // Atualizamos parâmetros da câmera com os deslocamentos
     g_freeCamera.SetCameraTheta(g_freeCamera.GetCameraTheta() - 0.01f*dx);

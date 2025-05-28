@@ -1,6 +1,6 @@
 file(REMOVE_RECURSE
-  "/home/gabiru/Documents/trab-FCG/GameEngine/bin/Linux/main"
-  "/home/gabiru/Documents/trab-FCG/GameEngine/bin/Linux/main.pdb"
+  "/home/btoresan/Documents/GameEngine/bin/Linux/main"
+  "/home/btoresan/Documents/GameEngine/bin/Linux/main.pdb"
   "CMakeFiles/main.dir/src/FreeCamera.cpp.o"
   "CMakeFiles/main.dir/src/FreeCamera.cpp.o.d"
   "CMakeFiles/main.dir/src/LookAtCamera.cpp.o"
