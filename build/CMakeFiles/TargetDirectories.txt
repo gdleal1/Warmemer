@@ -1,4 +1,0 @@
-/home/btoresan/Documents/GameEngine/build/CMakeFiles/main.dir
-/home/btoresan/Documents/GameEngine/build/CMakeFiles/run.dir
-/home/btoresan/Documents/GameEngine/build/CMakeFiles/edit_cache.dir
-/home/btoresan/Documents/GameEngine/build/CMakeFiles/rebuild_cache.dir
