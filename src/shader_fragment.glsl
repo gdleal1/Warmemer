@@ -20,7 +20,7 @@ uniform mat4 projection;
 
 // Identificador que define qual objeto está sendo desenhado no momento
 #define SPHERE 0
-#define FLAT  1
+#define PLANE  1
 #define DREAD 2
 #define DAEMON 3
 uniform int object_id;
@@ -80,7 +80,7 @@ void main()
         U = theta / (2.0 * M_PI) + 0.5; // Normalizando theta para [0,1]
         V = (phi + M_PI_2) / M_PI; // Normalizando phi para [0,1]
     }
-    else if ( object_id == FLAT ){
+    else if ( object_id == PLANE ){
 
         float minx = bbox_min.x;
         float maxx = bbox_max.x;
@@ -93,6 +93,8 @@ void main()
 
         U = (position_model.x - minx) / (maxx - minx);
         V = (position_model.z - minz) / (maxz - minz);
+
+        Kd0 = texture(TextureImage2, vec2(U,V)).rgb;
     }
     else if ( object_id == DREAD )
     {
@@ -128,7 +130,7 @@ void main()
     // Equação de Iluminação
     float lambert = max(0,dot(n,l));
 
-    color.rgb = Kd0 * (lambert + 0.01);
+    color.rgb = Kd0 * (lambert + 0.11);
 
     // NOTE: Se você quiser fazer o rendering de objetos transparentes, é
     // necessário:

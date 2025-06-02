@@ -299,7 +299,8 @@ int main(int argc, char* argv[])
 
     // Carregamos duas imagens para serem utilizadas como textura
     LoadTextureImage("../../data/steel_texture.jpg");      // TextureImage0 // TextureImage1
-    LoadTextureImage("../../data/demonskin.jpg");       // TextureImage2
+    LoadTextureImage("../../data/demonskin.jpg");       // TextureImage1
+    LoadTextureImage("../../data/map.jpeg");       // TextureImage2
 
     // Construímos a representação de objetos geométricos através de malhas de triângulos
     ObjModel dreadmodel("../../data/dreadUnified.obj");
@@ -309,6 +310,10 @@ int main(int argc, char* argv[])
     ObjModel deamonmodel("../../data/daemonUnified.obj");
     ComputeNormals(&deamonmodel);
     BuildTrianglesAndAddToVirtualScene(&deamonmodel);
+
+    ObjModel planemodel("../../data/plane.obj");
+    ComputeNormals(&planemodel);
+    BuildTrianglesAndAddToVirtualScene(&planemodel);
 
     if ( argc > 1 )
     {
@@ -338,7 +343,7 @@ int main(int argc, char* argv[])
         // Conversaremos sobre sistemas de cores nas aulas de Modelos de Iluminação.
         //
         //           R     G     B     A
-        glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
+        glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 
         // "Pintamos" todos os pixels do framebuffer com a cor definida acima,
         // e também resetamos todos os pixels do Z-buffer (depth buffer).
@@ -406,20 +411,28 @@ int main(int argc, char* argv[])
         glUniformMatrix4fv(g_projection_uniform , 1 , GL_FALSE , glm::value_ptr(projection));
 
         #define SPHERE 0
-        #define FLAT  1
+        #define PLANE  1
         #define DREAD 2
         #define DAEMON 3
 
         //Desenhamos o modelo do dreadnought
-        model = Matrix_Translate(1.0f, 0.0f, 0.0f);
+        model = Matrix_Translate(1.0f, -0.3f, 0.0f) *
+                Matrix_Rotate_Y(glfwGetTime()*0.2);
         glUniformMatrix4fv(g_model_uniform, 1 , GL_FALSE , glm::value_ptr(model));
         glUniform1i(g_object_id_uniform, DREAD); // Dreadnought
         DrawVirtualObject("the_dread");
 
-        model = Matrix_Translate(-1.0f, 0.0f, 0.0f);
+        model = Matrix_Translate(-1.0f, -0.3f, 0.0f) *
+                Matrix_Rotate_Y(-glfwGetTime()*0.2);;
         glUniformMatrix4fv(g_model_uniform, 1 , GL_FALSE , glm::value_ptr(model));
         glUniform1i(g_object_id_uniform, DAEMON); // Daemon
         DrawVirtualObject("the_daemon");
+
+        model = Matrix_Translate(0.0f, -0.4f, 0.0f) *
+                Matrix_Scale(10.0f, 0.01f, 10.0f);
+        glUniformMatrix4fv(g_model_uniform, 1 , GL_FALSE , glm::value_ptr(model));
+        glUniform1i(g_object_id_uniform, PLANE); // Plano
+        DrawVirtualObject("the_plane");
 
         // Imprimimos na tela os ângulos de Euler que controlam a rotação do
         // terceiro cubo.
