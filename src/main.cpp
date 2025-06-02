@@ -305,6 +305,10 @@ int main(int argc, char* argv[])
     ComputeNormals(&dreadmodel);
     BuildTrianglesAndAddToVirtualScene(&dreadmodel);
 
+    ObjModel deamonmodel("../../data/daemonUnified.obj");
+    ComputeNormals(&deamonmodel);
+    BuildTrianglesAndAddToVirtualScene(&deamonmodel);
+
     if ( argc > 1 )
     {
         ObjModel model(argv[1]);
@@ -402,16 +406,18 @@ int main(int argc, char* argv[])
 
         #define SPHERE 0
         #define FLAT  1
-
-
+        #define CILINDER 2
 
         //Desenhamos o modelo do dreadnought
-        model = Matrix_Translate(0.0f, 0.0f, 0.0f)
-                * Matrix_Rotate_Y(g_AngleX + (float)glfwGetTime() * 0.1f);
+        model = Matrix_Translate(1.0f, 0.0f, 0.0f);
         glUniformMatrix4fv(g_model_uniform, 1 , GL_FALSE , glm::value_ptr(model));
-        glUniform1i(g_object_id_uniform, SPHERE); // Dreadnought
-        // If your system has a "draw all" function
+        glUniform1i(g_object_id_uniform, CILINDER); // Dreadnought
         DrawVirtualObject("the_dread");
+
+        model = Matrix_Translate(-1.0f, 0.0f, 0.0f);
+        glUniformMatrix4fv(g_model_uniform, 1 , GL_FALSE , glm::value_ptr(model));
+        glUniform1i(g_object_id_uniform, CILINDER); // Daemon
+        DrawVirtualObject("the_daemon");
 
         // Imprimimos na tela os ângulos de Euler que controlam a rotação do
         // terceiro cubo.

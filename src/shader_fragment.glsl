@@ -21,6 +21,8 @@ uniform mat4 projection;
 // Identificador que define qual objeto está sendo desenhado no momento
 #define SPHERE 0
 #define FLAT  1
+#define CILINDER 2
+#define CUBE 3
 uniform int object_id;
 
 // Parâmetros da axis-aligned bounding box (AABB) do modelo
@@ -113,6 +115,20 @@ void main()
         U = (position_model.x - minx) / (maxx - minx);
         V = (position_model.z - minz) / (maxz - minz);
     }
+    else if ( object_id == CILINDER )
+    {
+        vec4 bbox_center = (bbox_min + bbox_max) / 2.0;
+        
+        vec3 direction = position_model.xyz - bbox_center.xyz;
+        
+        float theta = atan(direction.z, direction.x);
+        
+        U = theta / (2.0 * M_PI) + 0.5;
+        
+        float height = bbox_max.y - bbox_min.y;
+        V = (position_model.y - bbox_min.y) / height;
+    }
+    
 
     // Obtemos a refletância difusa a partir da leitura da imagem TextureImage0
     vec3 Kd0 = texture(TextureImage0, vec2(U,V)).rgb;
