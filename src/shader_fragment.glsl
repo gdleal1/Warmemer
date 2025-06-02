@@ -20,8 +20,7 @@ uniform mat4 projection;
 
 // Identificador que define qual objeto está sendo desenhado no momento
 #define SPHERE 0
-#define BUNNY  1
-#define PLANE  2
+#define FLAT  1
 uniform int object_id;
 
 // Parâmetros da axis-aligned bounding box (AABB) do modelo
@@ -91,7 +90,7 @@ void main()
         U = theta / (2.0 * M_PI) + 0.5; // Normalizando theta para [0,1]
         V = (phi + M_PI_2) / M_PI; // Normalizando phi para [0,1]
     }
-    else if ( object_id == BUNNY )
+    else if ( object_id == FLAT )
     {
         // PREENCHA AQUI as coordenadas de textura do coelho, computadas com
         // projeção planar XY em COORDENADAS DO MODELO. Utilize como referência
@@ -114,22 +113,14 @@ void main()
         U = (position_model.x - minx) / (maxx - minx);
         V = (position_model.z - minz) / (maxz - minz);
     }
-    else if ( object_id == PLANE )
-    {
-        // Coordenadas de textura do plano, obtidas do arquivo OBJ.
-        U = texcoords.x;
-        V = texcoords.y;
-    }
 
     // Obtemos a refletância difusa a partir da leitura da imagem TextureImage0
     vec3 Kd0 = texture(TextureImage0, vec2(U,V)).rgb;
-    vec3 Kd1 = texture(TextureImage1, vec2(U,V)).rgb;
 
     // Equação de Iluminação
     float lambert = max(0,dot(n,l));
 
-    color.rgb = Kd0 * (lambert + 0.01) + 
-                Kd1 * 0.01/(lambert + 0.01); //More lights the darker the object
+    color.rgb = Kd0 * (lambert + 0.01);
 
     // NOTE: Se você quiser fazer o rendering de objetos transparentes, é
     // necessário:
