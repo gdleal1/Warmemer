@@ -299,6 +299,7 @@ int main(int argc, char* argv[])
 
     // Carregamos duas imagens para serem utilizadas como textura
     LoadTextureImage("../../data/steel_texture.jpg");      // TextureImage0 // TextureImage1
+    LoadTextureImage("../../data/demonskin.jpg");       // TextureImage2
 
     // Construímos a representação de objetos geométricos através de malhas de triângulos
     ObjModel dreadmodel("../../data/dreadUnified.obj");
@@ -406,17 +407,18 @@ int main(int argc, char* argv[])
 
         #define SPHERE 0
         #define FLAT  1
-        #define CILINDER 2
+        #define DREAD 2
+        #define DAEMON 3
 
         //Desenhamos o modelo do dreadnought
         model = Matrix_Translate(1.0f, 0.0f, 0.0f);
         glUniformMatrix4fv(g_model_uniform, 1 , GL_FALSE , glm::value_ptr(model));
-        glUniform1i(g_object_id_uniform, CILINDER); // Dreadnought
+        glUniform1i(g_object_id_uniform, DREAD); // Dreadnought
         DrawVirtualObject("the_dread");
 
         model = Matrix_Translate(-1.0f, 0.0f, 0.0f);
         glUniformMatrix4fv(g_model_uniform, 1 , GL_FALSE , glm::value_ptr(model));
-        glUniform1i(g_object_id_uniform, CILINDER); // Daemon
+        glUniform1i(g_object_id_uniform, DAEMON); // Daemon
         DrawVirtualObject("the_daemon");
 
         // Imprimimos na tela os ângulos de Euler que controlam a rotação do

@@ -21,8 +21,8 @@ uniform mat4 projection;
 // Identificador que define qual objeto está sendo desenhado no momento
 #define SPHERE 0
 #define FLAT  1
-#define CILINDER 2
-#define CUBE 3
+#define DREAD 2
+#define DAEMON 3
 uniform int object_id;
 
 // Parâmetros da axis-aligned bounding box (AABB) do modelo
@@ -68,21 +68,9 @@ void main()
     // Coordenadas de textura U e V
     float U = 0.0;
     float V = 0.0;
+    vec3 Kd0 = vec3(1.0, 2.0, 1.0);
 
-    if ( object_id == SPHERE )
-    {
-        // PREENCHA AQUI as coordenadas de textura da esfera, computadas com
-        // projeção esférica EM COORDENADAS DO MODELO. Utilize como referência
-        // o slides 134-150 do documento Aula_20_Mapeamento_de_Texturas.pdf.
-        // A esfera que define a projeção deve estar centrada na posição
-        // "bbox_center" definida abaixo.
-
-        // Você deve utilizar:
-        //   função 'length( )' : comprimento Euclidiano de um vetor
-        //   função 'atan( , )' : arcotangente. Veja https://en.wikipedia.org/wiki/Atan2.
-        //   função 'asin( )'   : seno inverso.
-        //   constante M_PI
-        //   variável position_model
+    if ( object_id == SPHERE ){
 
         vec4 bbox_center = (bbox_min + bbox_max) / 2.0;
 
@@ -92,16 +80,7 @@ void main()
         U = theta / (2.0 * M_PI) + 0.5; // Normalizando theta para [0,1]
         V = (phi + M_PI_2) / M_PI; // Normalizando phi para [0,1]
     }
-    else if ( object_id == FLAT )
-    {
-        // PREENCHA AQUI as coordenadas de textura do coelho, computadas com
-        // projeção planar XY em COORDENADAS DO MODELO. Utilize como referência
-        // o slides 99-104 do documento Aula_20_Mapeamento_de_Texturas.pdf,
-        // e também use as variáveis min*/max* definidas abaixo para normalizar
-        // as coordenadas de textura U e V dentro do intervalo [0,1]. Para
-        // tanto, veja por exemplo o mapeamento da variável 'p_v' utilizando
-        // 'h' no slides 158-160 do documento Aula_20_Mapeamento_de_Texturas.pdf.
-        // Veja também a Questão 4 do Questionário 4 no Moodle.
+    else if ( object_id == FLAT ){
 
         float minx = bbox_min.x;
         float maxx = bbox_max.x;
@@ -115,7 +94,7 @@ void main()
         U = (position_model.x - minx) / (maxx - minx);
         V = (position_model.z - minz) / (maxz - minz);
     }
-    else if ( object_id == CILINDER )
+    else if ( object_id == DREAD )
     {
         vec4 bbox_center = (bbox_min + bbox_max) / 2.0;
         
@@ -127,11 +106,24 @@ void main()
         
         float height = bbox_max.y - bbox_min.y;
         V = (position_model.y - bbox_min.y) / height;
-    }
-    
 
-    // Obtemos a refletância difusa a partir da leitura da imagem TextureImage0
-    vec3 Kd0 = texture(TextureImage0, vec2(U,V)).rgb;
+        Kd0 = texture(TextureImage0, vec2(U,V)).rgb;
+    }
+    else if ( object_id == DAEMON )
+    {
+        vec4 bbox_center = (bbox_min + bbox_max) / 2.0;
+        
+        vec3 direction = position_model.xyz - bbox_center.xyz;
+        
+        float theta = atan(direction.z, direction.x);
+        
+        U = theta / (2.0 * M_PI) + 0.5;
+        
+        float height = bbox_max.y - bbox_min.y;
+        V = (position_model.y - bbox_min.y) / height;
+
+        Kd0 = texture(TextureImage1, vec2(U,V)).rgb;
+    }
 
     // Equação de Iluminação
     float lambert = max(0,dot(n,l));
