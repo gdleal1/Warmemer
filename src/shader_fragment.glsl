@@ -22,7 +22,7 @@ uniform mat4 projection;
 #define SPHERE 0
 #define PLANE  1
 #define DREAD 2
-#define DAEMON 3
+#define ORCMECH 3
 uniform int object_id;
 
 // Parâmetros da axis-aligned bounding box (AABB) do modelo
@@ -70,6 +70,11 @@ void main()
     float V = 0.0;
     vec3 Kd0 = vec3(1.0, 2.0, 1.0);
 
+    // Equação de Iluminação
+    float lambert = max(0,dot(n,l));
+    vec4 reflect_dir = reflect(-l, n);
+    float specular = pow(max(0, dot(reflect_dir, v)), 64.0);
+
     if ( object_id == SPHERE ){
 
         vec4 bbox_center = (bbox_min + bbox_max) / 2.0;
@@ -110,8 +115,10 @@ void main()
         V = (position_model.y - bbox_min.y) / height;
 
         Kd0 = texture(TextureImage0, vec2(U,V)).rgb;
+
+        
     }
-    else if ( object_id == DAEMON )
+    else if ( object_id == ORCMECH )
     {
         vec4 bbox_center = (bbox_min + bbox_max) / 2.0;
         
@@ -125,12 +132,12 @@ void main()
         V = (position_model.y - bbox_min.y) / height;
 
         Kd0 = texture(TextureImage1, vec2(U,V)).rgb;
+
+        specular = 0.0; // ORCMECH não tem brilho
     }
 
-    // Equação de Iluminação
-    float lambert = max(0,dot(n,l));
 
-    color.rgb = Kd0 * (lambert + 0.11);
+    color.rgb = Kd0 * (lambert + 0.11) + vec3(1.0, 1.0, 1.0) * specular;
 
     // NOTE: Se você quiser fazer o rendering de objetos transparentes, é
     // necessário:

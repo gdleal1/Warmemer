@@ -224,6 +224,10 @@ GLint g_bbox_max_uniform;
 // Número de texturas carregadas pela função LoadTextureImage()
 GLuint g_NumLoadedTextures = 0;
 
+
+//VAR GLOBAIS TEMPORARIAS ENQ N TEMOS A CLASSE DE MINIATURA
+glm::vec3 DreadPosition = glm::vec3(1.0f, -0.3f, 0.0f);
+
 int main(int argc, char* argv[])
 {
     // Inicializamos a biblioteca GLFW, utilizada para criar uma janela do
@@ -299,7 +303,7 @@ int main(int argc, char* argv[])
 
     // Carregamos duas imagens para serem utilizadas como textura
     LoadTextureImage("../../data/steel_texture.jpg");      // TextureImage0 // TextureImage1
-    LoadTextureImage("../../data/demonskin.jpg");       // TextureImage1
+    LoadTextureImage("../../data/rustedSteel.jpg");       // TextureImage1
     LoadTextureImage("../../data/map.jpeg");       // TextureImage2
 
     // Construímos a representação de objetos geométricos através de malhas de triângulos
@@ -307,7 +311,7 @@ int main(int argc, char* argv[])
     ComputeNormals(&dreadmodel);
     BuildTrianglesAndAddToVirtualScene(&dreadmodel);
 
-    ObjModel deamonmodel("../../data/daemonUnified.obj");
+    ObjModel deamonmodel("../../data/orcMechUnified.obj");
     ComputeNormals(&deamonmodel);
     BuildTrianglesAndAddToVirtualScene(&deamonmodel);
 
@@ -413,10 +417,10 @@ int main(int argc, char* argv[])
         #define SPHERE 0
         #define PLANE  1
         #define DREAD 2
-        #define DAEMON 3
+        #define ORCMECH 3
 
         //Desenhamos o modelo do dreadnought
-        model = Matrix_Translate(1.0f, -0.3f, 0.0f) *
+        model = Matrix_Translate(DreadPosition.x, DreadPosition.y, DreadPosition.z) *
                 Matrix_Rotate_Y(glfwGetTime()*0.2);
         glUniformMatrix4fv(g_model_uniform, 1 , GL_FALSE , glm::value_ptr(model));
         glUniform1i(g_object_id_uniform, DREAD); // Dreadnought
@@ -425,8 +429,8 @@ int main(int argc, char* argv[])
         model = Matrix_Translate(-1.0f, -0.3f, 0.0f) *
                 Matrix_Rotate_Y(-glfwGetTime()*0.2);;
         glUniformMatrix4fv(g_model_uniform, 1 , GL_FALSE , glm::value_ptr(model));
-        glUniform1i(g_object_id_uniform, DAEMON); // Daemon
-        DrawVirtualObject("the_daemon");
+        glUniform1i(g_object_id_uniform, ORCMECH); // Daemon
+        DrawVirtualObject("the_orcMech");
 
         model = Matrix_Translate(0.0f, -0.4f, 0.0f) *
                 Matrix_Scale(10.0f, 0.01f, 10.0f);
