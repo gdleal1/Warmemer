@@ -1,5 +1,5 @@
 // ObjModel.cpp
-#include "ObjModel.h"
+#include "GastalUtils/ObjModel.h"
 
 
 ObjModel::ObjModel(const char* filename, const char* basepath, bool triangulate)

@@ -1,13 +1,13 @@
 #ifndef SCENE_BUILDER_H
 #define SCENE_BUILDER_H
 
-#include "ObjModel.h"
+#include "GastalUtils/ObjModel.h"
 #include "SceneObject.h"
 #include <glad/glad.h>
 #include <glm/glm.hpp>
 #include <limits>
 #include <cassert>
-#include "matrices.h"
+#include "GastalUtils/matricies.h"
 
 // Declaração das variáveis globais 
 extern std::map<std::string, SceneObject> g_VirtualScene;

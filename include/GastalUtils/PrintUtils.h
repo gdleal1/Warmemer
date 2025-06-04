@@ -1,5 +1,5 @@
 #include <stdio.h>
-#include <ObjModel.h>
+#include <GastalUtils/ObjModel.h>
 #include <assert.h>
 
 // Função para debugging: imprime no terminal todas informações de um modelo

@@ -2,7 +2,7 @@
 #ifndef OBJMODEL_H
 #define OBJMODEL_H
 
-#include <tiny_obj_loader.h>
+#include <GastalUtils/tiny_obj_loader.h>
 #include <vector>
 #include <string>
 #include <cstdio>

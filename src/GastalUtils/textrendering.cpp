@@ -8,8 +8,8 @@
 #include <glm/mat4x4.hpp>
 #include <glm/vec4.hpp>
 
-#include "utils.h"
-#include "dejavufont.h"
+#include "GastalUtils/utils.h"
+#include "GastalUtils/dejavufont.h"
 
 GLuint CreateGpuProgram(GLuint vertex_shader_id, GLuint fragment_shader_id); // Função definida em main.cpp
 

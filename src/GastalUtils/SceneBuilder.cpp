@@ -1,4 +1,4 @@
-#include "SceneBuilder.h"
+#include "GastalUtils/SceneBuilder.h"
 
 // Constrói triângulos para futura renderização a partir de um ObjModel.
 void BuildTrianglesAndAddToVirtualScene(ObjModel* model)

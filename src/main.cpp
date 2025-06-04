@@ -29,7 +29,6 @@
 #include <sstream>
 #include <stdexcept>
 #include <algorithm>
-#include <stb_image.h>
 
 // Headers das bibliotecas OpenGL
 #include <glad/glad.h>   // Criação de contexto OpenGL 3.3
@@ -40,42 +39,12 @@
 #include <glm/vec4.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
-// Headers da biblioteca para carregar modelos obj
-#include <tiny_obj_loader.h>
-
-// Headers locais, definidos na pasta "include/"
-#include "utils.h"
-
-
-// Header para a struct ObjModel
-#include "ObjModel.h"
-
-//Header para a struct SceneObject
-#include "SceneObject.h"
-
-// Header para o arquivo que contém as funções que constroem a cena virtual
-#include "SceneBuilder.h"
-
-// Header para o arquivo que contém as funções de manipulação de matrizes
-#include "MatrixStack.h"
-
-//Heador para lidar com entradas de teclado mouse, etc
-#include "external_input.h"
-
 //Header com as definioes relacionadas a camera
 #include "camera.h"
 
-//Header com as definições de funções auxiliares para renderizar texto
-#include "PrintUtils.h"
-
-//Header com as definições de funções auxiliares para carregar shaders
-#include "shaderUtil.h"
-
-//Header com as definições de funções auxiliares para renderizar texto
-#include "textrendering.h"
-
-//Header com as definicoes de callbacks
-#include "callBacks.h"
+//Header com as Utilidades dos labs feitos pelo prof Gastal
+//e completados nas atividades de laboratorio
+#include "GastalUtils/includes.h"
 
 // Abaixo definimos variáveis globais utilizadas em várias funções do código.
 

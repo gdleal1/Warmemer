@@ -3,7 +3,7 @@
 
 
 #include <glm/glm.hpp>
-#include "matrices.h"
+#include "GastalUtils/matricies.h"
 #include <stack>
 
 // Declaração de variáveis globais
