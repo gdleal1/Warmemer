@@ -5,6 +5,8 @@
 #include <tiny_obj_loader.h>
 #include <vector>
 #include <string>
+#include <cstdio>
+#include <stdexcept>
 
 struct ObjModel
 {

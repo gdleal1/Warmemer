@@ -1,7 +1,6 @@
 // ObjModel.cpp
 #include "ObjModel.h"
-#include <cstdio>
-#include <stdexcept>
+
 
 ObjModel::ObjModel(const char* filename, const char* basepath, bool triangulate)
 {
