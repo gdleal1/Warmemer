@@ -4,13 +4,16 @@
 
 #include <glm/mat4x4.hpp>
 #include <glm/vec4.hpp>
-#include "GastalUtils/matricies.h"
 
 
+
+// Declare functions for camera transformations
 glm::mat4 Matrix_Camera_View(glm::vec4 camera_position_c, glm::vec4 camera_view_vector, glm::vec4 camera_up_vector);
 glm::mat4 Matrix_Perspective(float field_of_view, float aspect, float near, float far);
 float norm(glm::vec4 v);
 glm::vec4 crossproduct(glm::vec4 u, glm::vec4 v);
+
+
 
 class FreeCamera {
 private:
@@ -22,7 +25,8 @@ private:
     float viewY;
     float viewZ;
 
-    glm::vec4 cameraPositionC =glm::vec4(0.0f, 0.0f, 5.0f, 1.0f); //Initial camera position
+    glm::vec4 cameraPositionC =glm::vec4(0.0f, 1.0f, 0.0f, 1.0f); //Initial camera position
+
     glm::vec4 cameraViewVector;
     glm::vec4 cameraUpVector;
 

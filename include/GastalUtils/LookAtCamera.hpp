@@ -40,6 +40,7 @@ public:
     float GetCameraTheta() const;
     float GetCameraPhi() const;
     float GetCameraDistance() const;
+    
         
 };
 

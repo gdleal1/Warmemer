@@ -15,7 +15,11 @@ bool g_MiddleMouseButtonPressed = false; // Análogo para botão do meio do mous
 
 extern LookAtCamera g_lookAtCamera; // Declaração da câmera look-at, definida no arquivo LookAtCamera.cpp
 extern FreeCamera g_freeCamera; // Declaração da câmera free, definida no arquivo FreeCamera.cpp
-extern bool g_isLookAtCameraActive; // Declaração do booleano que controla se a câmera look-at está ativa
+extern bool g_isLookAtUsed; // Declaração do booleano que controla se a câmera look-at está ativa
+extern bool g_KeyWPressed; // Tecla W pressionada (movimento para frente)
+extern bool g_KeySPressed; // Tecla S pressionada (movimento para trás)
+extern bool g_KeyAPressed; // Tecla A pressionada (movimento para esquerda)
+extern bool g_KeyDPressed; // Tecla D pressionada (movimento para direita)
 
 // Função callback chamada sempre que o usuário aperta algum dos botões do mouse
 void MouseButtonCallback(GLFWwindow* window, int button, int action, int mods)
@@ -86,42 +90,35 @@ void CursorPosCallback(GLFWwindow* window, double xpos, double ypos)
         float dx = xpos - g_LastCursorPosX;
         float dy = ypos - g_LastCursorPosY;
     
-        // Atualizamos parâmetros da câmera com os deslocamentos
-        // g_CameraTheta -= 0.01f*dx;
-        // g_CameraPhi   += 0.01f*dy;
 
-        if (g_isLookAtCameraActive){
-            g_lookAtCamera.SetCameraTheta(g_lookAtCamera.GetCameraTheta() - 0.01f * dx);
-            g_lookAtCamera.SetCameraPhi(g_lookAtCamera.GetCameraPhi() + 0.01f * dy);
+        if (g_isLookAtUsed){
+            g_lookAtCamera.SetCameraTheta(g_lookAtCamera.GetCameraTheta() - 0.01f*dx);
+            g_lookAtCamera.SetCameraPhi(g_lookAtCamera.GetCameraPhi() + 0.01f*dy);
         }
 
         else{
-            g_freeCamera.SetCameraTheta(g_freeCamera.GetCameraTheta() - 0.01f * dx);
-            g_freeCamera.SetCameraPhi(g_freeCamera.GetCameraPhi() + 0.01f * dy);
+            g_freeCamera.SetCameraTheta(g_freeCamera.GetCameraTheta() - 0.01f*dx);
+            g_freeCamera.SetCameraPhi(g_freeCamera.GetCameraPhi() - 0.01f*dy);
         }
         
-    
         // Em coordenadas esféricas, o ângulo phi deve ficar entre -pi/2 e +pi/2.
         float phimax = 3.141592f/2;
         float phimin = -phimax;
 
-        if (g_isLookAtCameraActive)
-        {
+        if (g_isLookAtUsed){
             if (g_lookAtCamera.GetCameraPhi() > phimax)
-            g_lookAtCamera.SetCameraPhi(phimax);
-    
+                g_lookAtCamera.SetCameraPhi(phimax);
+
             if (g_lookAtCamera.GetCameraPhi() < phimin)
                 g_lookAtCamera.SetCameraPhi(phimin);
-            
         }
-        else
-        {
+
+        else{
             if (g_freeCamera.GetCameraPhi() > phimax)
                 g_freeCamera.SetCameraPhi(phimax);
-    
+
             if (g_freeCamera.GetCameraPhi() < phimin)
-                g_freeCamera.SetCameraPhi(phimin);
-            
+                g_freeCamera.SetCameraPhi(phimax);
         }
         
     
@@ -153,13 +150,8 @@ void ScrollCallback(GLFWwindow* window, double xoffset, double yoffset)
 {
     // Atualizamos a distância da câmera para a origem utilizando a
     // movimentação da "rodinha", simulando um ZOOM.
-    //g_CameraDistance -= 0.1f*yoffset;
-    if (g_isLookAtCameraActive)
+    if (g_isLookAtUsed)
         g_lookAtCamera.SetCameraDistance(g_lookAtCamera.GetCameraDistance() - 0.1f * yoffset);
-    
-    else
-        g_freeCamera.SetCameraDistance(g_freeCamera.GetCameraDistance() - 0.1f * yoffset);
-    
 
     // Uma câmera look-at nunca pode estar exatamente "em cima" do ponto para
     // onde ela está olhando, pois isto gera problemas de divisão por zero na
@@ -168,15 +160,9 @@ void ScrollCallback(GLFWwindow* window, double xoffset, double yoffset)
     // o qual foi detectado pelo aluno Vinicius Fraga (2017/2).
     const float verysmallnumber = std::numeric_limits<float>::epsilon();
     
-    if (g_isLookAtCameraActive){
+    if (g_isLookAtUsed)
         if (g_lookAtCamera.GetCameraDistance() < verysmallnumber)
             g_lookAtCamera.SetCameraDistance(verysmallnumber);
-    }
-
-    else{
-        if (g_freeCamera.GetCameraDistance() < verysmallnumber)
-            g_freeCamera.SetCameraDistance(verysmallnumber);
-    }
     
 }
 
@@ -203,11 +189,72 @@ void KeyCallback(GLFWwindow* window, int key, int scancode, int action, int mod)
         //do something we tdont know yet
     }
 
-    if (key == GLFW_KEY_C && action == GLFW_PRESS)
+    // Se o usuário apertar a tecla L, a variavel booleana g_isLookAtUsed é setada para true
+    if (key == GLFW_KEY_L && action == GLFW_PRESS)
     {
-        // Alterna entre a câmera look-at e a câmera free
-        g_isLookAtCameraActive = !g_isLookAtCameraActive;
-        
+        g_isLookAtUsed = true;
+    }
+
+    // Se o usuário apertar a tecla F, a variavel booleana g_isLookAtUsed é setada para false
+    if (key == GLFW_KEY_F && action == GLFW_PRESS)
+    {
+        g_isLookAtUsed = false;
+    }
+
+    // Teclas W, A, S, D para movimentação da câmera
+    if (key == GLFW_KEY_W){
+        if (action == GLFW_PRESS){
+            g_KeyWPressed = true;
+        }
+
+        else if (action == GLFW_RELEASE){
+            g_KeyWPressed = false;
+        }
+
+        else if (action == GLFW_REPEAT){
+            ;
+        }
+    }
+
+    if (key == GLFW_KEY_A){
+        if (action == GLFW_PRESS){
+            g_KeyAPressed = true;
+        }
+
+        else if (action == GLFW_RELEASE){
+            g_KeyAPressed = false;
+        }
+        else if (action == GLFW_REPEAT){
+            ;
+        }
+    }
+
+    if (key == GLFW_KEY_S){
+        if (action == GLFW_PRESS){
+            g_KeySPressed = true;
+        }
+
+        else if (action == GLFW_RELEASE){
+            g_KeySPressed = false;
+        }
+
+        else if (action == GLFW_REPEAT){
+            ;
+        }
+    }
+
+    if (key == GLFW_KEY_D){
+        if (action == GLFW_PRESS){
+            g_KeyDPressed = true;
+        }
+
+        else if (action == GLFW_RELEASE){
+            g_KeyDPressed = false;
+        }
+
+        else if (action == GLFW_REPEAT){
+            ;
+        }
     }
 
 }

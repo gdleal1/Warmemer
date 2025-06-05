@@ -234,14 +234,42 @@ int main(int argc, char* argv[])
         // Computamos a matriz "View" utilizando os parâmetros da câmera para
         // definir o sistema de coordenadas da câmera.  Veja slides 2-14, 184-190 e 236-242 do documento Aula_08_Sistemas_de_Coordenadas.pdf.
         
+        // Atualiza delta de tempo
+        float current_time = (float)glfwGetTime();
+        float delta_t = current_time - prev_time;
+        prev_time = current_time;
+
+        // Movimentacao da camera livre
+        if (g_isLookAtUsed==false){
+            if (g_KeyWPressed)
+            {
+                g_freeCamera.MoveFoward(g_speed_cam,delta_t); // Movimenta a camera para frente
+            }
+
+            if (g_KeySPressed)
+            {
+                g_freeCamera.MoveBackward(g_speed_cam,delta_t); // Movimenta a camera para tras
+            }
+
+            if (g_KeyAPressed)
+            {
+                g_freeCamera.MoveLeft(g_speed_cam,delta_t); // Movimenta a camera para esquerda
+            }
+
+            if (g_KeyDPressed)
+            {
+                g_freeCamera.MoveRight(g_speed_cam,delta_t); // Movimenta a camera para direita
+            }
+        }
+
         glm::mat4 view;
         
-        if (g_isLookAtCameraActive){
-            view = g_lookAtCamera.GetMatrixCameraView();
+        if (g_isLookAtUsed){
+            view = g_lookAtCamera.GetMatrixCameraView(); // Matriz de visualização da câmera LookAt
         }
 
         else{
-            view = g_freeCamera.GetMatrixCameraView();
+            view = g_freeCamera.GetMatrixCameraView(); // Matriz de visualização da câmera livre
         }
         
 
@@ -258,7 +286,7 @@ int main(int argc, char* argv[])
             // Projeção Perspectiva.
             // Para definição do field of view (FOV), veja slides 205-215 do documento Aula_09_Projecoes.pdf.
             float field_of_view = 3.141592 / 3.0f;
-            projection = g_lookAtCamera.GetMatrixPerspective(nearplane, farplane, field_of_view, g_ScreenRatio);
+            projection = g_freeCamera.GetMatrixPerspective(nearplane, farplane, field_of_view, g_ScreenRatio);
         }
         else
         {

@@ -55,3 +55,4 @@ glm::mat4 LookAtCamera::GetMatrixCameraView() const {
 glm::mat4 LookAtCamera::GetMatrixPerspective(float nearplane, float farplane, float field_of_view, float screenRatio) const {
     return Matrix_Perspective(field_of_view, screenRatio, nearplane, farplane);
 }
+
