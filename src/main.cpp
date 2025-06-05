@@ -143,9 +143,11 @@ int main(int argc, char* argv[])
     LoadShadersFromFiles();
 
     // Carregamos duas imagens para serem utilizadas como textura
-    LoadTextureImage("../../data/steel_texture.jpg");      // TextureImage0 // TextureImage1
+    LoadTextureImage("../../data/steel_texture.jpg");      // TextureImage0 
     LoadTextureImage("../../data/rustedSteel.jpg");       // TextureImage1
-    LoadTextureImage("../../data/map.jpeg");       // TextureImage2
+    LoadTextureImage("../../data/map.jpg");       // TextureImage2
+    LoadTextureImage("../../data/brickwall.jpg");       // TextureImage3
+
 
     // Construímos a representação de objetos geométricos através de malhas de triângulos
     ObjModel dreadmodel("../../data/dreadUnified.obj");
@@ -159,6 +161,10 @@ int main(int argc, char* argv[])
     ObjModel planemodel("../../data/plane.obj");
     ComputeNormals(&planemodel);
     BuildTrianglesAndAddToVirtualScene(&planemodel);
+
+    ObjModel ruinmodel("../../data/ruinsUnified.obj");
+    ComputeNormals(&ruinmodel);
+    BuildTrianglesAndAddToVirtualScene(&ruinmodel);
 
     if ( argc > 1 )
     {
@@ -237,7 +243,7 @@ int main(int argc, char* argv[])
         // Note que, no sistema de coordenadas da câmera, os planos near e far
         // estão no sentido negativo! Veja slides 176-204 do documento Aula_09_Projecoes.pdf.
         float nearplane = -0.1f;  // Posição do "near plane"
-        float farplane  = -10.0f; // Posição do "far plane"
+        float farplane  = -100.0f; // Posição do "far plane"
 
         if (g_UsePerspectiveProjection)
         {
@@ -272,6 +278,7 @@ int main(int argc, char* argv[])
         #define PLANE  1
         #define DREAD 2
         #define ORCMECH 3
+        #define RUINS 4
 
         //Desenhamos o modelo do dreadnought
         model = Matrix_Translate(DreadPosition.x, DreadPosition.y, DreadPosition.z) *
@@ -287,10 +294,17 @@ int main(int argc, char* argv[])
         DrawVirtualObject("the_orcMech");
 
         model = Matrix_Translate(0.0f, -0.4f, 0.0f) *
-                Matrix_Scale(10.0f, 0.01f, 10.0f);
+                Matrix_Scale(15.0f, 0.01f, 10.0f);
         glUniformMatrix4fv(g_model_uniform, 1 , GL_FALSE , glm::value_ptr(model));
         glUniform1i(g_object_id_uniform, PLANE); // Plano
         DrawVirtualObject("the_plane");
+
+        model =  Matrix_Scale(0.2f, 0.2f, 0.2f) *
+                Matrix_Translate(0.f, 1.2f, 0.0f) *
+                Matrix_Rotate_X(-M_PI/2.0f);
+        glUniformMatrix4fv(g_model_uniform, 1 , GL_FALSE , glm::value_ptr(model));
+        glUniform1i(g_object_id_uniform, RUINS); // Ruinas
+        DrawVirtualObject("the_ruins");
 
         // Imprimimos na tela informação sobre o número de quadros renderizados
         // por segundo (frames per second).

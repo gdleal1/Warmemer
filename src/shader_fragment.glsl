@@ -23,6 +23,7 @@ uniform mat4 projection;
 #define PLANE  1
 #define DREAD 2
 #define ORCMECH 3
+#define RUIN 4
 uniform int object_id;
 
 // Parâmetros da axis-aligned bounding box (AABB) do modelo
@@ -33,6 +34,7 @@ uniform vec4 bbox_max;
 uniform sampler2D TextureImage0;
 uniform sampler2D TextureImage1;
 uniform sampler2D TextureImage2;
+uniform sampler2D TextureImage3;
 
 // O valor de saída ("out") de um Fragment Shader é a cor final do fragmento.
 out vec4 color;
@@ -98,8 +100,11 @@ void main()
 
         U = (position_model.x - minx) / (maxx - minx);
         V = (position_model.z - minz) / (maxz - minz);
-
+        
         Kd0 = texture(TextureImage2, vec2(U,V)).rgb;
+
+        specular = 0.0; // PLANE não tem brilho
+        lambert *= 0.5; //fica mais natural
     }
     else if ( object_id == DREAD )
     {
@@ -134,6 +139,25 @@ void main()
         Kd0 = texture(TextureImage1, vec2(U,V)).rgb;
 
         specular = 0.0; // ORCMECH não tem brilho
+    }
+    else if ( object_id == RUIN )
+    {
+        vec4 bbox_center = (bbox_min + bbox_max) / 2.0;
+        
+        vec3 direction = position_model.xyz - bbox_center.xyz;
+        
+        float theta = atan(direction.z, direction.x);
+        
+        U = theta / (2.0 * M_PI) + 0.5;
+        
+        float height = bbox_max.y - bbox_min.y;
+        V = (position_model.y - bbox_min.y) / height;
+
+        Kd0 = texture(TextureImage3, vec2(U,V)).rgb;
+
+        specular = 0.0; // RUIN não tem brilho
+
+        
     }
 
 
