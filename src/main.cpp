@@ -239,6 +239,21 @@ int main(int argc, char* argv[])
         float delta_t = current_time - prev_time;
         prev_time = current_time;
 
+
+        if (g_cameraTransition.isTransitioning) {
+            
+            glm::vec4 interpolatedPosition = BezierCubic(delta_t);
+            
+            if (g_isLookAtUsed) {
+                g_lookAtCamera.SetPosition(interpolatedPosition);
+            } 
+
+            else {
+                g_freeCamera.SetPosition(interpolatedPosition);
+            }
+        }
+
+
         // Movimentacao da camera livre
         if (g_isLookAtUsed==false){
             FreeCamMove(delta_t);

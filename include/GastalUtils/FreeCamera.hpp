@@ -49,6 +49,9 @@ public:
     float GetCameraPhi() const;
     float GetCameraDistance() const;
 
+    void SetPosition(glm::vec4 position);
+    glm::vec4 GetPosition();
+
     void MoveFoward(float camSpeed, float deltaTime);
     void MoveBackward(float camSpeed, float deltaTime);
     void MoveLeft(float camSpeed, float deltaTime);

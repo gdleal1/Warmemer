@@ -35,6 +35,9 @@ public:
     void SetCameraPhi(float phi);
     void SetCameraDistance(float distance);
 
+    void SetPosition(glm::vec4 position);
+    glm::vec4 GetPosition();
+
     glm::mat4 GetMatrixCameraView() const;
     glm::mat4 GetMatrixPerspective(float nearplane, float farplane, float field_of_view, float screenRatio) const;
     float GetCameraTheta() const;

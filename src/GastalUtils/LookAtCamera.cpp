@@ -48,6 +48,15 @@ float LookAtCamera::GetCameraDistance() const {
     return cameraDistance;
 }
 
+void LookAtCamera::SetPosition(glm::vec4 position) {
+    cameraPositionC = position;
+    cameraViewVector = cameraLookAtL - cameraPositionC;
+}
+
+glm::vec4 LookAtCamera::GetPosition() {
+    return cameraPositionC;
+}
+
 glm::mat4 LookAtCamera::GetMatrixCameraView() const {
     return Matrix_Camera_View(cameraPositionC, cameraViewVector, cameraUpVector);
 }

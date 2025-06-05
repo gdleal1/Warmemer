@@ -2,6 +2,7 @@
 #include "camera.h"
 #include "GastalUtils/LookAtCamera.hpp"
 #include "GastalUtils/FreeCamera.hpp"
+#include "GastalUtils/cameraTransition.h"
 
 // Variáveis globais que armazenam a última posição do cursor do mouse, para
 // que possamos calcular quanto que o mouse se movimentou entre dois instantes
@@ -15,6 +16,7 @@ bool g_MiddleMouseButtonPressed = false; // Análogo para botão do meio do mous
 
 extern LookAtCamera g_lookAtCamera; // Declaração da câmera look-at, definida no arquivo LookAtCamera.cpp
 extern FreeCamera g_freeCamera; // Declaração da câmera free, definida no arquivo FreeCamera.cpp
+extern CameraTransition g_cameraTransition;
 extern bool g_isLookAtUsed; // Declaração do booleano que controla se a câmera look-at está ativa
 extern bool g_KeyWPressed; // Tecla W pressionada (movimento para frente)
 extern bool g_KeySPressed; // Tecla S pressionada (movimento para trás)
@@ -189,16 +191,32 @@ void KeyCallback(GLFWwindow* window, int key, int scancode, int action, int mod)
         //do something we tdont know yet
     }
 
-    // Se o usuário apertar a tecla L, a variavel booleana g_isLookAtUsed é setada para true
-    if (key == GLFW_KEY_L && action == GLFW_PRESS)
-    {
+    // Se o usuário apertar a tecla L, a variavel booleana g_isLookAtUsed é setada para true e é iniciada uma transição de câmera
+    if (key == GLFW_KEY_L && action == GLFW_PRESS && !g_isLookAtUsed) {
         g_isLookAtUsed = true;
+        g_cameraTransition.isTransitioning = true;
+        g_cameraTransition.t = 0.0f;
+
+        g_cameraTransition.p0 = g_freeCamera.GetPosition(); // posição atual
+        g_cameraTransition.p3 = g_lookAtCamera.GetPosition(); // destino
+
+        glm::vec4 dir = g_cameraTransition.p3 - g_cameraTransition.p0;
+        g_cameraTransition.p1 = g_cameraTransition.p0 + 0.25f * dir;
+        g_cameraTransition.p2 = g_cameraTransition.p0 + 0.75f * dir;
     }
 
-    // Se o usuário apertar a tecla F, a variavel booleana g_isLookAtUsed é setada para false
-    if (key == GLFW_KEY_F && action == GLFW_PRESS)
-    {
+    // Se o usuário apertar a tecla F, a variavel booleana g_isLookAtUsed é setada para false e é iniciada uma transição de câmera
+    if (key == GLFW_KEY_F && action == GLFW_PRESS && g_isLookAtUsed) {
         g_isLookAtUsed = false;
+        g_cameraTransition.isTransitioning = true;
+        g_cameraTransition.t = 0.0f;
+
+        g_cameraTransition.p0 = g_lookAtCamera.GetPosition(); // posição atual
+        g_cameraTransition.p3 = g_freeCamera.GetPosition(); // destino
+
+        glm::vec4 dir = g_cameraTransition.p3 - g_cameraTransition.p0;
+        g_cameraTransition.p1 = g_cameraTransition.p0 + 0.25f * dir;
+        g_cameraTransition.p2 = g_cameraTransition.p0 + 0.75f * dir;
     }
 
     // Teclas W, A, S, D para movimentação da câmera
