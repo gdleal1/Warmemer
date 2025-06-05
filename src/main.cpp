@@ -284,8 +284,6 @@ int main(int argc, char* argv[])
             projection = Matrix_Orthographic(l, r, b, t, nearplane, farplane);
         }
 
-        glm::mat4 model = Matrix_Identity(); // Transformação identidade de modelagem
-
         // Enviamos as matrizes "view" e "projection" para a placa de vídeo
         // (GPU). Veja o arquivo "shader_vertex.glsl", onde estas são
         // efetivamente aplicadas em todos os pontos.
@@ -299,6 +297,8 @@ int main(int argc, char* argv[])
         #define RUINS 4
 
         BuildMini(&Minis[0]);
+
+        glm::mat4 model = Matrix_Identity(); // Transformação identidade de modelagem
 
         model = Matrix_Translate(-1.0f, -0.3f, 0.0f) *
                 Matrix_Rotate_Y(-glfwGetTime()*0.2);;
