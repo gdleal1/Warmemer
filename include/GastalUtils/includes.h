@@ -10,3 +10,4 @@
 #include "GastalUtils/stb_image.h"
 #include "GastalUtils/tiny_obj_loader.h"
 #include "GastalUtils/utils.h"
+#include "GastalUtils/LookAtCamera.hpp"
