@@ -303,25 +303,13 @@ int main(int argc, char* argv[])
         #define ORCMECH 3
         #define RUINS 4
 
-        int DreadArmy_len = sizeof(DreadArmy)/sizeof(Miniature);
-        for (int i = 0; i < DreadArmy_len; ++i)
+        for (int i = 0; i < ArmySize; ++i)
         {
             BuildMini(&DreadArmy[i]);
-        }
-
-        int OrcMechArmy_len = sizeof(OrcMechArmy)/sizeof(Miniature);
-        for (int i = 0; i < OrcMechArmy_len; ++i)
-        {
             BuildMini(&OrcMechArmy[i]);
         }
 
         glm::mat4 model = Matrix_Identity(); // Transformação identidade de modelagem
-
-        model = Matrix_Translate(-1.0f, -0.3f, 0.0f) *
-                Matrix_Rotate_Y(-glfwGetTime()*0.2);;
-        glUniformMatrix4fv(g_model_uniform, 1 , GL_FALSE , glm::value_ptr(model));
-        glUniform1i(g_object_id_uniform, ORCMECH); // Daemon
-        DrawVirtualObject("the_orcMech");
 
         model = Matrix_Translate(0.0f, -0.4f, 0.0f) *
                 Matrix_Scale(15.0f, 0.01f, 10.0f);
