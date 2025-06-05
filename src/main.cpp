@@ -42,6 +42,8 @@
 //Header com as definioes relacionadas a camera
 #include "camera.h"
 
+#include "Miniatures.hpp"
+
 //Header com as Utilidades dos labs feitos pelo prof Gastal
 //e completados nas atividades de laboratorio
 #include "GastalUtils/includes.h"
@@ -71,6 +73,12 @@ glm::vec3 DreadPosition = glm::vec3(1.0f, -0.3f, 0.0f);
 
 int main(int argc, char* argv[])
 {
+    Minis[0].position = glm::vec4(DreadPosition, 1.0f);
+    Minis[0].object = "the_dread";
+    Minis[0].shaderID = 2;
+    Minis[0].maxHealth = 100;
+    Minis[0].currentHealth = 100;
+
     // Inicializamos a biblioteca GLFW, utilizada para criar uma janela do
     // sistema operacional, onde poderemos renderizar com OpenGL.
     int success = glfwInit();
@@ -280,12 +288,7 @@ int main(int argc, char* argv[])
         #define ORCMECH 3
         #define RUINS 4
 
-        //Desenhamos o modelo do dreadnought
-        model = Matrix_Translate(DreadPosition.x, DreadPosition.y, DreadPosition.z) *
-                Matrix_Rotate_Y(glfwGetTime()*0.2);
-        glUniformMatrix4fv(g_model_uniform, 1 , GL_FALSE , glm::value_ptr(model));
-        glUniform1i(g_object_id_uniform, DREAD); // Dreadnought
-        DrawVirtualObject("the_dread");
+        BuildMini(&Minis[0]);
 
         model = Matrix_Translate(-1.0f, -0.3f, 0.0f) *
                 Matrix_Rotate_Y(-glfwGetTime()*0.2);;

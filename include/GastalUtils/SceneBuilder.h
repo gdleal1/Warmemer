@@ -1,3 +1,4 @@
+#pragma once
 #ifndef SCENE_BUILDER_H
 #define SCENE_BUILDER_H
 
