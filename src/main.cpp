@@ -43,6 +43,7 @@
 #include "camera.h"
 
 #include "Miniatures.hpp"
+#include "FillArmies.hpp"
 
 //Header com as Utilidades dos labs feitos pelo prof Gastal
 //e completados nas atividades de laboratorio
@@ -65,19 +66,10 @@ bool g_UsePerspectiveProjection = true;
 // Variável que controla se o texto informativo será mostrado na tela.
 bool g_ShowInfoText = true;
 
-
-//VAR GLOBAIS TEMPORARIAS ENQ N TEMOS A CLASSE DE MINIATURA
-glm::vec3 DreadPosition = glm::vec3(1.0f, -0.3f, 0.0f);
-
-
-
 int main(int argc, char* argv[])
 {
-    Minis[0].position = glm::vec4(DreadPosition, 1.0f);
-    Minis[0].object = "the_dread";
-    Minis[0].shaderID = 2;
-    Minis[0].maxHealth = 100;
-    Minis[0].currentHealth = 100;
+    Miniature* DreadArmy = BuildDreadArmy();
+    Miniature* OrcMechArmy = BuildOrcMechArmy();
 
     // Inicializamos a biblioteca GLFW, utilizada para criar uma janela do
     // sistema operacional, onde poderemos renderizar com OpenGL.
@@ -311,7 +303,17 @@ int main(int argc, char* argv[])
         #define ORCMECH 3
         #define RUINS 4
 
-        BuildMini(&Minis[0]);
+        int DreadArmy_len = sizeof(DreadArmy)/sizeof(Miniature);
+        for (int i = 0; i < DreadArmy_len; ++i)
+        {
+            BuildMini(&DreadArmy[i]);
+        }
+
+        int OrcMechArmy_len = sizeof(OrcMechArmy)/sizeof(Miniature);
+        for (int i = 0; i < OrcMechArmy_len; ++i)
+        {
+            BuildMini(&OrcMechArmy[i]);
+        }
 
         glm::mat4 model = Matrix_Identity(); // Transformação identidade de modelagem
 
