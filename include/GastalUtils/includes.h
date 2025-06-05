@@ -13,3 +13,4 @@
 #include "GastalUtils/LookAtCamera.hpp"
 #include "GastalUtils/FreeCamera.hpp"
 #include "GastalUtils/key_state.h"
+#include "GastalUtils/freeCamMove.h"

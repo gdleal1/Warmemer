@@ -20,4 +20,4 @@ FreeCamera g_freeCamera(g_CameraTheta, g_CameraPhi, g_CameraDistance);
 bool g_isLookAtUsed = true;
 
 // Velocidade de movimentacao da camera livre
-float g_speed_cam = 1.0f;
+float g_speed_cam = 3.0f;
