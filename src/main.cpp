@@ -67,14 +67,7 @@ bool g_ShowInfoText = true;
 //VAR GLOBAIS TEMPORARIAS ENQ N TEMOS A CLASSE DE MINIATURA
 glm::vec3 DreadPosition = glm::vec3(1.0f, -0.3f, 0.0f);
 
-// Camera look at
-LookAtCamera g_lookAtCamera(g_CameraTheta, g_CameraPhi, g_CameraDistance);
 
-// Free camera
-FreeCamera g_freeCamera(g_CameraTheta, g_CameraPhi, g_CameraDistance);
-
-// Booleano que controla se a camera look-at está sendo utilizada
-bool g_isLookAtCameraActive = true;
 
 int main(int argc, char* argv[])
 {
@@ -183,7 +176,10 @@ int main(int argc, char* argv[])
     glEnable(GL_CULL_FACE);
     glCullFace(GL_BACK);
     glFrontFace(GL_CCW);
-
+    
+    // Tempo anterior
+    float prev_time = (float)glfwGetTime();
+    
     // Ficamos em um loop infinito, renderizando, até que o usuário feche a janela
     while (!glfwWindowShouldClose(window))
     {

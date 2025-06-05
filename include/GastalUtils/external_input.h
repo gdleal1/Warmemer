@@ -192,20 +192,22 @@ void KeyCallback(GLFWwindow* window, int key, int scancode, int action, int mod)
             std::exit(100 + i);
     // ======================
 
+
     // Se o usuário pressionar a tecla ESC, fechamos a janela.
     if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
         glfwSetWindowShouldClose(window, GL_TRUE);
 
-    // O código abaixo implementa a seguinte lógica:
-    //   Se apertar tecla X       então g_AngleX += delta;
-    //   Se apertar tecla shift+X então g_AngleX -= delta;
-    //   Se apertar tecla Y       então g_AngleY += delta;
-    //   Se apertar tecla shift+Y então g_AngleY -= delta;
-    //   Se apertar tecla Z       então g_AngleZ += delta;
-    //   Se apertar tecla shift+Z então g_AngleZ -= delta;
 
     if (key == GLFW_KEY_X && action == GLFW_PRESS)
     {
         //do something we tdont know yet
     }
+
+    if (key == GLFW_KEY_C && action == GLFW_PRESS)
+    {
+        // Alterna entre a câmera look-at e a câmera free
+        g_isLookAtCameraActive = !g_isLookAtCameraActive;
+        
+    }
+
 }
