@@ -1,6 +1,7 @@
 #include <GLFW/glfw3.h>
 #include "camera.h"
 #include "GastalUtils/LookAtCamera.hpp"
+#include "GastalUtils/FreeCamera.hpp"
 
 // Variáveis globais que armazenam a última posição do cursor do mouse, para
 // que possamos calcular quanto que o mouse se movimentou entre dois instantes
@@ -13,6 +14,8 @@ bool g_RightMouseButtonPressed = false; // Análogo para botão direito do mouse
 bool g_MiddleMouseButtonPressed = false; // Análogo para botão do meio do mouse
 
 extern LookAtCamera g_lookAtCamera; // Declaração da câmera look-at, definida no arquivo LookAtCamera.cpp
+extern FreeCamera g_freeCamera; // Declaração da câmera free, definida no arquivo FreeCamera.cpp
+extern bool g_isLookAtCameraActive; // Declaração do booleano que controla se a câmera look-at está ativa
 
 // Função callback chamada sempre que o usuário aperta algum dos botões do mouse
 void MouseButtonCallback(GLFWwindow* window, int button, int action, int mods)
@@ -86,18 +89,41 @@ void CursorPosCallback(GLFWwindow* window, double xpos, double ypos)
         // Atualizamos parâmetros da câmera com os deslocamentos
         // g_CameraTheta -= 0.01f*dx;
         // g_CameraPhi   += 0.01f*dy;
-        g_lookAtCamera.SetCameraTheta(g_lookAtCamera.GetCameraTheta() - 0.01f * dx);
-        g_lookAtCamera.SetCameraPhi(g_lookAtCamera.GetCameraPhi() + 0.01f * dy);
+
+        if (g_isLookAtCameraActive){
+            g_lookAtCamera.SetCameraTheta(g_lookAtCamera.GetCameraTheta() - 0.01f * dx);
+            g_lookAtCamera.SetCameraPhi(g_lookAtCamera.GetCameraPhi() + 0.01f * dy);
+        }
+
+        else{
+            g_freeCamera.SetCameraTheta(g_freeCamera.GetCameraTheta() - 0.01f * dx);
+            g_freeCamera.SetCameraPhi(g_freeCamera.GetCameraPhi() + 0.01f * dy);
+        }
+        
     
         // Em coordenadas esféricas, o ângulo phi deve ficar entre -pi/2 e +pi/2.
         float phimax = 3.141592f/2;
         float phimin = -phimax;
-    
-        if (g_lookAtCamera.GetCameraPhi() > phimax)
+
+        if (g_isLookAtCameraActive)
+        {
+            if (g_lookAtCamera.GetCameraPhi() > phimax)
             g_lookAtCamera.SetCameraPhi(phimax);
     
-        if (g_lookAtCamera.GetCameraPhi() < phimin)
-            g_lookAtCamera.SetCameraPhi(phimin);
+            if (g_lookAtCamera.GetCameraPhi() < phimin)
+                g_lookAtCamera.SetCameraPhi(phimin);
+            
+        }
+        else
+        {
+            if (g_freeCamera.GetCameraPhi() > phimax)
+                g_freeCamera.SetCameraPhi(phimax);
+    
+            if (g_freeCamera.GetCameraPhi() < phimin)
+                g_freeCamera.SetCameraPhi(phimin);
+            
+        }
+        
     
         // Atualizamos as variáveis globais para armazenar a posição atual do
         // cursor como sendo a última posição conhecida do cursor.
@@ -128,7 +154,12 @@ void ScrollCallback(GLFWwindow* window, double xoffset, double yoffset)
     // Atualizamos a distância da câmera para a origem utilizando a
     // movimentação da "rodinha", simulando um ZOOM.
     //g_CameraDistance -= 0.1f*yoffset;
-    g_lookAtCamera.SetCameraDistance(g_lookAtCamera.GetCameraDistance() - 0.1f * yoffset);
+    if (g_isLookAtCameraActive)
+        g_lookAtCamera.SetCameraDistance(g_lookAtCamera.GetCameraDistance() - 0.1f * yoffset);
+    
+    else
+        g_freeCamera.SetCameraDistance(g_freeCamera.GetCameraDistance() - 0.1f * yoffset);
+    
 
     // Uma câmera look-at nunca pode estar exatamente "em cima" do ponto para
     // onde ela está olhando, pois isto gera problemas de divisão por zero na
@@ -136,8 +167,17 @@ void ScrollCallback(GLFWwindow* window, double xoffset, double yoffset)
     // nunca pode ser zero. Versões anteriores deste código possuíam este bug,
     // o qual foi detectado pelo aluno Vinicius Fraga (2017/2).
     const float verysmallnumber = std::numeric_limits<float>::epsilon();
-    if (g_lookAtCamera.GetCameraDistance() < verysmallnumber)
-        g_lookAtCamera.SetCameraDistance(verysmallnumber);
+    
+    if (g_isLookAtCameraActive){
+        if (g_lookAtCamera.GetCameraDistance() < verysmallnumber)
+            g_lookAtCamera.SetCameraDistance(verysmallnumber);
+    }
+
+    else{
+        if (g_freeCamera.GetCameraDistance() < verysmallnumber)
+            g_freeCamera.SetCameraDistance(verysmallnumber);
+    }
+    
 }
 
 // Definição da função que será chamada sempre que o usuário pressionar alguma

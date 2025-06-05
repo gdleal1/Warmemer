@@ -70,6 +70,12 @@ glm::vec3 DreadPosition = glm::vec3(1.0f, -0.3f, 0.0f);
 // Camera look at
 LookAtCamera g_lookAtCamera(g_CameraTheta, g_CameraPhi, g_CameraDistance);
 
+// Free camera
+FreeCamera g_freeCamera(g_CameraTheta, g_CameraPhi, g_CameraDistance);
+
+// Booleano que controla se a camera look-at está sendo utilizada
+bool g_isLookAtCameraActive = true;
+
 int main(int argc, char* argv[])
 {
     // Inicializamos a biblioteca GLFW, utilizada para criar uma janela do
@@ -217,7 +223,17 @@ int main(int argc, char* argv[])
 
         // Computamos a matriz "View" utilizando os parâmetros da câmera para
         // definir o sistema de coordenadas da câmera.  Veja slides 2-14, 184-190 e 236-242 do documento Aula_08_Sistemas_de_Coordenadas.pdf.
-        glm::mat4 view = g_lookAtCamera.GetMatrixCameraView();
+        
+        glm::mat4 view;
+        
+        if (g_isLookAtCameraActive){
+            view = g_lookAtCamera.GetMatrixCameraView();
+        }
+
+        else{
+            view = g_freeCamera.GetMatrixCameraView();
+        }
+        
 
         // Agora computamos a matriz de Projeção.
         glm::mat4 projection;
