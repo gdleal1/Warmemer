@@ -196,13 +196,22 @@ void KeyCallback(GLFWwindow* window, int key, int scancode, int action, int mod)
         g_isLookAtUsed = true;
         g_cameraTransition.isTransitioning = true;
         g_cameraTransition.t = 0.0f;
-
+        
+        // Posição
         g_cameraTransition.p0 = g_freeCamera.GetPosition(); // posição atual
         g_cameraTransition.p3 = g_lookAtCamera.GetPosition(); // destino
 
         glm::vec4 dir = g_cameraTransition.p3 - g_cameraTransition.p0;
         g_cameraTransition.p1 = g_cameraTransition.p0 + 0.25f * dir;
         g_cameraTransition.p2 = g_cameraTransition.p0 + 0.75f * dir;
+
+        // Direção
+        g_cameraTransition.v0 = g_freeCamera.GetViewVector();
+        g_cameraTransition.v3 = g_lookAtCamera.GetViewVector();
+
+        // Pontos de controle intermediários para a curva de direção
+        g_cameraTransition.v1 = glm::normalize(glm::mix(g_cameraTransition.v0, g_cameraTransition.v3, 0.25f));
+        g_cameraTransition.v2 = glm::normalize(glm::mix(g_cameraTransition.v0, g_cameraTransition.v3, 0.75f));
     }
 
     // Se o usuário apertar a tecla F, a variavel booleana g_isLookAtUsed é setada para false e é iniciada uma transição de câmera
@@ -211,12 +220,22 @@ void KeyCallback(GLFWwindow* window, int key, int scancode, int action, int mod)
         g_cameraTransition.isTransitioning = true;
         g_cameraTransition.t = 0.0f;
 
+        // Posição
         g_cameraTransition.p0 = g_lookAtCamera.GetPosition(); // posição atual
         g_cameraTransition.p3 = g_freeCamera.GetPosition(); // destino
 
         glm::vec4 dir = g_cameraTransition.p3 - g_cameraTransition.p0;
         g_cameraTransition.p1 = g_cameraTransition.p0 + 0.25f * dir;
         g_cameraTransition.p2 = g_cameraTransition.p0 + 0.75f * dir;
+
+        // Direção
+        g_cameraTransition.v0 = g_lookAtCamera .GetViewVector();
+        g_cameraTransition.v3 = g_freeCamera.GetViewVector();
+
+        // Pontos de controle intermediários para a curva de direção
+        g_cameraTransition.v1 = glm::normalize(glm::mix(g_cameraTransition.v0, g_cameraTransition.v3, 0.25f));
+        g_cameraTransition.v2 = glm::normalize(glm::mix(g_cameraTransition.v0, g_cameraTransition.v3, 0.75f));
+
     }
 
     // Teclas W, A, S, D para movimentação da câmera

@@ -38,6 +38,9 @@ public:
     void SetPosition(glm::vec4 position);
     glm::vec4 GetPosition();
 
+    void SetViewVector(glm::vec4 viewVector);
+    glm::vec4 GetViewVector();
+
     glm::mat4 GetMatrixCameraView() const;
     glm::mat4 GetMatrixPerspective(float nearplane, float farplane, float field_of_view, float screenRatio) const;
     float GetCameraTheta() const;

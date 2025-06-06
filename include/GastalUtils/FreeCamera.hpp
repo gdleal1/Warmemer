@@ -52,6 +52,10 @@ public:
     void SetPosition(glm::vec4 position);
     glm::vec4 GetPosition();
 
+    void SetViewVector(glm::vec4 viewVector);
+    glm::vec4 GetViewVector();
+        
+
     void MoveFoward(float camSpeed, float deltaTime);
     void MoveBackward(float camSpeed, float deltaTime);
     void MoveLeft(float camSpeed, float deltaTime);

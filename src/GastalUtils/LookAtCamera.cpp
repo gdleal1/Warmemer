@@ -57,6 +57,13 @@ glm::vec4 LookAtCamera::GetPosition() {
     return cameraPositionC;
 }
 
+void LookAtCamera::SetViewVector(glm::vec4 viewVector) {
+    cameraViewVector = viewVector;
+}
+
+glm::vec4 LookAtCamera::GetViewVector() {
+    return cameraViewVector;}
+
 glm::mat4 LookAtCamera::GetMatrixCameraView() const {
     return Matrix_Camera_View(cameraPositionC, cameraViewVector, cameraUpVector);
 }

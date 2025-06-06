@@ -70,12 +70,22 @@ float FreeCamera::GetCameraDistance() const {
 
 void FreeCamera::SetPosition(glm::vec4 position) {
     cameraPositionC = position;
-    //UpdateCamera();
+    
 }
 
 glm::vec4 FreeCamera::GetPosition() {
     return cameraPositionC;
 }
+
+void FreeCamera::SetViewVector(glm::vec4 viewVector) {
+    cameraViewVector = viewVector;
+    w = (-1.0f * cameraViewVector) / norm(cameraViewVector);
+    u = crossproduct(cameraUpVector,w)/norm(crossproduct(cameraUpVector,w));
+
+}
+
+glm::vec4 FreeCamera::GetViewVector() {
+    return cameraViewVector;}
 
 glm::mat4 FreeCamera::GetMatrixCameraView() const {
     return Matrix_Camera_View(cameraPositionC, cameraViewVector, cameraUpVector);

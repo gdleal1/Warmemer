@@ -17,7 +17,7 @@ LookAtCamera g_lookAtCamera(g_CameraTheta, g_CameraPhi, g_CameraDistance);
 FreeCamera g_freeCamera(g_CameraTheta, g_CameraPhi, g_CameraDistance);
 
 // Booleano que controla se a camera look-at está sendo utilizada
-bool g_isLookAtUsed = false;
+bool g_isLookAtUsed = true;
 
 // Velocidade de movimentacao da camera livre
 float g_speed_cam = 3.0f;
