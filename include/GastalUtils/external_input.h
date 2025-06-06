@@ -4,12 +4,7 @@
 #include "GastalUtils/FreeCamera.hpp"
 #include "GastalUtils/cameraTransition.h"
 
-// Variáveis globais que armazenam a última posição do cursor do mouse, para
-// que possamos calcular quanto que o mouse se movimentou entre dois instantes
-// de tempo. Utilizadas no callback CursorPosCallback() abaixo.
 double g_LastCursorPosX, g_LastCursorPosY;
-// "g_LeftMouseButtonPressed = true" se o usuário está com o botão esquerdo do mouse
-// pressionado no momento atual. Veja função MouseButtonCallback().
 bool g_LeftMouseButtonPressed = false;
 bool g_RightMouseButtonPressed = false; // Análogo para botão direito do mouse
 bool g_MiddleMouseButtonPressed = false; // Análogo para botão do meio do mouse
@@ -22,6 +17,7 @@ extern bool g_KeyWPressed; // Tecla W pressionada (movimento para frente)
 extern bool g_KeySPressed; // Tecla S pressionada (movimento para trás)
 extern bool g_KeyAPressed; // Tecla A pressionada (movimento para esquerda)
 extern bool g_KeyDPressed; // Tecla D pressionada (movimento para direita)
+extern bool g_KeySpacePressed; // Tecla Space pressionada (movimento para cima)
 
 // Função callback chamada sempre que o usuário aperta algum dos botões do mouse
 void MouseButtonCallback(GLFWwindow* window, int button, int action, int mods)
@@ -287,6 +283,20 @@ void KeyCallback(GLFWwindow* window, int key, int scancode, int action, int mod)
 
         else if (action == GLFW_RELEASE){
             g_KeyDPressed = false;
+        }
+
+        else if (action == GLFW_REPEAT){
+            ;
+        }
+    }
+
+    if (key == GLFW_KEY_SPACE){
+        if (action == GLFW_PRESS){
+            g_KeySpacePressed = true;
+        }
+
+        else if (action == GLFW_RELEASE){
+            g_KeySpacePressed = false;
         }
 
         else if (action == GLFW_REPEAT){

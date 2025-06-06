@@ -22,6 +22,7 @@ void FreeCamera::UpdateCamera() {
 
     w = (-1.0f * cameraViewVector) / norm(cameraViewVector);
     u = crossproduct(cameraUpVector,w)/norm(crossproduct(cameraUpVector,w));
+    v = crossproduct(w,u);
 
 }
 
@@ -39,6 +40,10 @@ void FreeCamera::MoveLeft(float camSpeed, float deltaTime){
 
 void FreeCamera::MoveRight(float camSpeed, float deltaTime){
     cameraPositionC += u * camSpeed * deltaTime;
+}
+
+void FreeCamera::MoveUp(float camSpeed, float deltaTime){
+    cameraPositionC += v * camSpeed * deltaTime;
 }
 
 void FreeCamera::SetCameraTheta(float theta) {

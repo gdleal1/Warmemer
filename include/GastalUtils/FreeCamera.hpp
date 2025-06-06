@@ -32,6 +32,7 @@ private:
 
     glm::vec4 w;
     glm::vec4 u;
+    glm::vec4 v;
 
     void UpdateCamera();
     
@@ -60,6 +61,7 @@ public:
     void MoveBackward(float camSpeed, float deltaTime);
     void MoveLeft(float camSpeed, float deltaTime);
     void MoveRight(float camSpeed, float deltaTime);
+    void MoveUp(float camSpeed, float deltaTime);
         
 };
 
