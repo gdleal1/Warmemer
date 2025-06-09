@@ -72,8 +72,7 @@ bool g_ShowInfoText = true;
 
 int main(int argc, char* argv[])
 {
-    Miniature* DreadArmy = BuildDreadArmy();
-    Miniature* OrcMechArmy = BuildOrcMechArmy();
+    InitializeArmies(); //Inicialize the armies with the default miniatures
 
     // Inicializamos a biblioteca GLFW, utilizada para criar uma janela do
     // sistema operacional, onde poderemos renderizar com OpenGL.
@@ -294,11 +293,7 @@ int main(int argc, char* argv[])
         #define ORCMECH 3
         #define RUINS 4
 
-        for (int i = 0; i < ArmySize; ++i)
-        {
-            BuildMini(&DreadArmy[i]);
-            BuildMini(&OrcMechArmy[i]);
-        }
+        BuildArmies(); //Draws the armies in the scene
 
         glm::mat4 model = Matrix_Identity(); // Transformação identidade de modelagem
 

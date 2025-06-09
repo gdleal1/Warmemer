@@ -1,7 +1,5 @@
 #include "Warhammer/Miniatures.hpp"
 
-Miniature Minis[10];
-
 void BuildMini(Miniature *mini){
     int scale;
 

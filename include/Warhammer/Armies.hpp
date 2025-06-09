@@ -1,6 +1,15 @@
+#pragma once
 #include "Warhammer/Miniatures.hpp"
+#include <vector>
 
 extern int ArmySize;
 
-Miniature* BuildDreadArmy();
-Miniature* BuildOrcMechArmy();
+extern int current_mini_idx;
+extern int current_player_idx;
+
+extern std::vector<std::vector<Miniature>> Armies;
+
+void BuildArmies();
+void InitializeArmies();
+std::vector<Miniature> BuildDreadArmy();
+std::vector<Miniature> BuildOrcMechArmy();

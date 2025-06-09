@@ -3,26 +3,44 @@
 
 int ArmySize = 1;
 
-Miniature* BuildDreadArmy(){
-    static Miniature Minis[1];
-    for (int i = 0; i < ArmySize; ++i) {
-        Minis[i].position = glm::vec4(-10.0f, -0.4f, -5.5f, 1.0f);
-        Minis[i].object = "the_dread";
-        Minis[i].shaderID = 2; // Supondo que o shader ID do dreadnought seja 1
-        Minis[i].maxHealth = 100;
-        Minis[i].currentHealth = 100;
-    }
-    return Minis;
+int current_mini_idx;
+int current_player_idx;
+
+std::vector<std::vector<Miniature>> Armies(2);
+
+void InitializeArmies() {
+    Armies[0] = BuildDreadArmy();
+    Armies[1] = BuildOrcMechArmy();
 }
 
-Miniature* BuildOrcMechArmy(){
-    static Miniature Minis[1];
+void BuildArmies(){
+    for (int i = 0; i < ArmySize; ++i)
+                {
+                    BuildMini(&Armies[0][i]);
+                    BuildMini(&Armies[1][i]);
+                }
+}
+
+std::vector<Miniature> BuildDreadArmy() {
+    std::vector<Miniature> minis(ArmySize);
     for (int i = 0; i < ArmySize; ++i) {
-        Minis[i].position = glm::vec4(10.5f, -0.4f, 5.0f, 1.0f);
-        Minis[i].object = "the_orcMech";
-        Minis[i].shaderID = 3; // Supondo que o shader ID do orcMech seja 2
-        Minis[i].maxHealth = 100;
-        Minis[i].currentHealth = 100;
+        minis[i].position = glm::vec4(-10.0f, -0.4f, -5.5f, 1.0f);
+        minis[i].object = "the_dread";
+        minis[i].shaderID = 2; // Supondo que o shader ID do dreadnought seja 2
+        minis[i].maxHealth = 100;
+        minis[i].currentHealth = 100;
     }
-    return Minis;
+    return minis;
+}
+
+std::vector<Miniature> BuildOrcMechArmy() {
+    std::vector<Miniature> minis(ArmySize);
+    for (int i = 0; i < ArmySize; ++i) {
+        minis[i].position = glm::vec4(10.5f, -0.4f, 5.0f, 1.0f);
+        minis[i].object = "the_orcMech";
+        minis[i].shaderID = 3; // Supondo que o shader ID do orcMech seja 3
+        minis[i].maxHealth = 100;
+        minis[i].currentHealth = 100;
+    }
+    return minis;
 }

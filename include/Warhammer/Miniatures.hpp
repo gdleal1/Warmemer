@@ -10,6 +10,8 @@
 #include "GastalUtils/SceneBuilder.h"
 #include "GastalUtils/shaderUtil.h"
 
+//#include "Warhammer/Armies.hpp"
+
 struct Miniature
 {
     glm::vec4 position;
@@ -20,7 +22,6 @@ struct Miniature
 };
 
 extern Miniature Minis[10];
-
 
 void BuildMini(Miniature *mini);
 
