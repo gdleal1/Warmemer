@@ -1,6 +1,6 @@
 #pragma once
-# include "GastalUtils/LookAtCamera.hpp"
-# include "GastalUtils/FreeCamera.hpp"
+# include "Camera/LookAtCamera.hpp"
+# include "Camera/FreeCamera.hpp"
 
 // Variáveis que definem a câmera em coordenadas esféricas, controladas pelo
 // usuário através do mouse (veja função CursorPosCallback()). A posição

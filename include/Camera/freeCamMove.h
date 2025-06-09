@@ -1,5 +1,5 @@
 #pragma once
-#include "GastalUtils/FreeCamera.hpp"
+#include "Camera/FreeCamera.hpp"
 
 extern FreeCamera g_freeCamera;
 extern float g_speed_cam;

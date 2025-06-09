@@ -1,8 +1,8 @@
 #include <GLFW/glfw3.h>
-#include "camera.h"
-#include "GastalUtils/LookAtCamera.hpp"
-#include "GastalUtils/FreeCamera.hpp"
-#include "GastalUtils/cameraTransition.h"
+#include "Camera/camera.h"
+#include "Camera/LookAtCamera.hpp"
+#include "Camera/FreeCamera.hpp"
+#include "Camera/cameraTransition.h"
 
 double g_LastCursorPosX, g_LastCursorPosY;
 bool g_LeftMouseButtonPressed = false;

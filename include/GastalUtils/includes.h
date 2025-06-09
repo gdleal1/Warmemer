@@ -10,8 +10,4 @@
 #include "GastalUtils/stb_image.h"
 #include "GastalUtils/tiny_obj_loader.h"
 #include "GastalUtils/utils.h"
-#include "GastalUtils/LookAtCamera.hpp"
-#include "GastalUtils/FreeCamera.hpp"
 #include "GastalUtils/key_state.h"
-#include "GastalUtils/freeCamMove.h"
-#include "GastalUtils/cameraTransition.h"

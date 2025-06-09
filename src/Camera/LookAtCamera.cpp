@@ -1,5 +1,5 @@
 // LookAtCamera.cpp
-#include "GastalUtils/LookAtCamera.hpp"
+#include "Camera/LookAtCamera.hpp"
 #include <cmath>
 
 // Constructor initializes the camera parameters 

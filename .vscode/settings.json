@@ -53,5 +53,6 @@
         "cinttypes": "cpp",
         "typeinfo": "cpp"
     },
-    "cmake.ignoreCMakeListsMissing": true
+    "cmake.ignoreCMakeListsMissing": true,
+    "makefile.configureOnOpen": true
 }

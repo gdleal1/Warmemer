@@ -1,5 +1,5 @@
 // FreeCamera.cpp
-#include "GastalUtils/FreeCamera.hpp"
+#include "Camera/FreeCamera.hpp"
 #include <cmath>
 
 // Constructor initializes the camera parameters 

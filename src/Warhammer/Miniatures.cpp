@@ -1,4 +1,4 @@
-#include "Miniatures.hpp"
+#include "Warhammer/Miniatures.hpp"
 
 Miniature Minis[10];
 

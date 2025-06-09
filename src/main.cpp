@@ -40,10 +40,14 @@
 #include <glm/gtc/type_ptr.hpp>
 
 //Header com as definioes relacionadas a camera
-#include "camera.h"
+#include "Camera/camera.h"
+#include "Camera/LookAtCamera.hpp"
+#include "Camera/FreeCamera.hpp"
+#include "Camera/cameraTransition.h"
+#include "Camera/freeCamMove.h"
 
-#include "Miniatures.hpp"
-#include "FillArmies.hpp"
+#include "Warhammer/Miniatures.hpp"
+#include "Warhammer/Armies.hpp"
 
 //Header com as Utilidades dos labs feitos pelo prof Gastal
 //e completados nas atividades de laboratorio
