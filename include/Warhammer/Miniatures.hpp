@@ -16,6 +16,7 @@ class Miniature
 {
 public:
     glm::vec4 position;
+    glm::vec4 facing;
     std::string object;
     int shaderID;
     int maxHealth;
