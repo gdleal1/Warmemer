@@ -293,7 +293,7 @@ int main(int argc, char* argv[])
         #define ORCMECH 3
         #define RUINS 4
 
-        BuildArmies(); //Draws the armies in the scene
+        DrawArmies(); //Draws the armies in the scene
 
         glm::mat4 model = Matrix_Identity(); // Transformação identidade de modelagem
 

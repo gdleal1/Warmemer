@@ -4,7 +4,7 @@
 
 #include <glm/mat4x4.hpp>
 #include <glm/vec4.hpp>
-
+#include "Warhammer/Armies.hpp"
 
 
 // Declare functions for camera transformations

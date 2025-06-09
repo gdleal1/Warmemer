@@ -12,16 +12,17 @@
 
 //#include "Warhammer/Armies.hpp"
 
-struct Miniature
+class Miniature
 {
+public:
     glm::vec4 position;
     std::string object;
     int shaderID;
     int maxHealth;
     int currentHealth;
+
+    Miniature(const glm::vec4& pos, const std::string& obj, int shader, int maxHp, int currHp);
+
+    void Draw() const;
 };
-
-extern Miniature Minis[10];
-
-void BuildMini(Miniature *mini);
 

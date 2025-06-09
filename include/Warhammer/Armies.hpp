@@ -9,7 +9,7 @@ extern int current_player_idx;
 
 extern std::vector<std::vector<Miniature>> Armies;
 
-void BuildArmies();
+void DrawArmies();
 void InitializeArmies();
 std::vector<Miniature> BuildDreadArmy();
 std::vector<Miniature> BuildOrcMechArmy();

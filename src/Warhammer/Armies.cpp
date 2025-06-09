@@ -13,11 +13,11 @@ void InitializeArmies() {
     Armies[1] = BuildOrcMechArmy();
 }
 
-void BuildArmies(){
+void DrawArmies(){
     for (int i = 0; i < ArmySize; ++i)
                 {
-                    BuildMini(&Armies[0][i]);
-                    BuildMini(&Armies[1][i]);
+                    Armies[0][i].Draw(); // Draw the Dreadnought army
+                    Armies[0][i].Draw(); // Draw the Orc Mech army
                 }
 }
 
