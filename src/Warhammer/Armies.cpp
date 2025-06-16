@@ -27,6 +27,7 @@ std::vector<Miniature> BuildDreadArmy() {
         Miniature mini(
             glm::vec4(-9.0f, -0.4f, -5.5f, 1.0f), // position
             "the_dread",                            // object
+            1.00f,                                 //Facing angle
             2,                                      // shaderID
             100,                                    // maxHealth
             100                                     // currentHealth
@@ -40,8 +41,9 @@ std::vector<Miniature> BuildOrcMechArmy() {
     std::vector<Miniature> minis;
     for (int i = 0; i < ArmySize; ++i) {
         Miniature mini(
-            glm::vec4(11.0f, -0.4f, 5.5f, 1.0f), // position
-            "the_orcMech",                            // object
+            glm::vec4(11.0f, -0.4f, 5.5f, 1.0f),    // position
+            "the_orcMech",                          // object
+            -2.0f,                                  //Facing angle
             3,                                      // shaderID
             100,                                    // maxHealth
             100                                     // currentHealth

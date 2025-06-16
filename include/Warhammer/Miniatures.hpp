@@ -14,13 +14,13 @@ class Miniature
 {
 public:
     glm::vec4 position;
-    glm::vec4 facing;
     std::string object;
+    float facingTheta;
     int shaderID;
     int maxHealth;
     int currentHealth;
 
-    Miniature(const glm::vec4& pos, const std::string& obj, int shader, int maxHp, int currHp);
+    Miniature(const glm::vec4& pos, const std::string& obj, float theta, int shader, int maxHp, int currHp);
 
     void Draw() const;
 };
