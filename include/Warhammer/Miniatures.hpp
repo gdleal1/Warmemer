@@ -10,8 +10,6 @@
 #include "GastalUtils/SceneBuilder.h"
 #include "GastalUtils/shaderUtil.h"
 
-//#include "Warhammer/Armies.hpp"
-
 class Miniature
 {
 public:
