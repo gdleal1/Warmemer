@@ -13,6 +13,7 @@ extern LookAtCamera g_lookAtCamera; // Declaração da câmera look-at, definida
 extern FreeCamera g_freeCamera; // Declaração da câmera free, definida no arquivo FreeCamera.cpp
 extern CameraTransition g_cameraTransition;
 extern bool g_isLookAtUsed; // Declaração do booleano que controla se a câmera look-at está ativa
+
 extern bool g_KeyWPressed; // Tecla W pressionada (movimento para frente)
 extern bool g_KeySPressed; // Tecla S pressionada (movimento para trás)
 extern bool g_KeyAPressed; // Tecla A pressionada (movimento para esquerda)
