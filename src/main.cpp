@@ -165,7 +165,7 @@ int main(int argc, char* argv[])
     ComputeNormals(&planemodel);
     BuildTrianglesAndAddToVirtualScene(&planemodel);
 
-    ObjModel ruinmodel("../../data/ruinsUnified.obj");
+    ObjModel ruinmodel("../../data/wall.obj");
     ComputeNormals(&ruinmodel);
     BuildTrianglesAndAddToVirtualScene(&ruinmodel);
 
@@ -290,12 +290,11 @@ int main(int argc, char* argv[])
         glUniform1i(g_object_id_uniform, PLANE); // Plano
         DrawVirtualObject("the_plane");
 
-        model =  Matrix_Scale(0.2f, 0.2f, 0.2f) *
-                Matrix_Translate(0.f, 1.2f, 0.0f) *
-                Matrix_Rotate_X(-M_PI/2.0f);
+        model = Matrix_Scale(1.0f, 1.0f, 1.0f) *
+                Matrix_Translate(0.f, -0.5f, 0.0f);
         glUniformMatrix4fv(g_model_uniform, 1 , GL_FALSE , glm::value_ptr(model));
         glUniform1i(g_object_id_uniform, RUINS); // Ruinas
-        DrawVirtualObject("the_ruins");
+        DrawVirtualObject("the_wall");
 
         // Imprimimos na tela informação sobre o número de quadros renderizados
         // por segundo (frames per second).
