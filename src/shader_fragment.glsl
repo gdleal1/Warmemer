@@ -142,16 +142,15 @@ void main()
     }
     else if ( object_id == RUIN )
     {
-        vec4 bbox_center = (bbox_min + bbox_max) / 2.0;
-        
-        vec3 direction = position_model.xyz - bbox_center.xyz;
-        
-        float theta = atan(direction.z, direction.x);
-        
-        U = theta / (2.0 * M_PI) + 0.5;
-        
-        float height = bbox_max.y - bbox_min.y;
-        V = (position_model.y - bbox_min.y) / height;
+        float minx = bbox_min.x;
+        float maxx = bbox_max.x;
+
+        float miny = bbox_min.y;
+        float maxy = bbox_max.y;
+
+        // Flat mapping along the Z axis: project onto the XY plane
+        U = (position_model.x - minx) / (maxx - minx);
+        V = (position_model.y - miny) / (maxy - miny);
 
         Kd0 = texture(TextureImage3, vec2(U,V)).rgb;
 

@@ -149,7 +149,7 @@ int main(int argc, char* argv[])
     LoadTextureImage("../../data/steel_texture.jpg");      // TextureImage0 
     LoadTextureImage("../../data/rustedSteel.jpg");       // TextureImage1
     LoadTextureImage("../../data/map.jpg");       // TextureImage2
-    LoadTextureImage("../../data/brickwall.jpg");       // TextureImage3
+    LoadTextureImage("../../data/concrete.jpg");       // TextureImage3
 
 
     // Construímos a representação de objetos geométricos através de malhas de triângulos
