@@ -3,6 +3,8 @@
 #include "Camera/LookAtCamera.hpp"
 #include "Camera/FreeCamera.hpp"
 #include "Camera/cameraTransition.h"
+#include "Warhammer/Armies.hpp"
+
 
 double g_LastCursorPosX, g_LastCursorPosY;
 bool g_LeftMouseButtonPressed = false;
@@ -19,6 +21,9 @@ extern bool g_KeySPressed; // Tecla S pressionada (movimento para trás)
 extern bool g_KeyAPressed; // Tecla A pressionada (movimento para esquerda)
 extern bool g_KeyDPressed; // Tecla D pressionada (movimento para direita)
 extern bool g_KeySpacePressed; // Tecla Space pressionada (movimento para cima)
+
+bool g_isDreadArmy = true; // Flag to indicate if the Dreadnought army is being used
+
 
 // Função callback chamada sempre que o usuário aperta algum dos botões do mouse
 void MouseButtonCallback(GLFWwindow* window, int button, int action, int mods)
@@ -216,6 +221,27 @@ void KeyCallback(GLFWwindow* window, int key, int scancode, int action, int mod)
         g_isLookAtUsed = false;
         g_cameraTransition.isTransitioning = true;
         g_cameraTransition.t = 0.0f;
+        glm::vec4 minPosition;
+        float cameraTheta;
+        
+        // Valores de posição e direção da câmera livre para Dread Army
+        if (g_isDreadArmy){
+            minPosition = Armies[0][0].position;
+            minPosition.y = minPosition.y + 1.0f;
+            minPosition.x = minPosition.x + 0.5f;
+            minPosition.z = minPosition.z + 0.4f;
+            cameraTheta = Armies[0][0].facingTheta;
+        }
+
+        // Valores de posição e direção da câmera livre para OrcMech Army
+        else{}
+         
+        g_freeCamera.SetPosition(minPosition);
+        float cameraPhi = 0.0;
+        float viewX = cos(cameraPhi)*sin(cameraTheta);
+        float viewY = sin(cameraPhi);
+        float viewZ = cos(cameraPhi)*cos(cameraTheta);
+        g_freeCamera.SetViewVector(glm::vec4(viewX, viewY, viewZ, 0.0f)); 
 
         // Posição
         g_cameraTransition.p0 = g_lookAtCamera.GetPosition(); // posição atual

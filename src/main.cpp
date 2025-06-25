@@ -224,10 +224,12 @@ int main(int argc, char* argv[])
             glm::vec4 interpolatedPosition = BezierCubicPos();
             glm::vec4 interpolatedView = BezierCubicView();
             
+            
             if (g_isLookAtUsed) {
                 g_lookAtCamera.SetPosition(interpolatedPosition);
                 g_lookAtCamera.SetViewVector(interpolatedView);
             } 
+
 
             else {
                 g_freeCamera.SetPosition(interpolatedPosition);
