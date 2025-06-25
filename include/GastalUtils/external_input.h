@@ -22,7 +22,8 @@ extern bool g_KeyAPressed; // Tecla A pressionada (movimento para esquerda)
 extern bool g_KeyDPressed; // Tecla D pressionada (movimento para direita)
 extern bool g_KeySpacePressed; // Tecla Space pressionada (movimento para cima)
 
-bool g_isDreadArmy = true; // Flag to indicate if the Dreadnought army is being used
+extern std::vector<std::vector<Miniature>> Armies;
+extern bool g_isDreadArmy; 
 
 
 // Função callback chamada sempre que o usuário aperta algum dos botões do mouse
@@ -103,6 +104,8 @@ void CursorPosCallback(GLFWwindow* window, double xpos, double ypos)
         else{
             g_freeCamera.SetCameraTheta(g_freeCamera.GetCameraTheta() - 0.01f*dx);
             g_freeCamera.SetCameraPhi(g_freeCamera.GetCameraPhi() - 0.01f*dy);
+            // Atualiza theta da miniatura também
+            Armies[0][0].facingTheta = g_freeCamera.GetCameraTheta();
         }
         
         // Em coordenadas esféricas, o ângulo phi deve ficar entre -pi/2 e +pi/2.
@@ -123,9 +126,12 @@ void CursorPosCallback(GLFWwindow* window, double xpos, double ypos)
 
             if (g_freeCamera.GetCameraPhi() < phimin)
                 g_freeCamera.SetCameraPhi(phimax);
+            
+            // Atualiza theta da miniatura também
+            Armies[0][0].facingTheta = g_freeCamera.GetCameraTheta();
         }
-        
-    
+
+
         // Atualizamos as variáveis globais para armazenar a posição atual do
         // cursor como sendo a última posição conhecida do cursor.
         g_LastCursorPosX = xpos;
@@ -224,16 +230,14 @@ void KeyCallback(GLFWwindow* window, int key, int scancode, int action, int mod)
         glm::vec4 minPosition;
         float cameraTheta;
         
-        // Valores de posição e direção da câmera livre para Dread Army
+        // Valores de posição da câmera livre para Dread Army
         if (g_isDreadArmy){
             minPosition = Armies[0][0].position;
-            minPosition.y = minPosition.y + 1.0f;
-            minPosition.x = minPosition.x + 0.5f;
-            minPosition.z = minPosition.z + 0.4f;
+            minPosition.y = minPosition.y + 2.0f;
             cameraTheta = Armies[0][0].facingTheta;
         }
 
-        // Valores de posição e direção da câmera livre para OrcMech Army
+        // Valores de posição da câmera livre para OrcMech Army
         else{}
          
         g_freeCamera.SetPosition(minPosition);

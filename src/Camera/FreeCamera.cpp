@@ -27,19 +27,27 @@ void FreeCamera::UpdateCamera() {
 }
 
 void FreeCamera::MoveFoward(float camSpeed, float deltaTime){
-    cameraPositionC += -1.0f *w * camSpeed * deltaTime;
+    glm::vec4 wXZ = glm::vec4(w.x, 0.0f, w.z, 0.0f);           // projeta w no plano XZ
+    wXZ = glm::normalize(wXZ);                                 // re-normaliza
+    cameraPositionC += -1.0f * wXZ * camSpeed * deltaTime;
 }
 
 void FreeCamera::MoveBackward(float camSpeed, float deltaTime){
-    cameraPositionC += w * camSpeed * deltaTime;
+    glm::vec4 wXZ = glm::vec4(w.x, 0.0f, w.z, 0.0f);
+    wXZ = glm::normalize(wXZ);
+    cameraPositionC += wXZ * camSpeed * deltaTime;
 }
 
 void FreeCamera::MoveLeft(float camSpeed, float deltaTime){
-    cameraPositionC += -1.0f *u * camSpeed * deltaTime;
+    glm::vec4 uXZ = glm::vec4(u.x, 0.0f, u.z, 0.0f);
+    uXZ = glm::normalize(uXZ);
+    cameraPositionC += -1.0f * uXZ * camSpeed * deltaTime;
 }
 
 void FreeCamera::MoveRight(float camSpeed, float deltaTime){
-    cameraPositionC += u * camSpeed * deltaTime;
+    glm::vec4 uXZ = glm::vec4(u.x, 0.0f, u.z, 0.0f);
+    uXZ = glm::normalize(uXZ);
+    cameraPositionC += uXZ * camSpeed * deltaTime;
 }
 
 void FreeCamera::MoveUp(float camSpeed, float deltaTime){

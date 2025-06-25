@@ -241,6 +241,7 @@ int main(int argc, char* argv[])
         // Movimentacao da camera livre
         if (g_isLookAtUsed==false){
             FreeCamMove(delta_t);
+            Armies[0][0].MiniatureMove(delta_t); // Move the first miniature of the Dread Army
         }
 
         glm::mat4 view;
