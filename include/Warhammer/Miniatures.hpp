@@ -22,12 +22,13 @@ public:
     glm::vec4 position;
     std::string object;
     float facingTheta;
+    float size;
     int shaderID;
     int maxHealth;
     int currentHealth;
     float speed = 3.0f; 
 
-    Miniature(const glm::vec4& pos, const std::string& obj, float theta, int shader, int maxHp, int currHp);
+    Miniature(const glm::vec4& pos, const std::string& obj, float theta, float scale, int shader, int maxHp, int currHp);
 
     void Draw() const;
     void MiniatureMove(float delta_t);

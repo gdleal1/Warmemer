@@ -48,6 +48,7 @@
 
 #include "Warhammer/Miniatures.hpp"
 #include "Warhammer/Armies.hpp"
+#include "Warhammer/Structures.hpp"
 
 //Header com as Utilidades dos labs feitos pelo prof Gastal
 //e completados nas atividades de laboratorio
@@ -73,6 +74,7 @@ bool g_ShowInfoText = true;
 int main(int argc, char* argv[])
 {
     InitializeArmies(); //Inicialize the armies with the default miniatures
+    InitializeStructures(); //Initialize the structures in the scene
 
     // Inicializamos a biblioteca GLFW, utilizada para criar uma janela do
     // sistema operacional, onde poderemos renderizar com OpenGL.
@@ -284,6 +286,7 @@ int main(int argc, char* argv[])
         #define RUINS 4
 
         DrawArmies(); //Draws the armies in the scene
+        DrawStructures(); //Draws the structures in the scene
 
         glm::mat4 model = Matrix_Identity(); // Transformação identidade de modelagem
 
@@ -292,12 +295,6 @@ int main(int argc, char* argv[])
         glUniformMatrix4fv(g_model_uniform, 1 , GL_FALSE , glm::value_ptr(model));
         glUniform1i(g_object_id_uniform, PLANE); // Plano
         DrawVirtualObject("the_plane");
-
-        model = Matrix_Scale(1.0f, 1.0f, 1.0f) *
-                Matrix_Translate(0.f, -0.5f, 0.0f);
-        glUniformMatrix4fv(g_model_uniform, 1 , GL_FALSE , glm::value_ptr(model));
-        glUniform1i(g_object_id_uniform, RUINS); // Ruinas
-        DrawVirtualObject("the_wall");
 
         // Imprimimos na tela informação sobre o número de quadros renderizados
         // por segundo (frames per second).
