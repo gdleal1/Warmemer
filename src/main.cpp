@@ -251,7 +251,7 @@ int main(int argc, char* argv[])
         glm::mat4 model = Matrix_Identity(); 
 
         model = Matrix_Translate(0.0f, -0.4f, 0.0f) *
-                Matrix_Scale(15.0f, 0.01f, 10.0f);
+                Matrix_Scale(20.0f, 0.01f, 12.0f);
         glUniformMatrix4fv(g_model_uniform, 1 , GL_FALSE , glm::value_ptr(model));
         glUniform1i(g_object_id_uniform, PLANE); // Plane
         DrawVirtualObject("the_plane");

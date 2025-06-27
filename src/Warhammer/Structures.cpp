@@ -4,20 +4,40 @@ std::vector<Miniature> Strucutres;
 
 void InitializeStructures() {
     Strucutres.push_back(Miniature(
-        glm::vec4(0.0f, -0.4f, 0.0f, 1.0f), // position
+        glm::vec4(2.6f, -0.4f, 0.6f, 1.0f), // position
         "the_wall",                         // object
-        1.00f,                               // Facing angle
-        2.0f,                                 // size
+        0.00f,                               // Facing angle
+        1.5f,                                 // size
         4,                                    // shaderID
         100,                                  // maxHealth
         100                                   // currentHealth
     ));
 
     Strucutres.push_back(Miniature(
-        glm::vec4(5.0f, -0.4f, 5.0f, 1.0f), // position
+        glm::vec4(0.6f, -0.4f, 2.6f, 1.0f), // position
         "the_wall",                         // object
-        0.50f,                               // Facing angle
-        2.0f,                                 // size
+        1.57f,                               // Facing angle
+        1.5f,                                 // size
+        4,                                    // shaderID
+        100,                                  // maxHealth
+        100                                   // currentHealth
+    ));
+
+    Strucutres.push_back(Miniature(
+        glm::vec4(-2.6f, -0.4f, -0.6f, 1.0f), // position
+        "the_wall",                         // object
+        0.00f,                               // Facing angle
+        1.5f,                                 // size
+        4,                                    // shaderID
+        100,                                  // maxHealth
+        100                                   // currentHealth
+    ));
+
+    Strucutres.push_back(Miniature(
+        glm::vec4(-0.6f, -0.4f, -2.6f, 1.0f), // position
+        "the_wall",                         // object
+        1.57f,                               // Facing angle
+        1.5f,                                 // size
         4,                                    // shaderID
         100,                                  // maxHealth
         100                                   // currentHealth
