@@ -1,17 +1,17 @@
 #pragma once
 
-// Headers abaixo são específicos de C++
+// Headers below are specific to C++
 #include <string>
 #include <fstream>
 #include <sstream>
 
-// Headers das bibliotecas OpenGL
-#include <glad/glad.h>   // Criação de contexto OpenGL 3.3
-#include <GLFW/glfw3.h>  // Criação de janelas do sistema operacional
+// OpenGL library headers
+#include <glad/glad.h>   
+#include <GLFW/glfw3.h>  
 
 #include <GastalUtils/stb_image.h>
 
-// Variáveis que definem um programa de GPU (shaders). Veja função LoadShadersFromFiles().
+// Variables that define a GPU program (shaders). See LoadShadersFromFiles() function.
 extern GLuint g_GpuProgramID;
 extern GLint g_model_uniform;
 extern GLint g_view_uniform;
@@ -20,7 +20,7 @@ extern GLint g_object_id_uniform;
 extern GLint g_bbox_min_uniform;
 extern GLint g_bbox_max_uniform;
 
-// Número de texturas carregadas pela função LoadTextureImage()
+// Number of textures loaded by the LoadTextureImage() function
 extern GLuint g_NumLoadedTextures;
 
 void LoadShader(const char* filename, GLuint shader_id);

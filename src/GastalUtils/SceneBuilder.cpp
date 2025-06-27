@@ -1,6 +1,6 @@
 #include "GastalUtils/SceneBuilder.h"
 
-// Constrói triângulos para futura renderização a partir de um ObjModel.
+// Builds triangles for future rendering from an ObjModel.
 void BuildTrianglesAndAddToVirtualScene(ObjModel* model)
 {
     GLuint vertex_array_object_id;
@@ -49,10 +49,6 @@ void BuildTrianglesAndAddToVirtualScene(ObjModel* model)
                 bbox_max.y = std::max(bbox_max.y, vy);
                 bbox_max.z = std::max(bbox_max.z, vz);
 
-                // Inspecionando o código da tinyobjloader, o aluno Bernardo
-                // Sulzbach (2017/1) apontou que a maneira correta de testar se
-                // existem normais e coordenadas de textura no ObjModel é
-                // comparando se o índice retornado é -1. Fazemos isso abaixo.
 
                 if ( idx.normal_index != -1 )
                 {
@@ -79,9 +75,9 @@ void BuildTrianglesAndAddToVirtualScene(ObjModel* model)
 
         SceneObject theobject;
         theobject.name           = model->shapes[shape].name;
-        theobject.first_index    = first_index; // Primeiro índice
-        theobject.num_indices    = last_index - first_index + 1; // Número de indices
-        theobject.rendering_mode = GL_TRIANGLES;       // Índices correspondem ao tipo de rasterização GL_TRIANGLES.
+        theobject.first_index    = first_index; 
+        theobject.num_indices    = last_index - first_index + 1; 
+        theobject.rendering_mode = GL_TRIANGLES;       
         theobject.vertex_array_object_id = vertex_array_object_id;
 
         theobject.bbox_min = bbox_min;
@@ -132,30 +128,30 @@ void BuildTrianglesAndAddToVirtualScene(ObjModel* model)
     GLuint indices_id;
     glGenBuffers(1, &indices_id);
 
-    // "Ligamos" o buffer. Note que o tipo agora é GL_ELEMENT_ARRAY_BUFFER.
+    // We “turn on” the buffer. Note that the type is now GL_ELEMENT_ARRAY_BUFFER.
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indices_id);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(GLuint), NULL, GL_STATIC_DRAW);
     glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, 0, indices.size() * sizeof(GLuint), indices.data());
-    // glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0); // XXX Errado!
+    // glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0); // XXX Wrong!
     //
 
-    // "Desligamos" o VAO, evitando assim que operações posteriores venham a
-    // alterar o mesmo. Isso evita bugs.
+    // We "turn off" the VAO, thus preventing subsequent operations from
+    // altering it. This prevents bugs.
     glBindVertexArray(0);
 }
 
 
-// Função que computa as normais de um ObjModel, caso elas não tenham sido
-// especificadas dentro do arquivo ".obj"
+// Function that computes the normals of an ObjModel, if they have not been
+// specified in the ".obj" file.
 void ComputeNormals(ObjModel* model)
 {
     if ( !model->attrib.normals.empty() )
         return;
 
-    // Primeiro computamos as normais para todos os TRIÂNGULOS.
-    // Segundo, computamos as normais dos VÉRTICES através do método proposto
-    // por Gouraud, onde a normal de cada vértice vai ser a média das normais de
-    // todas as faces que compartilham este vértice.
+    // First, we compute the normals for all the TRIANGULES.
+    // Second, we compute the normals of the VÉRTICES using the method proposed
+    // by Gouraud, where the normal of each vertex will be the average of the normals of
+    // all the faces that share this vertex.
 
     size_t num_vertices = model->attrib.vertices.size() / 3;
 
@@ -208,26 +204,26 @@ void ComputeNormals(ObjModel* model)
     }
 }
 
-// Função que desenha um objeto armazenado em g_VirtualScene. Veja definição
-// dos objetos na função BuildTrianglesAndAddToVirtualScene().
+// Function that draws an object stored in g_VirtualScene. See definition
+// of the objects in the BuildTrianglesAndAddToVirtualScene() function.
 void DrawVirtualObject(const char* object_name)
 {
-    // "Ligamos" o VAO. Informamos que queremos utilizar os atributos de
-    // vértices apontados pelo VAO criado pela função BuildTrianglesAndAddToVirtualScene(). Veja
-    // comentários detalhados dentro da definição de BuildTrianglesAndAddToVirtualScene().
+    // "Turn on" the VAO. We tell it that we want to use the attributes of
+    // vertices pointed to by the VAO created by the BuildTrianglesAndAddToVirtualScene() function. See
+    // detailed comments within the definition of BuildTrianglesAndAddToVirtualScene().
     glBindVertexArray(g_VirtualScene[object_name].vertex_array_object_id);
 
-    // Setamos as variáveis "bbox_min" e "bbox_max" do fragment shader
-    // com os parâmetros da axis-aligned bounding box (AABB) do modelo.
+    // Set the "bbox_min" and "bbox_max" variables of the fragment shader
+    // with the parameters of the model's axis-aligned bounding box (AABB).
     glm::vec3 bbox_min = g_VirtualScene[object_name].bbox_min;
     glm::vec3 bbox_max = g_VirtualScene[object_name].bbox_max;
     glUniform4f(g_bbox_min_uniform, bbox_min.x, bbox_min.y, bbox_min.z, 1.0f);
     glUniform4f(g_bbox_max_uniform, bbox_max.x, bbox_max.y, bbox_max.z, 1.0f);
 
-    // Pedimos para a GPU rasterizar os vértices dos eixos XYZ
-    // apontados pelo VAO como linhas. Veja a definição de
-    // g_VirtualScene[""] dentro da função BuildTrianglesAndAddToVirtualScene(), e veja
-    // a documentação da função glDrawElements() em
+    // We ask the GPU to rasterize the vertices of the XYZ axes
+    // pointed to by VAO as lines. See the definition of
+    // g_VirtualScene[""] within the BuildTrianglesAndAddToVirtualScene() function, and see
+    // the documentation for the glDrawElements() function at
     // http://docs.gl/gl3/glDrawElements.
     glDrawElements(
         g_VirtualScene[object_name].rendering_mode,
@@ -236,7 +232,7 @@ void DrawVirtualObject(const char* object_name)
         (void*)(g_VirtualScene[object_name].first_index * sizeof(GLuint))
     );
 
-    // "Desligamos" o VAO, evitando assim que operações posteriores venham a
-    // alterar o mesmo. Isso evita bugs.
+    // We "turn off" the VAO, thus preventing subsequent operations from
+    // altering it. This prevents bugs.
     glBindVertexArray(0);
 }

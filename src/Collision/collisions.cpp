@@ -1,5 +1,6 @@
 #include "Collision/collisions.h"
 
+// Function to check if two miniatures are colliding using their bounding boxes
 bool MiniaturesAreColliding(const Miniature& a, const Miniature& b)
 {
     const SceneObject& objA = g_VirtualScene[a.object];

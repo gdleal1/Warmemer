@@ -1,19 +1,19 @@
 #pragma once
 #include <glm/glm.hpp>
 
-// Estrutura que define uma transição de câmera usando uma curva de Bézier cúbica (3 pontos)
+// Structure that defines a camera transition using a cubic Bézier curve (3 points) 
 struct CameraTransition {
     bool isTransitioning = false;
     float t = 0.0f;
-    float duration = 2.0f; // 1 segundo de transição
+    float duration = 2.0f; 
 
-    glm::vec4 p0, p1, p2, p3; // pontos da curva de Bézier para posição
-    glm::vec4 v0, v1, v2, v3; // Curva Bézier para o vetor de direção (view)
+    glm::vec4 p0, p1, p2, p3; // Bézier curve points for position
+    glm::vec4 v0, v1, v2, v3; // Bézier curve for the direction vector (view)
 };
 
 CameraTransition g_cameraTransition;
 
-// Função que realiza a interpolação de uma curva de Bézier cúbica para a posição da camera
+// Function that interpolates a cubic Bézier curve to the camera position
 glm::vec4 BezierCubicPos(){
             
     if (g_cameraTransition.t >= 1.0f) {
@@ -30,11 +30,11 @@ glm::vec4 BezierCubicPos(){
         3.0f * oneMinusT * t * t * g_cameraTransition.p2 +
         t * t * t * g_cameraTransition.p3;
             
-    interpolatedPosition.w = 1.0f; // Garantir que a posição é homogênea (w = 1)
+    interpolatedPosition.w = 1.0f; // Ensure that the position is homogeneous (w = 1)
     return interpolatedPosition;
 }
 
-// Função que realiza a interpolação de uma curva de Bézier cúbica para o vetor de direção da camera
+// Function that interpolates a cubic Bézier curve to the camera's direction vector
 glm::vec4 BezierCubicView()
 {
     float t = g_cameraTransition.t;
@@ -50,7 +50,7 @@ glm::vec4 BezierCubicView()
         3.0f * oneMinusT * t * t * v2 +
         t * t * t * v3;
 
-    interpolatedView.w = 0.0f; // Garantir que o vetor de direção é homogêneo (w = 0)
+    interpolatedView.w = 0.0f; // Ensure that the direction vector is homogeneous (w = 0)
     return glm::normalize(interpolatedView); 
 }
 

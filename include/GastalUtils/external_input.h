@@ -8,90 +8,90 @@
 
 double g_LastCursorPosX, g_LastCursorPosY;
 bool g_LeftMouseButtonPressed = false;
-bool g_RightMouseButtonPressed = false; // Análogo para botão direito do mouse
-bool g_MiddleMouseButtonPressed = false; // Análogo para botão do meio do mouse
+bool g_RightMouseButtonPressed = false; 
+bool g_MiddleMouseButtonPressed = false; 
 
-extern LookAtCamera g_lookAtCamera; // Declaração da câmera look-at, definida no arquivo LookAtCamera.cpp
-extern FreeCamera g_freeCameraMiniatures; // Declaração da câmera free, definida no arquivo FreeCamera.cpp
+extern LookAtCamera g_lookAtCamera; // Declaration of the look-at camera, defined in the LookAtCamera.cpp file
+extern FreeCamera g_freeCameraMiniatures; // Declaration of the free camera, defined in the FreeCamera.cpp file
 extern CameraTransition g_cameraTransition;
-extern bool g_isLookAtUsed; // Declaração do booleano que controla se a câmera look-at está ativa
+extern bool g_isLookAtUsed; // Declaration of the boolean that controls whether the look-at camera is active
 
-extern bool g_KeyWPressed; // Tecla W pressionada (movimento para frente)
-extern bool g_KeySPressed; // Tecla S pressionada (movimento para trás)
-extern bool g_KeyAPressed; // Tecla A pressionada (movimento para esquerda)
-extern bool g_KeyDPressed; // Tecla D pressionada (movimento para direita)
-extern bool g_KeySpacePressed; // Tecla Space pressionada (movimento para cima)
+extern bool g_KeyWPressed; // W key pressed (forward movement)
+extern bool g_KeySPressed; // S key pressed (backward movement)
+extern bool g_KeyAPressed; // Key A pressed (movement to the left)
+extern bool g_KeyDPressed; // D key pressed (movement to the right)
+extern bool g_KeySpacePressed; // Space key pressed (upward movement)
 
 extern std::vector<std::vector<Miniature>> Armies;
 extern bool g_isDreadArmy; 
 
 
-// Função callback chamada sempre que o usuário aperta algum dos botões do mouse
+// Callback function called whenever the user presses any of the mouse buttons
 void MouseButtonCallback(GLFWwindow* window, int button, int action, int mods)
 {
     if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS)
     {
-        // Se o usuário pressionou o botão esquerdo do mouse, guardamos a
-        // posição atual do cursor nas variáveis g_LastCursorPosX e
-        // g_LastCursorPosY.  Também, setamos a variável
-        // g_LeftMouseButtonPressed como true, para saber que o usuário está
-        // com o botão esquerdo pressionado.
+        // If the user has pressed the left mouse button, we store the
+        // current cursor position in the variables g_LastCursorPosX and
+        // g_LastCursorPosY.  We also set the variable
+        // g_LeftMouseButtonPressed to true, so that we know that the user is
+        // pressing the left button.
         glfwGetCursorPos(window, &g_LastCursorPosX, &g_LastCursorPosY);
         g_LeftMouseButtonPressed = true;
     }
     if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_RELEASE)
     {
-        // Quando o usuário soltar o botão esquerdo do mouse, atualizamos a
-        // variável abaixo para false.
+        // When the user releases the left mouse button, we update the
+        // variable below to false.
         g_LeftMouseButtonPressed = false;
     }
     if (button == GLFW_MOUSE_BUTTON_RIGHT && action == GLFW_PRESS)
     {
-        // Se o usuário pressionou o botão esquerdo do mouse, guardamos a
-        // posição atual do cursor nas variáveis g_LastCursorPosX e
-        // g_LastCursorPosY.  Também, setamos a variável
-        // g_RightMouseButtonPressed como true, para saber que o usuário está
-        // com o botão esquerdo pressionado.
+        // If the user has pressed the left mouse button, we store the
+        // current cursor position in the variables g_LastCursorPosX and
+        // g_LastCursorPosY.  We also set the variable
+        // g_RightMouseButtonPressed to true, so that we know that the user is
+        // pressing the left button.
         glfwGetCursorPos(window, &g_LastCursorPosX, &g_LastCursorPosY);
         g_RightMouseButtonPressed = true;
     }
     if (button == GLFW_MOUSE_BUTTON_RIGHT && action == GLFW_RELEASE)
     {
-        // Quando o usuário soltar o botão esquerdo do mouse, atualizamos a
-        // variável abaixo para false.
+        // When the user releases the left mouse button, we update the
+        // variable below to false.
         g_RightMouseButtonPressed = false;
     }
     if (button == GLFW_MOUSE_BUTTON_MIDDLE && action == GLFW_PRESS)
     {
-        // Se o usuário pressionou o botão esquerdo do mouse, guardamos a
-        // posição atual do cursor nas variáveis g_LastCursorPosX e
-        // g_LastCursorPosY.  Também, setamos a variável
-        // g_MiddleMouseButtonPressed como true, para saber que o usuário está
-        // com o botão esquerdo pressionado.
+        // If the user has pressed the left mouse button, we store the
+        // current cursor position in the variables g_LastCursorPosX and
+        // g_LastCursorPosY.  We also set the variable
+        // g_MiddleMouseButtonPressed to true, so that we know that the user is
+        // pressing the left button.
         glfwGetCursorPos(window, &g_LastCursorPosX, &g_LastCursorPosY);
         g_MiddleMouseButtonPressed = true;
     }
     if (button == GLFW_MOUSE_BUTTON_MIDDLE && action == GLFW_RELEASE)
     {
-        // Quando o usuário soltar o botão esquerdo do mouse, atualizamos a
-        // variável abaixo para false.
+        // When the user releases the left mouse button, we update the
+        // variable below to false.
         g_MiddleMouseButtonPressed = false;
     }
 }
 
-// Função callback chamada sempre que o usuário movimentar o cursor do mouse em
-// cima da janela OpenGL.
+// Callback function called whenever the user moves the mouse cursor on
+// above the OpenGL window.
 void CursorPosCallback(GLFWwindow* window, double xpos, double ypos)
 {
-    // Abaixo executamos o seguinte: caso o botão esquerdo do mouse esteja
-    // pressionado, computamos quanto que o mouse se movimento desde o último
-    // instante de tempo, e usamos esta movimentação para atualizar os
-    // parâmetros que definem a posição da câmera dentro da cena virtual.
-    // Assim, temos que o usuário consegue controlar a câmera.
+    // Below we do the following: if the left mouse button is
+    // pressed, we compute how much the mouse has moved since the last
+    // instant of time, and we use this movement to update the
+    // parameters that define the position of the camera within the virtual scene.
+    // Thus, we have the user being able to control the camera.
 
     if (g_LeftMouseButtonPressed)
     {
-        // Deslocamento do cursor do mouse em x e y de coordenadas de tela!
+        // Moving the mouse cursor in x and y screen coordinates!
         float dx = xpos - g_LastCursorPosX;
         float dy = ypos - g_LastCursorPosY;
     
@@ -104,11 +104,12 @@ void CursorPosCallback(GLFWwindow* window, double xpos, double ypos)
         else{
             g_freeCameraMiniatures.SetCameraTheta(g_freeCameraMiniatures.GetCameraTheta() - 0.01f*dx);
             g_freeCameraMiniatures.SetCameraPhi(g_freeCameraMiniatures.GetCameraPhi() - 0.01f*dy);
-            // Atualiza theta da miniatura também
+            
+            // Updates theta of the miniatures too
             Armies[0][0].facingTheta = g_freeCameraMiniatures.GetCameraTheta();
         }
         
-        // Em coordenadas esféricas, o ângulo phi deve ficar entre -pi/2 e +pi/2.
+        // In spherical coordinates, the phi angle must be between -pi/2 and +pi/2.
         float phimax = 3.141592f/2;
         float phimin = -phimax;
 
@@ -127,47 +128,42 @@ void CursorPosCallback(GLFWwindow* window, double xpos, double ypos)
             if (g_freeCameraMiniatures.GetCameraPhi() < phimin)
                 g_freeCameraMiniatures.SetCameraPhi(phimax);
             
-            // Atualiza theta da miniatura também
+            // Updates theta of the miniatures too
             Armies[0][0].facingTheta = g_freeCameraMiniatures.GetCameraTheta();
         }
 
 
-        // Atualizamos as variáveis globais para armazenar a posição atual do
-        // cursor como sendo a última posição conhecida do cursor.
+        // We update the global variables to store the current position of the
+        // cursor as the last known position of the cursor.
         g_LastCursorPosX = xpos;
         g_LastCursorPosY = ypos;
     }
 
     if (g_RightMouseButtonPressed)
     {
-        // Atualizamos as variáveis globais para armazenar a posição atual do
-        // cursor como sendo a última posição conhecida do cursor.
+        // We update the global variables to store the current position of the
+        // cursor as the last known position of the cursor.
         g_LastCursorPosX = xpos;
         g_LastCursorPosY = ypos;
     }
 
     if (g_MiddleMouseButtonPressed)
     {
-        // Atualizamos as variáveis globais para armazenar a posição atual do
-        // cursor como sendo a última posição conhecida do cursor.
+        // We update the global variables to store the current position of the
+        // cursor as the last known position of the cursor.
         g_LastCursorPosX = xpos;
         g_LastCursorPosY = ypos;
     }
 }
 
-// Função callback chamada sempre que o usuário movimenta a "rodinha" do mouse.
+// Callback function called whenever the user moves the mouse wheel.
 void ScrollCallback(GLFWwindow* window, double xoffset, double yoffset)
 {
-    // Atualizamos a distância da câmera para a origem utilizando a
-    // movimentação da "rodinha", simulando um ZOOM.
+    // We update the distance from the camera to the origin using the
+    // movement of the "wheel", simulating a ZOOM.
     if (g_isLookAtUsed)
         g_lookAtCamera.SetCameraDistance(g_lookAtCamera.GetCameraDistance() - 0.1f * yoffset);
 
-    // Uma câmera look-at nunca pode estar exatamente "em cima" do ponto para
-    // onde ela está olhando, pois isto gera problemas de divisão por zero na
-    // definição do sistema de coordenadas da câmera. Isto é, a variável abaixo
-    // nunca pode ser zero. Versões anteriores deste código possuíam este bug,
-    // o qual foi detectado pelo aluno Vinicius Fraga (2017/2).
     const float verysmallnumber = std::numeric_limits<float>::epsilon();
     
     if (g_isLookAtUsed)
@@ -176,20 +172,17 @@ void ScrollCallback(GLFWwindow* window, double xoffset, double yoffset)
     
 }
 
-// Definição da função que será chamada sempre que o usuário pressionar alguma
-// tecla do teclado. Veja http://www.glfw.org/docs/latest/input_guide.html#input_key
+// Definition of the function that will be called whenever the user presses any
+// key on the keyboard. See http://www.glfw.org/docs/latest/input_guide.html#input_key
 void KeyCallback(GLFWwindow* window, int key, int scancode, int action, int mod)
 {
-    // ======================
-    // Não modifique este loop! Ele é utilizando para correção automatizada dos
-    // laboratórios. Deve ser sempre o primeiro comando desta função KeyCallback().
     for (int i = 0; i < 10; ++i)
         if (key == GLFW_KEY_0 + i && action == GLFW_PRESS && mod == GLFW_MOD_SHIFT)
             std::exit(100 + i);
-    // ======================
 
 
-    // Se o usuário pressionar a tecla ESC, fechamos a janela.
+
+    // If the user presses the ESC key, we close the window.
     if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
         glfwSetWindowShouldClose(window, GL_TRUE);
 
@@ -199,30 +192,30 @@ void KeyCallback(GLFWwindow* window, int key, int scancode, int action, int mod)
         //do something we tdont know yet
     }
 
-    // Se o usuário apertar a tecla L, a variavel booleana g_isLookAtUsed é setada para true e é iniciada uma transição de câmera
+    // If the user presses the L key, the boolean variable g_isLookAtUsed is set to true and a camera transition is initiated.
     if (key == GLFW_KEY_L && action == GLFW_PRESS && !g_isLookAtUsed) {
         g_isLookAtUsed = true;
         g_cameraTransition.isTransitioning = true;
         g_cameraTransition.t = 0.0f;
         
-        // Posição
-        g_cameraTransition.p0 = g_freeCameraMiniatures.GetPosition(); // posição atual
-        g_cameraTransition.p3 = g_lookAtCamera.GetPosition(); // destino
+        // Position
+        g_cameraTransition.p0 = g_freeCameraMiniatures.GetPosition(); // current position
+        g_cameraTransition.p3 = g_lookAtCamera.GetPosition(); // destination
 
         glm::vec4 dir = g_cameraTransition.p3 - g_cameraTransition.p0;
         g_cameraTransition.p1 = g_cameraTransition.p0 + 0.25f * dir;
         g_cameraTransition.p2 = g_cameraTransition.p0 + 0.75f * dir;
 
-        // Direção
+        // Direction
         g_cameraTransition.v0 = g_freeCameraMiniatures.GetViewVector();
         g_cameraTransition.v3 = g_lookAtCamera.GetViewVector();
 
-        // Pontos de controle intermediários para a curva de direção
+        // Control points for the intermediate direction curve
         g_cameraTransition.v1 = glm::normalize(glm::mix(g_cameraTransition.v0, g_cameraTransition.v3, 0.25f));
         g_cameraTransition.v2 = glm::normalize(glm::mix(g_cameraTransition.v0, g_cameraTransition.v3, 0.75f));
     }
 
-    // Se o usuário apertar a tecla F, a variavel booleana g_isLookAtUsed é setada para false e é iniciada uma transição de câmera
+    // If the user presses the F key, the boolean variable g_isLookAtUsed is set to false and a camera transition is initiated
     if (key == GLFW_KEY_F && action == GLFW_PRESS && g_isLookAtUsed) {
         g_isLookAtUsed = false;
         g_cameraTransition.isTransitioning = true;
@@ -230,14 +223,14 @@ void KeyCallback(GLFWwindow* window, int key, int scancode, int action, int mod)
         glm::vec4 minPosition;
         float cameraTheta;
         
-        // Valores de posição da câmera livre para Dread Army
+        // Free camera position values for Dread Army
         if (g_isDreadArmy){
             minPosition = Armies[0][0].position;
             minPosition.y = minPosition.y + 2.0f;
             cameraTheta = Armies[0][0].facingTheta;
         }
 
-        // Valores de posição da câmera livre para OrcMech Army
+        // Free camera position values for OrcMech Army
         else{}
          
         g_freeCameraMiniatures.SetPosition(minPosition);
@@ -247,25 +240,25 @@ void KeyCallback(GLFWwindow* window, int key, int scancode, int action, int mod)
         float viewZ = cos(cameraPhi)*cos(cameraTheta);
         g_freeCameraMiniatures.SetViewVector(glm::vec4(viewX, viewY, viewZ, 0.0f)); 
 
-        // Posição
-        g_cameraTransition.p0 = g_lookAtCamera.GetPosition(); // posição atual
-        g_cameraTransition.p3 = g_freeCameraMiniatures.GetPosition(); // destino
+        // Position
+        g_cameraTransition.p0 = g_lookAtCamera.GetPosition(); // current position
+        g_cameraTransition.p3 = g_freeCameraMiniatures.GetPosition(); // destination
 
         glm::vec4 dir = g_cameraTransition.p3 - g_cameraTransition.p0;
         g_cameraTransition.p1 = g_cameraTransition.p0 + 0.25f * dir;
         g_cameraTransition.p2 = g_cameraTransition.p0 + 0.75f * dir;
 
-        // Direção
+        // Direction
         g_cameraTransition.v0 = g_lookAtCamera .GetViewVector();
         g_cameraTransition.v3 = g_freeCameraMiniatures.GetViewVector();
 
-        // Pontos de controle intermediários para a curva de direção
+        // Intermediate control points for the direction curve
         g_cameraTransition.v1 = glm::normalize(glm::mix(g_cameraTransition.v0, g_cameraTransition.v3, 0.25f));
         g_cameraTransition.v2 = glm::normalize(glm::mix(g_cameraTransition.v0, g_cameraTransition.v3, 0.75f));
 
     }
 
-    // Teclas W, A, S, D para movimentação da câmera
+    // W, A, S, D, SPACE keys for camera movement
     if (key == GLFW_KEY_W){
         if (action == GLFW_PRESS){
             g_KeyWPressed = true;

@@ -11,7 +11,7 @@
 #include "GastalUtils/utils.h"
 #include "GastalUtils/dejavufont.h"
 
-GLuint CreateGpuProgram(GLuint vertex_shader_id, GLuint fragment_shader_id); // Função definida em main.cpp
+GLuint CreateGpuProgram(GLuint vertex_shader_id, GLuint fragment_shader_id); 
 
 const GLchar* const textvertexshader_source = ""
 "#version 330\n"
@@ -37,25 +37,25 @@ const GLchar* const textfragmentshader_source = ""
 
 void TextRendering_LoadShader(const GLchar* const shader_string, GLuint shader_id)
 {
-    // Define o código do shader, contido na string "shader_string"
+    // Define the shader code, contained in the string “shader_string”
     glShaderSource(shader_id, 1, &shader_string, NULL);
 
-    // Compila o código do shader (em tempo de execução)
+    // Compiles the shader code (at runtime)
     glCompileShader(shader_id);
 
-    // Verificamos se ocorreu algum erro ou "warning" durante a compilação
+    // Check if any errors or warnings occurred during compilation
     GLint compiled_ok;
     glGetShaderiv(shader_id, GL_COMPILE_STATUS, &compiled_ok);
 
     GLint log_length = 0;
     glGetShaderiv(shader_id, GL_INFO_LOG_LENGTH, &log_length);
 
-    // Alocamos memória para guardar o log de compilação.
-    // A chamada "new" em C++ é equivalente ao "malloc()" do C.
+    // We allocate memory to store the compilation log.
+    // The "new" call in C++ is equivalent to C's "malloc()".
     GLchar* log = new GLchar[log_length];
     glGetShaderInfoLog(shader_id, log_length, &log_length, log);
 
-    // Imprime no terminal qualquer erro ou "warning" de compilação
+    // Prints any compilation errors or warnings in the terminal
     if ( log_length != 0 )
     {
         std::string  output;
@@ -78,7 +78,7 @@ void TextRendering_LoadShader(const GLchar* const shader_string, GLuint shader_i
         fprintf(stderr, "%s", output.c_str());
     }
 
-    // A chamada "delete" em C++ é equivalente ao "free()" do C
+    
     delete [] log;
 }
 
@@ -305,12 +305,12 @@ void TextRendering_PrintMatrixVectorProductDivW(GLFWwindow* window, glm::mat4 M,
     TextRendering_PrintString(window, buffer, x, y - 3*lineheight, scale);
 }
 
-// Escrevemos na tela o número de quadros renderizados por segundo (frames per
+// We write the number of frames rendered per second to the screen (frames per
 // second).
 void TextRendering_ShowFramesPerSecond(GLFWwindow* window)
 {
-    // Variáveis estáticas (static) mantém seus valores entre chamadas
-    // subsequentes da função!
+    // Static variables keep their values between calls
+    // subsequent to the function!
     static float old_seconds = (float)glfwGetTime();
     static int   ellapsed_frames = 0;
     static char  buffer[20] = "?? fps";
@@ -318,10 +318,10 @@ void TextRendering_ShowFramesPerSecond(GLFWwindow* window)
 
     ellapsed_frames += 1;
 
-    // Recuperamos o número de segundos que passou desde a execução do programa
+    // We retrieve the number of seconds that have passed since the program was executed
     float seconds = (float)glfwGetTime();
 
-    // Número de segundos desde o último cálculo do fps
+    // Number of seconds since the last fps calculation
     float ellapsed_seconds = seconds - old_seconds;
 
     if ( ellapsed_seconds > 1.0f )

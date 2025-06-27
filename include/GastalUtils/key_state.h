@@ -1,8 +1,8 @@
 #pragma once
 
-// Variaveis que definem se alguma tecla de movimentacao está pressionada
-bool g_KeyWPressed = false; // Tecla W pressionada (movimento para frente)
-bool g_KeySPressed = false; // Tecla S pressionada (movimento para trás)
-bool g_KeyAPressed = false; // Tecla A pressionada (movimento para esquerda)
-bool g_KeyDPressed = false; // Tecla D pressionada (movimento para direita)
-bool g_KeySpacePressed = false; // Tecla Space pressionada (movimento para cima)
+// Variables that define whether a movement key is pressed
+bool g_KeyWPressed = false; 
+bool g_KeySPressed = false; 
+bool g_KeyAPressed = false; 
+bool g_KeyDPressed = false; 
+bool g_KeySpacePressed = false; 

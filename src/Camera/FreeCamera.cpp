@@ -27,8 +27,8 @@ void FreeCamera::UpdateCamera() {
 }
 
 void FreeCamera::MoveFoward(float camSpeed, float deltaTime){
-    glm::vec4 wXZ = glm::vec4(w.x, 0.0f, w.z, 0.0f);           // projeta w no plano XZ
-    wXZ = glm::normalize(wXZ);                                 // re-normaliza
+    glm::vec4 wXZ = glm::vec4(w.x, 0.0f, w.z, 0.0f);           // projects w onto the XZ plane
+    wXZ = glm::normalize(wXZ);                                 // re-normalize
     cameraPositionC += -1.0f * wXZ * camSpeed * deltaTime;
 }
 

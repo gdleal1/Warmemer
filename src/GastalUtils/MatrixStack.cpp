@@ -2,13 +2,13 @@
 #include "GastalUtils/MatrixStack.h"
 
 
-// Função que pega a matriz M e guarda a mesma no topo da pilha
+// Function that takes the matrix M and stores it at the top of the stack
 void PushMatrix(glm::mat4 M)
 {
     g_MatrixStack.push(M);
 }
 
-// Função que remove a matriz atualmente no topo da pilha e armazena a mesma na variável M
+// Function that removes the matrix currently on top of the stack and stores it in the variable M
 void PopMatrix(glm::mat4& M)
 {
     if ( g_MatrixStack.empty() )

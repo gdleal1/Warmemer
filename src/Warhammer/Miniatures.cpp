@@ -75,12 +75,3 @@ bool Miniature::CanMove(const glm::vec4& movementDelta, const std::vector<std::v
 
     return true;
 }
-
-//    for (int i = 0; i < 2; ++i)
-//     {
-//         for (int j = 0; j < 1; ++j)
-//         {
-//             if (&Armies[i][j] != this && MiniaturesAreColliding(simulated, Armies[i][j]))
-//                 return false;
-//         }
-//     }

@@ -9,14 +9,14 @@
 #include <cassert>
 #include "GastalUtils/matricies.h"
 
-// Declaração das variáveis globais 
+// Declaration of global variables 
 extern std::map<std::string, SceneObject> g_VirtualScene;
 extern GLint g_bbox_min_uniform;
 extern GLint g_bbox_max_uniform;
 
 
-extern void BuildTrianglesAndAddToVirtualScene(ObjModel* model); // Constrói representação de um ObjModel como malha de triângulos para renderização
-extern void ComputeNormals(ObjModel* model); // Computa normais de um ObjModel, caso não existam.
-extern void DrawVirtualObject(const char* object_name); // Desenha um objeto armazenado em g_VirtualScene
+extern void BuildTrianglesAndAddToVirtualScene(ObjModel* model); // Builds a representation of an ObjModel as a mesh of triangles for rendering
+extern void ComputeNormals(ObjModel* model); // Computes normals of an ObjModel if they don't exist.
+extern void DrawVirtualObject(const char* object_name); // Draw an object stored in g_VirtualScene
 
 #endif //SCENE_BUILDER_H

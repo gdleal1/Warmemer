@@ -1,8 +1,8 @@
 #include <GLFW/glfw3.h>
 #include <string>
 
-// Declaração de funções auxiliares para renderizar texto dentro da janela
-// OpenGL. Estas funções estão definidas no arquivo "textrendering.cpp".
+// Declaration of auxiliary functions for rendering text within the
+// OpenGL window. These functions are defined in the "textrendering.cpp" file.
 void TextRendering_Init();
 float TextRendering_LineHeight(GLFWwindow* window);
 float TextRendering_CharWidth(GLFWwindow* window);

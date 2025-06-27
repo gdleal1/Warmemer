@@ -6,11 +6,11 @@
 #include "GastalUtils/matricies.h"
 #include <stack>
 
-// Declaração de variáveis globais
+// Declaration of global variables
 extern std::stack<glm::mat4>  g_MatrixStack;
 
 
-// Funções para manipular a pilha de matrizes
+// Functions to manipulate the matrix stack
 void PushMatrix(glm::mat4 M);
 void PopMatrix(glm::mat4& M);
 

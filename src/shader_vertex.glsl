@@ -1,20 +1,20 @@
 #version 330 core
 
-// Atributos de vértice recebidos como entrada ("in") pelo Vertex Shader.
-// Veja a função BuildTrianglesAndAddToVirtualScene() em "main.cpp".
+// Vertex attributes received as input ("in") by the Vertex Shader.
+// See the BuildTrianglesAndAddToVirtualScene() function in "main.cpp".
 layout (location = 0) in vec4 model_coefficients;
 layout (location = 1) in vec4 normal_coefficients;
 layout (location = 2) in vec2 texture_coefficients;
 
-// Matrizes computadas no código C++ e enviadas para a GPU
+// Matrices computed in the C++ code and sent to the GPU
 uniform mat4 model;
 uniform mat4 view;
 uniform mat4 projection;
 
-// Atributos de vértice que serão gerados como saída ("out") pelo Vertex Shader.
-// ** Estes serão interpolados pelo rasterizador! ** gerando, assim, valores
-// para cada fragmento, os quais serão recebidos como entrada pelo Fragment
-// Shader. Veja o arquivo "shader_fragment.glsl".
+// Vertex attributes that will be generated as output by the Vertex Shader.
+// ** These will be interpolated by the rasterizer! ** thus generating values
+// for each fragment, which will be received as input by the Fragment
+// Shader. See the file "shader_fragment.glsl".
 out vec4 position_world;
 out vec4 position_model;
 out vec4 normal;
@@ -22,46 +22,44 @@ out vec2 texcoords;
 
 void main()
 {
-    // A variável gl_Position define a posição final de cada vértice
-    // OBRIGATORIAMENTE em "normalized device coordinates" (NDC), onde cada
-    // coeficiente estará entre -1 e 1 após divisão por w.
-    // Veja {+NDC2+}.
+    // The gl_Position variable defines the final position of each vertex
+    // MANDATORY in "normalized device coordinates" (NDC), where each
+    // coefficient will be between -1 and 1 after division by w.
+    // See {+NDC2+}.
     //
-    // O código em "main.cpp" define os vértices dos modelos em coordenadas
-    // locais de cada modelo (array model_coefficients). Abaixo, utilizamos
-    // operações de modelagem, definição da câmera, e projeção, para computar
-    // as coordenadas finais em NDC (variável gl_Position). Após a execução
-    // deste Vertex Shader, a placa de vídeo (GPU) fará a divisão por W. Veja
-    // slides 41-67 e 69-86 do documento Aula_09_Projecoes.pdf.
+    // The code in "main.cpp" defines the vertices of the models in coordinates
+    // local to each model (array model_coefficients). Below, we use
+    // modeling operations, camera definition, and projection, to compute
+    // the final coordinates in NDC (gl_Position variable). After executing
+    // this Vertex Shader, the video card (GPU) will do the division by W.
 
     gl_Position = projection * view * model * model_coefficients;
 
-    // Como as variáveis acima  (tipo vec4) são vetores com 4 coeficientes,
-    // também é possível acessar e modificar cada coeficiente de maneira
-    // independente. Esses são indexados pelos nomes x, y, z, e w (nessa
-    // ordem, isto é, 'x' é o primeiro coeficiente, 'y' é o segundo, ...):
+    // As the variables above (type vec4) are vectors with 4 coefficients,
+    // it is also possible to access and modify each coefficient independently
+    //. These are indexed by the names x, y, z, and w (in that
+    // order, i.e. 'x' is the first coefficient, 'y' is the second, ...):
     //
-    //     gl_Position.x = model_coefficients.x;
-    //     gl_Position.y = model_coefficients.y;
-    //     gl_Position.z = model_coefficients.z;
-    //     gl_Position.w = model_coefficients.w;
+    // gl_Position.x = model_coefficients.x;
+    // gl_Position.y = model_coefficients.y;
+    // gl_Position.z = model_coefficients.z;
+    // gl_Position.w = model_coefficients.w;
     //
 
-    // Agora definimos outros atributos dos vértices que serão interpolados pelo
-    // rasterizador para gerar atributos únicos para cada fragmento gerado.
+    // Now we define other attributes of the vertices that will be interpolated by the
+    // rasterizer to generate unique attributes for each fragment generated.
 
-    // Posição do vértice atual no sistema de coordenadas global (World).
+    // Position of the current vertex in the global (World) coordinate system.
     position_world = model * model_coefficients;
 
-    // Posição do vértice atual no sistema de coordenadas local do modelo.
+    // Position of the current vertex in the model's local coordinate system.
     position_model = model_coefficients;
 
-    // Normal do vértice atual no sistema de coordenadas global (World).
-    // Veja slides 123-151 do documento Aula_07_Transformacoes_Geometricas_3D.pdf.
+    // Normal of the current vertex in the global coordinate system (World).
     normal = inverse(transpose(model)) * normal_coefficients;
     normal.w = 0.0;
 
-    // Coordenadas de textura obtidas do arquivo OBJ (se existirem!)
+    // Texture coordinates obtained from the OBJ file (if they exist!)
     texcoords = texture_coefficients;
 }
 

@@ -1,25 +1,8 @@
-//     Universidade Federal do Rio Grande do Sul
-//             Instituto de Informática
-//       Departamento de Informática Aplicada
-//
-//    INF01047 Fundamentos de Computação Gráfica
-//               Prof. Eduardo Gastal
-//
-//                   LABORATÓRIO 5
-//
-
-// Arquivos "headers" padrões de C podem ser incluídos em um
-// programa C++, sendo necessário somente adicionar o caractere
-// "c" antes de seu nome, e remover o sufixo ".h". Exemplo:
-//    #include <stdio.h> // Em C
-//  vira
-//    #include <cstdio> // Em C++
-//
 #include <cmath>
 #include <cstdio>
 #include <cstdlib>
 
-// Headers abaixo são específicos de C++
+
 #include <map>
 #include <stack>
 #include <string>
@@ -30,16 +13,16 @@
 #include <stdexcept>
 #include <algorithm>
 
-// Headers das bibliotecas OpenGL
-#include <glad/glad.h>   // Criação de contexto OpenGL 3.3
-#include <GLFW/glfw3.h>  // Criação de janelas do sistema operacional
+// OpenGL library headers
+#include <glad/glad.h>   
+#include <GLFW/glfw3.h>  
 
-// Headers da biblioteca GLM: criação de matrizes e vetores.
+// GLM library headers: creating matrices and vectors.
 #include <glm/mat4x4.hpp>
 #include <glm/vec4.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
-//Header com as definioes relacionadas a camera
+// Headers with camera-related settings
 #include "Camera/camera.h"
 #include "Camera/LookAtCamera.hpp"
 #include "Camera/FreeCamera.hpp"
@@ -50,27 +33,25 @@
 #include "Warhammer/Armies.hpp"
 #include "Warhammer/Structures.hpp"
 
-//Header com as Utilidades dos labs feitos pelo prof Gastal
-//e completados nas atividades de laboratorio
+// Header with the utilities of the labs made by Prof. Gastal
+// and completed in the lab activities
 #include "GastalUtils/includes.h"
 
 #include "Collision/collisions.h"
 
-// Abaixo definimos variáveis globais utilizadas em várias funções do código.
-
-// A cena virtual é uma lista de objetos nomeados, guardados em um dicionário
-// (map).  Veja dentro da função BuildTrianglesAndAddToVirtualScene() como que são incluídos
-// objetos dentro da variável g_VirtualScene, e veja na função main() como
-// estes são acessados.
+// The virtual scene is a list of named objects, stored in a dictionary
+// (map).  See inside the BuildTrianglesAndAddToVirtualScene() function how
+// objects are included inside the g_VirtualScene variable, and see in the main() function how
+// these are accessed.
 std::map<std::string, SceneObject> g_VirtualScene;
 
-// Pilha que guardará as matrizes de modelagem.
+// Stack that will store the modeling matrices.
 std::stack<glm::mat4>  g_MatrixStack;
 
-// Variável que controla o tipo de projeção utilizada: perspectiva ou ortográfica.
+// Variable that controls the type of projection used: perspective or orthographic.
 bool g_UsePerspectiveProjection = true;
 
-// Variável que controla se o texto informativo será mostrado na tela.
+// Variable that controls whether informative text will be shown on the screen.
 bool g_ShowInfoText = true;
 
 int main(int argc, char* argv[])
@@ -78,8 +59,8 @@ int main(int argc, char* argv[])
     InitializeArmies(); //Inicialize the armies with the default miniatures
     InitializeStructures(); //Initialize the structures in the scene
 
-    // Inicializamos a biblioteca GLFW, utilizada para criar uma janela do
-    // sistema operacional, onde poderemos renderizar com OpenGL.
+    // We have initialized the GLFW library, used to create a window of the
+    // operating system, where we can render with OpenGL.
     int success = glfwInit();
     if (!success)
     {
@@ -87,10 +68,10 @@ int main(int argc, char* argv[])
         std::exit(EXIT_FAILURE);
     }
 
-    // Definimos o callback para impressão de erros da GLFW no terminal
+    // Define the callback for printing GLFW errors in the terminal
     glfwSetErrorCallback(ErrorCallback);
 
-    // Pedimos para utilizar OpenGL versão 3.3 (ou superior)
+    // Use OpenGL version 3.3 (or higher)
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
 
@@ -98,12 +79,10 @@ int main(int argc, char* argv[])
     glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
     #endif
 
-    // Pedimos para utilizar o perfil "core", isto é, utilizaremos somente as
-    // funções modernas de OpenGL.
+    // Use the "core" profile, i.e. we will only use the
+    // modern OpenGL functions.
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
-    // Criamos uma janela do sistema operacional, com 800 colunas e 600 linhas
-    // de pixels, e com título "INF01047 ...".
     GLFWwindow* window;
     window = glfwCreateWindow(800, 600, "Warmemer", NULL, NULL);
     if (!window)
@@ -113,30 +92,22 @@ int main(int argc, char* argv[])
         std::exit(EXIT_FAILURE);
     }
 
-    // Definimos a função de callback que será chamada sempre que o usuário
-    // pressionar alguma tecla do teclado ...
+    // Callbacks for keyboard, mouse, cursor position, and scroll events.
     glfwSetKeyCallback(window, KeyCallback);
-    // ... ou clicar os botões do mouse ...
     glfwSetMouseButtonCallback(window, MouseButtonCallback);
-    // ... ou movimentar o cursor do mouse em cima da janela ...
     glfwSetCursorPosCallback(window, CursorPosCallback);
-    // ... ou rolar a "rodinha" do mouse.
     glfwSetScrollCallback(window, ScrollCallback);
 
-    // Indicamos que as chamadas OpenGL deverão renderizar nesta janela
     glfwMakeContextCurrent(window);
-
-    // Carregamento de todas funções definidas por OpenGL 3.3, utilizando a
-    // biblioteca GLAD.
     gladLoadGLLoader((GLADloadproc) glfwGetProcAddress);
 
-    // Definimos a função de callback que será chamada sempre que a janela for
-    // redimensionada, por consequência alterando o tamanho do "framebuffer"
-    // (região de memória onde são armazenados os pixels da imagem).
+    // We define the callback function that will be called whenever the window is
+    // resized, thereby changing the size of the framebuffer
+    // (the memory region where the image pixels are stored).
     glfwSetFramebufferSizeCallback(window, FramebufferSizeCallback);
-    FramebufferSizeCallback(window, 800, 600); // Forçamos a chamada do callback acima, para definir g_ScreenRatio.
+    FramebufferSizeCallback(window, 800, 600); 
 
-    // Imprimimos no terminal informações sobre a GPU do sistema
+    // We print information about the system's GPU in the terminal
     const GLubyte *vendor      = glGetString(GL_VENDOR);
     const GLubyte *renderer    = glGetString(GL_RENDERER);
     const GLubyte *glversion   = glGetString(GL_VERSION);
@@ -144,19 +115,16 @@ int main(int argc, char* argv[])
 
     printf("GPU: %s, %s, OpenGL %s, GLSL %s\n", vendor, renderer, glversion, glslversion);
 
-    // Carregamos os shaders de vértices e de fragmentos que serão utilizados
-    // para renderização. Veja slides 180-200 do documento Aula_03_Rendering_Pipeline_Grafico.pdf.
-    //
     LoadShadersFromFiles();
 
-    // Carregamos duas imagens para serem utilizadas como textura
-    LoadTextureImage("../../data/steel_texture.jpg");      // TextureImage0 
-    LoadTextureImage("../../data/rustedSteel.jpg");       // TextureImage1
-    LoadTextureImage("../../data/map.jpg");       // TextureImage2
-    LoadTextureImage("../../data/concrete.jpg");       // TextureImage3
+    // Load the textures used in the scene
+    LoadTextureImage("../../data/steel_texture.jpg");      
+    LoadTextureImage("../../data/rustedSteel.jpg");       
+    LoadTextureImage("../../data/map.jpg");       
+    LoadTextureImage("../../data/concrete.jpg");       
 
 
-    // Construímos a representação de objetos geométricos através de malhas de triângulos
+    // We build the representation of geometric objects through triangle meshes
     ObjModel dreadmodel("../../data/dreadUnified.obj");
     ComputeNormals(&dreadmodel);
     BuildTrianglesAndAddToVirtualScene(&dreadmodel);
@@ -179,50 +147,43 @@ int main(int argc, char* argv[])
         BuildTrianglesAndAddToVirtualScene(&model);
     }
 
-    // Inicializamos o código para renderização de texto.
+    // Initialize the code for rendering text.
     TextRendering_Init();
 
-    // Habilitamos o Z-buffer. Veja slides 104-116 do documento Aula_09_Projecoes.pdf.
+    // Enable the Z-buffer.
     glEnable(GL_DEPTH_TEST);
 
-    // Habilitamos o Backface Culling. Veja slides 8-13 do documento Aula_02_Fundamentos_Matematicos.pdf, slides 23-34 do documento Aula_13_Clipping_and_Culling.pdf e slides 112-123 do documento Aula_14_Laboratorio_3_Revisao.pdf.
+    // We enable Backface Culling.
     glEnable(GL_CULL_FACE);
     glCullFace(GL_BACK);
     glFrontFace(GL_CCW);
     
-    // Tempo anterior
+    // Previous time for delta time calculation
     float prev_time = (float)glfwGetTime();
     
-    // Ficamos em um loop infinito, renderizando, até que o usuário feche a janela
     while (!glfwWindowShouldClose(window))
     {
-        // Aqui executamos as operações de renderização
 
-        // Definimos a cor do "fundo" do framebuffer como branco.  Tal cor é
-        // definida como coeficientes RGBA: Red, Green, Blue, Alpha; isto é:
-        // Vermelho, Verde, Azul, Alpha (valor de transparência).
-        // Conversaremos sobre sistemas de cores nas aulas de Modelos de Iluminação.
-        //
         //           R     G     B     A
         glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 
-        // "Pintamos" todos os pixels do framebuffer com a cor definida acima,
-        // e também resetamos todos os pixels do Z-buffer (depth buffer).
+        // We "paint" all the pixels in the framebuffer with the color defined above,
+        // and we also reset all the pixels in the Z-buffer (depth buffer)..
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-        // Pedimos para a GPU utilizar o programa de GPU criado acima (contendo
-        // os shaders de vértice e fragmentos).
+        // We ask the GPU to use the GPU program created above (containing
+        // the vertex and fragment shaders).
         glUseProgram(g_GpuProgramID);
 
-        // Atualiza delta de tempo
+        // Update delta time
         float current_time = (float)glfwGetTime();
         float delta_t = current_time - prev_time;
         prev_time = current_time;
 
-        // Atualiza a câmera LookAt ou a câmera livre, dependendo do estado atual
+        // Updates the LookAt camera or the free camera, depending on the current state
         if (g_cameraTransition.isTransitioning) {
             
-            // Atualiza a transição da câmera, se estiver em andamento
+            // Updates the camera transition, if it is in progress
             g_cameraTransition.t += delta_t / g_cameraTransition.duration;
             
             glm::vec4 interpolatedPosition = BezierCubicPos();
@@ -242,7 +203,7 @@ int main(int argc, char* argv[])
         }
 
 
-        // Movimentacao da camera livre
+        // Free camera movement with the miniatures
         if (g_isLookAtUsed == false)
         {
             if (Armies[0][0].MiniatureMove(delta_t, Armies)) {
@@ -254,33 +215,27 @@ int main(int argc, char* argv[])
         glm::mat4 view;
         
         if (g_isLookAtUsed){
-            view = g_lookAtCamera.GetMatrixCameraView(); // Matriz de visualização da câmera LookAt
+            view = g_lookAtCamera.GetMatrixCameraView(); // LookAt camera view matrix
         }
 
         else{
-            view = g_freeCameraMiniatures.GetMatrixCameraView(); // Matriz de visualização da câmera livre
+            view = g_freeCameraMiniatures.GetMatrixCameraView(); // Free camera view matrix
         }
         
 
-        // Agora computamos a matriz de Projeção.
+        // Now we compute the Projection matrix.
         glm::mat4 projection;
 
-        // Note que, no sistema de coordenadas da câmera, os planos near e far
-        // estão no sentido negativo! Veja slides 176-204 do documento Aula_09_Projecoes.pdf.
-        float nearplane = -0.1f;  // Posição do "near plane"
-        float farplane  = -100.0f; // Posição do "far plane"
+        float nearplane = -0.1f;  // Near plane position
+        float farplane  = -100.0f; // Far plane position
 
-        
-        // Projeção Perspectiva.
-        // Para definição do field of view (FOV), veja slides 205-215 do documento Aula_09_Projecoes.pdf.
+        // Perspective Projection.
         float field_of_view = 3.141592 / 3.0f;
         projection = g_freeCameraMiniatures.GetMatrixPerspective(nearplane, farplane, field_of_view, g_ScreenRatio);
         
-        
-
-        // Enviamos as matrizes "view" e "projection" para a placa de vídeo
-        // (GPU). Veja o arquivo "shader_vertex.glsl", onde estas são
-        // efetivamente aplicadas em todos os pontos.
+        // We send the "view" and "projection" matrices to the video card
+        // (GPU). See the "shader_vertex.glsl" file, where these are
+        // effectively applied to all points.
         glUniformMatrix4fv(g_view_uniform       , 1 , GL_FALSE , glm::value_ptr(view));
         glUniformMatrix4fv(g_projection_uniform , 1 , GL_FALSE , glm::value_ptr(projection));
 
@@ -293,37 +248,34 @@ int main(int argc, char* argv[])
         DrawArmies(); //Draws the armies in the scene
         DrawStructures(); //Draws the structures in the scene
 
-        glm::mat4 model = Matrix_Identity(); // Transformação identidade de modelagem
+        glm::mat4 model = Matrix_Identity(); 
 
         model = Matrix_Translate(0.0f, -0.4f, 0.0f) *
                 Matrix_Scale(15.0f, 0.01f, 10.0f);
         glUniformMatrix4fv(g_model_uniform, 1 , GL_FALSE , glm::value_ptr(model));
-        glUniform1i(g_object_id_uniform, PLANE); // Plano
+        glUniform1i(g_object_id_uniform, PLANE); // Plane
         DrawVirtualObject("the_plane");
 
-        // Imprimimos na tela informação sobre o número de quadros renderizados
-        // por segundo (frames per second).
+        // We print information on the screen about the number of frames rendered
+        // per second (frames per second).
         TextRendering_ShowFramesPerSecond(window);
 
-        // O framebuffer onde OpenGL executa as operações de renderização não
-        // é o mesmo que está sendo mostrado para o usuário, caso contrário
-        // seria possível ver artefatos conhecidos como "screen tearing". A
-        // chamada abaixo faz a troca dos buffers, mostrando para o usuário
-        // tudo que foi renderizado pelas funções acima.
-        // Veja o link: https://en.wikipedia.org/w/index.php?title=Multiple_buffering&oldid=793452829#Double_buffering_in_computer_graphics
+        // The framebuffer where OpenGL performs the rendering operations is not
+        // the same as the one being shown to the user, otherwise
+        // it would be possible to see artifacts known as "screen tearing". The
+        // call below swaps the buffers, showing the user
+        // everything that has been rendered by the functions above.
+        // See the link: https://en.wikipedia.org/w/index.php?title=Multiple_buffering&oldid=793452829#Double_buffering_in_computer_graphics
         glfwSwapBuffers(window);
 
-        // Verificamos com o sistema operacional se houve alguma interação do
-        // usuário (teclado, mouse, ...). Caso positivo, as funções de callback
-        // definidas anteriormente usando glfwSet*Callback() serão chamadas
-        // pela biblioteca GLFW.
+        // We check with the operating system if there has been any interaction from the
+        // user (keyboard, mouse, ...). If so, the callback functions
+        // previously defined using glfwSet*Callback() will be called
+        // by the GLFW library.
         glfwPollEvents();
     }
 
-    // Finalizamos o uso dos recursos do sistema operacional
     glfwTerminate();
-
-    // Fim do programa
     return 0;
 }
 // set makeprg=cd\ ..\ &&\ make\ run\ >/dev/null
