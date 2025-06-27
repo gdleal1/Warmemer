@@ -1,7 +1,7 @@
 #pragma once
 #include "Camera/FreeCamera.hpp"
 
-extern FreeCamera g_freeCamera;
+extern FreeCamera g_freeCameraMiniatures;
 extern float g_speed_cam;
 extern bool g_KeyWPressed;
 extern bool g_KeySPressed;

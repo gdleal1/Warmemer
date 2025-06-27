@@ -1,4 +1,5 @@
 #include "Warhammer/Miniatures.hpp"
+#include "Collision/collisions.h"
 
 
 Miniature::Miniature(const glm::vec4& pos,const std::string& obj, float theta, float scale, int shader, int maxHp, int currHp)
@@ -14,7 +15,7 @@ void Miniature::Draw() const {
     DrawVirtualObject(object.c_str());
 }
 
-void Miniature::MiniatureMove(float delta_t) {
+bool Miniature::MiniatureMove(float delta_t, const std::vector<std::vector<Miniature>> Armies) {
 
     float phi = 0.0;
     float viewX = cos(phi)*sin(facingTheta);
@@ -24,25 +25,62 @@ void Miniature::MiniatureMove(float delta_t) {
     glm::vec4 minViewVector(viewX, viewY, viewZ, 0.0f);
     glm::vec4 minUpVector(0.0f, 1.0f, 0.0f, 0.0f); 
     glm::vec4 minRightVector = crossproduct(minUpVector, minViewVector); 
+    glm::vec4 movement(0.0f);
 
 
     if (g_KeyWPressed)
     {
-        position += minViewVector * speed * delta_t; 
+        movement += minViewVector * speed * delta_t; 
     }
 
     if (g_KeySPressed)
     {
-        position -= minViewVector * speed * delta_t; 
+        movement -= minViewVector * speed * delta_t; 
     }
 
     if (g_KeyAPressed)
     {
-        position += minRightVector * speed * delta_t;         
+        movement += minRightVector * speed * delta_t;         
     }
 
     if (g_KeyDPressed)
     {
-        position -= minRightVector * speed * delta_t;   
+        movement -= minRightVector * speed * delta_t;   
     }
+
+    
+    if (CanMove(movement, Armies)) {
+        position += movement;
+        return true; // Movement was successful
+    }
+
+    return false; // Movement was blocked by collision
+    
 }
+
+bool Miniature::CanMove(const glm::vec4& movementDelta, const std::vector<std::vector<Miniature>>& Armies) const
+{
+    Miniature simulated = *this;
+    simulated.position += movementDelta;
+
+    for (const auto& army : Armies)
+    {
+        for (const auto& other : army)
+        {
+            if (other.position != this->position && MiniaturesAreColliding(simulated, other))
+                return false;
+        }
+    }
+
+
+    return true;
+}
+
+//    for (int i = 0; i < 2; ++i)
+//     {
+//         for (int j = 0; j < 1; ++j)
+//         {
+//             if (&Armies[i][j] != this && MiniaturesAreColliding(simulated, Armies[i][j]))
+//                 return false;
+//         }
+//     }

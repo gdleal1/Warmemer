@@ -54,6 +54,8 @@
 //e completados nas atividades de laboratorio
 #include "GastalUtils/includes.h"
 
+#include "Collision/collisions.h"
+
 // Abaixo definimos variáveis globais utilizadas em várias funções do código.
 
 // A cena virtual é uma lista de objetos nomeados, guardados em um dicionário
@@ -234,17 +236,20 @@ int main(int argc, char* argv[])
 
 
             else {
-                g_freeCamera.SetPosition(interpolatedPosition);
-                g_freeCamera.SetViewVector(interpolatedView);
+                g_freeCameraMiniatures.SetPosition(interpolatedPosition);
+                g_freeCameraMiniatures.SetViewVector(interpolatedView);
             }
         }
 
 
         // Movimentacao da camera livre
-        if (g_isLookAtUsed==false){
-            FreeCamMove(delta_t);
-            Armies[0][0].MiniatureMove(delta_t); // Move the first miniature of the Dread Army
+        if (g_isLookAtUsed == false)
+        {
+            if (Armies[0][0].MiniatureMove(delta_t, Armies)) {
+                FreeCamMove(delta_t);
+            }
         }
+
 
         glm::mat4 view;
         
@@ -253,7 +258,7 @@ int main(int argc, char* argv[])
         }
 
         else{
-            view = g_freeCamera.GetMatrixCameraView(); // Matriz de visualização da câmera livre
+            view = g_freeCameraMiniatures.GetMatrixCameraView(); // Matriz de visualização da câmera livre
         }
         
 
@@ -269,7 +274,7 @@ int main(int argc, char* argv[])
         // Projeção Perspectiva.
         // Para definição do field of view (FOV), veja slides 205-215 do documento Aula_09_Projecoes.pdf.
         float field_of_view = 3.141592 / 3.0f;
-        projection = g_freeCamera.GetMatrixPerspective(nearplane, farplane, field_of_view, g_ScreenRatio);
+        projection = g_freeCameraMiniatures.GetMatrixPerspective(nearplane, farplane, field_of_view, g_ScreenRatio);
         
         
 

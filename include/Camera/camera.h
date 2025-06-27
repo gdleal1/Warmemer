@@ -18,7 +18,7 @@ float g_LookAtCameraDistance = 18.0f; // Distância da câmera para a origem
 LookAtCamera g_lookAtCamera(g_LookAtCameraTheta, g_LookAtCameraPhi, g_LookAtCameraDistance);
 
 // Free camera
-FreeCamera g_freeCamera(g_FreeCameraTheta, g_FreeCameraPhi, g_FreeCameraDistance);
+FreeCamera g_freeCameraMiniatures(g_FreeCameraTheta, g_FreeCameraPhi, g_FreeCameraDistance);
 
 // Booleano que controla se a camera look-at está sendo utilizada
 bool g_isLookAtUsed = true;

@@ -1,6 +1,7 @@
 #pragma once
 #include <glm/vec4.hpp>
 #include <string>
+#include <vector>
 #include <glm/mat4x4.hpp>
 #include <glad/glad.h>  
 #include <GLFW/glfw3.h>
@@ -31,7 +32,8 @@ public:
     Miniature(const glm::vec4& pos, const std::string& obj, float theta, float scale, int shader, int maxHp, int currHp);
 
     void Draw() const;
-    void MiniatureMove(float delta_t);
+    bool MiniatureMove(float delta_t, const std::vector<std::vector<Miniature>> Armies);
+    bool CanMove(const glm::vec4& movementDelta, const std::vector<std::vector<Miniature>>& Armies) const;
     
 };
 

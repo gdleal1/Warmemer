@@ -12,7 +12,7 @@ bool g_RightMouseButtonPressed = false; // Análogo para botão direito do mouse
 bool g_MiddleMouseButtonPressed = false; // Análogo para botão do meio do mouse
 
 extern LookAtCamera g_lookAtCamera; // Declaração da câmera look-at, definida no arquivo LookAtCamera.cpp
-extern FreeCamera g_freeCamera; // Declaração da câmera free, definida no arquivo FreeCamera.cpp
+extern FreeCamera g_freeCameraMiniatures; // Declaração da câmera free, definida no arquivo FreeCamera.cpp
 extern CameraTransition g_cameraTransition;
 extern bool g_isLookAtUsed; // Declaração do booleano que controla se a câmera look-at está ativa
 
@@ -102,10 +102,10 @@ void CursorPosCallback(GLFWwindow* window, double xpos, double ypos)
         }
 
         else{
-            g_freeCamera.SetCameraTheta(g_freeCamera.GetCameraTheta() - 0.01f*dx);
-            g_freeCamera.SetCameraPhi(g_freeCamera.GetCameraPhi() - 0.01f*dy);
+            g_freeCameraMiniatures.SetCameraTheta(g_freeCameraMiniatures.GetCameraTheta() - 0.01f*dx);
+            g_freeCameraMiniatures.SetCameraPhi(g_freeCameraMiniatures.GetCameraPhi() - 0.01f*dy);
             // Atualiza theta da miniatura também
-            Armies[0][0].facingTheta = g_freeCamera.GetCameraTheta();
+            Armies[0][0].facingTheta = g_freeCameraMiniatures.GetCameraTheta();
         }
         
         // Em coordenadas esféricas, o ângulo phi deve ficar entre -pi/2 e +pi/2.
@@ -121,14 +121,14 @@ void CursorPosCallback(GLFWwindow* window, double xpos, double ypos)
         }
 
         else{
-            if (g_freeCamera.GetCameraPhi() > phimax)
-                g_freeCamera.SetCameraPhi(phimax);
+            if (g_freeCameraMiniatures.GetCameraPhi() > phimax)
+                g_freeCameraMiniatures.SetCameraPhi(phimax);
 
-            if (g_freeCamera.GetCameraPhi() < phimin)
-                g_freeCamera.SetCameraPhi(phimax);
+            if (g_freeCameraMiniatures.GetCameraPhi() < phimin)
+                g_freeCameraMiniatures.SetCameraPhi(phimax);
             
             // Atualiza theta da miniatura também
-            Armies[0][0].facingTheta = g_freeCamera.GetCameraTheta();
+            Armies[0][0].facingTheta = g_freeCameraMiniatures.GetCameraTheta();
         }
 
 
@@ -206,7 +206,7 @@ void KeyCallback(GLFWwindow* window, int key, int scancode, int action, int mod)
         g_cameraTransition.t = 0.0f;
         
         // Posição
-        g_cameraTransition.p0 = g_freeCamera.GetPosition(); // posição atual
+        g_cameraTransition.p0 = g_freeCameraMiniatures.GetPosition(); // posição atual
         g_cameraTransition.p3 = g_lookAtCamera.GetPosition(); // destino
 
         glm::vec4 dir = g_cameraTransition.p3 - g_cameraTransition.p0;
@@ -214,7 +214,7 @@ void KeyCallback(GLFWwindow* window, int key, int scancode, int action, int mod)
         g_cameraTransition.p2 = g_cameraTransition.p0 + 0.75f * dir;
 
         // Direção
-        g_cameraTransition.v0 = g_freeCamera.GetViewVector();
+        g_cameraTransition.v0 = g_freeCameraMiniatures.GetViewVector();
         g_cameraTransition.v3 = g_lookAtCamera.GetViewVector();
 
         // Pontos de controle intermediários para a curva de direção
@@ -240,16 +240,16 @@ void KeyCallback(GLFWwindow* window, int key, int scancode, int action, int mod)
         // Valores de posição da câmera livre para OrcMech Army
         else{}
          
-        g_freeCamera.SetPosition(minPosition);
+        g_freeCameraMiniatures.SetPosition(minPosition);
         float cameraPhi = 0.0;
         float viewX = cos(cameraPhi)*sin(cameraTheta);
         float viewY = sin(cameraPhi);
         float viewZ = cos(cameraPhi)*cos(cameraTheta);
-        g_freeCamera.SetViewVector(glm::vec4(viewX, viewY, viewZ, 0.0f)); 
+        g_freeCameraMiniatures.SetViewVector(glm::vec4(viewX, viewY, viewZ, 0.0f)); 
 
         // Posição
         g_cameraTransition.p0 = g_lookAtCamera.GetPosition(); // posição atual
-        g_cameraTransition.p3 = g_freeCamera.GetPosition(); // destino
+        g_cameraTransition.p3 = g_freeCameraMiniatures.GetPosition(); // destino
 
         glm::vec4 dir = g_cameraTransition.p3 - g_cameraTransition.p0;
         g_cameraTransition.p1 = g_cameraTransition.p0 + 0.25f * dir;
@@ -257,7 +257,7 @@ void KeyCallback(GLFWwindow* window, int key, int scancode, int action, int mod)
 
         // Direção
         g_cameraTransition.v0 = g_lookAtCamera .GetViewVector();
-        g_cameraTransition.v3 = g_freeCamera.GetViewVector();
+        g_cameraTransition.v3 = g_freeCameraMiniatures.GetViewVector();
 
         // Pontos de controle intermediários para a curva de direção
         g_cameraTransition.v1 = glm::normalize(glm::mix(g_cameraTransition.v0, g_cameraTransition.v3, 0.25f));
