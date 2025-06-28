@@ -206,7 +206,7 @@ int main(int argc, char* argv[])
         // Free camera movement with the miniatures
         if (g_isLookAtUsed == false)
         {
-            if (Armies[0][0].MiniatureMove(delta_t, Armies)) {
+            if (Armies[0][0].MiniatureMove(delta_t, Armies, Strucutres)) {
                 FreeCamMove(delta_t);
             }
         }

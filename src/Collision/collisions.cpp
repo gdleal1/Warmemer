@@ -15,9 +15,6 @@ bool MiniaturesAreColliding(const Miniature& a, const Miniature& b)
     bool overlapX = (aMin.x <= bMax.x) && (aMax.x >= bMin.x);
     bool overlapY = (aMin.y <= bMax.y) && (aMax.y >= bMin.y);
     bool overlapZ = (aMin.z <= bMax.z) && (aMax.z >= bMin.z);
-
+ 
     return overlapX && overlapY && overlapZ;
 }
-
-
-

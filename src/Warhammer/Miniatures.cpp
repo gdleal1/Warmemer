@@ -1,7 +1,6 @@
 #include "Warhammer/Miniatures.hpp"
 #include "Collision/collisions.h"
 
-
 Miniature::Miniature(const glm::vec4& pos,const std::string& obj, float theta, float scale, int shader, int maxHp, int currHp)
     : position(pos), object(obj),facingTheta(theta), size(scale), shaderID(shader), maxHealth(maxHp), currentHealth(currHp){}
 
@@ -15,7 +14,7 @@ void Miniature::Draw() const {
     DrawVirtualObject(object.c_str());
 }
 
-bool Miniature::MiniatureMove(float delta_t, const std::vector<std::vector<Miniature>> Armies) {
+bool Miniature::MiniatureMove(float delta_t, const std::vector<std::vector<Miniature>> &Armies, const std::vector<Miniature> &Structures) {
 
     float phi = 0.0;
     float viewX = cos(phi)*sin(facingTheta);
@@ -49,7 +48,7 @@ bool Miniature::MiniatureMove(float delta_t, const std::vector<std::vector<Minia
     }
 
     
-    if (CanMove(movement, Armies)) {
+    if (CanMove(movement, Armies, Structures)) {
         position += movement;
         return true; // Movement was successful
     }
@@ -58,20 +57,28 @@ bool Miniature::MiniatureMove(float delta_t, const std::vector<std::vector<Minia
     
 }
 
-bool Miniature::CanMove(const glm::vec4& movementDelta, const std::vector<std::vector<Miniature>>& Armies) const
+bool Miniature::CanMove(const glm::vec4& movementDelta, const std::vector<std::vector<Miniature>>& Armies, const std::vector<Miniature> &Structures) const
 {
     Miniature simulated = *this;
     simulated.position += movementDelta;
 
+
+    // Check for collisions with other army miniatures 
     for (const auto& army : Armies)
     {
         for (const auto& other : army)
         {
-            if (other.position != this->position && MiniaturesAreColliding(simulated, other))
+            if (&other != this && MiniaturesAreColliding(simulated, other))
                 return false;
         }
     }
 
+    // Check for collisions with structures
+    for (const auto& structure : Structures)
+    {
+        if (MiniaturesAreColliding(simulated, structure))
+            return false;
+    }
 
     return true;
 }

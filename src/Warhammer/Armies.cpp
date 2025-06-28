@@ -27,7 +27,7 @@ std::vector<Miniature> BuildDreadArmy() {
         Miniature mini(
             glm::vec4(-9.0f, -0.4f, -5.5f, 1.0f), // position
             "the_dread",                            // object
-            1.00f,                                 //Facing angle
+            1.0f,                                 //Facing angle
             1.2f,                                // size
             2,                                      // shaderID
             100,                                    // maxHealth

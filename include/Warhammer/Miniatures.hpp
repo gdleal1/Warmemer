@@ -32,8 +32,8 @@ public:
     Miniature(const glm::vec4& pos, const std::string& obj, float theta, float scale, int shader, int maxHp, int currHp);
 
     void Draw() const;
-    bool MiniatureMove(float delta_t, const std::vector<std::vector<Miniature>> Armies);
-    bool CanMove(const glm::vec4& movementDelta, const std::vector<std::vector<Miniature>>& Armies) const;
+    bool MiniatureMove(float delta_t, const std::vector<std::vector<Miniature>>&Armies, const std::vector<Miniature>&Structures);
+    bool CanMove(const glm::vec4& movementDelta, const std::vector<std::vector<Miniature>>& Armies,const std::vector<Miniature>&Structures) const;
     
 };
 
