@@ -5,6 +5,7 @@
 #include <glm/glm.hpp>
 #include <string>
 #include <vector>
+#include "GastalUtils/matricies.h"
 
 
 extern std::map<std::string, SceneObject> g_VirtualScene;
