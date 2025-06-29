@@ -134,6 +134,7 @@ void main()
         float height = bbox_max.y - bbox_min.y;
         V = (position_model.y - bbox_min.y) / height;
 
+        specular *= 0.7;
         Kd0 = texture(TextureImage0, vec2(U,V)).rgb;
 
         
