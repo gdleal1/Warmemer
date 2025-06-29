@@ -121,7 +121,8 @@ int main(int argc, char* argv[])
     LoadTextureImage("../../data/steel_texture.jpg");      
     LoadTextureImage("../../data/rustedSteel.jpg");       
     LoadTextureImage("../../data/map.jpg");       
-    LoadTextureImage("../../data/concrete.jpg");       
+    LoadTextureImage("../../data/concrete.jpg");  
+    LoadTextureImage("../../data/container.jpg");     
 
 
     // We build the representation of geometric objects through triangle meshes
@@ -140,6 +141,10 @@ int main(int argc, char* argv[])
     ObjModel ruinmodel("../../data/wall.obj");
     ComputeNormals(&ruinmodel);
     BuildTrianglesAndAddToVirtualScene(&ruinmodel);
+
+    ObjModel containermodel("../../data/container.obj");
+    ComputeNormals(&containermodel);
+    BuildTrianglesAndAddToVirtualScene(&containermodel);
 
     if ( argc > 1 )
     {

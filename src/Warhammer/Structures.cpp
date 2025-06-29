@@ -45,6 +45,26 @@ void InitializeStructures() {
         100,                                  // maxHealth
         100                                   // currentHealth
     ));
+
+    Strucutres.push_back(Miniature(
+        glm::vec4(10.0f, -0.4f, -5.0f, 1.0f), // position
+        "the_container",                    // object
+        -0.79f,                               // Facing angle
+        1.0f,                                 // size
+        0,                                    // shaderID
+        100,                                  // maxHealth
+        100                                   // currentHealth
+    ));
+
+    Strucutres.push_back(Miniature(
+        glm::vec4(-10.0f, -0.4f, 5.0f, 1.0f), // position
+        "the_container",                    // object
+        -0.79f,                               // Facing angle
+        1.0f,                                 // size
+        0,                                    // shaderID
+        100,                                  // maxHealth
+        100                                   // currentHealth
+    ));
 }
 
 void DrawStructures() {

@@ -19,7 +19,7 @@ uniform mat4 view;
 uniform mat4 projection;
 
 // Identifier that defines which object is currently being drawn
-#define SPHERE 0
+#define CONTAINER 0
 #define PLANE  1
 #define DREAD 2
 #define ORCMECH 3
@@ -35,6 +35,7 @@ uniform sampler2D TextureImage0;
 uniform sampler2D TextureImage1;
 uniform sampler2D TextureImage2;
 uniform sampler2D TextureImage3;
+uniform sampler2D TextureImage4;
 
 // The output value (“out”) of a Fragment Shader is the final color of the fragment.
 out vec4 color;
@@ -76,15 +77,30 @@ void main()
     vec4 reflect_dir = reflect(-l, n);
     float specular = pow(max(0, dot(reflect_dir, v)), 64.0);
 
-    if ( object_id == SPHERE ){
+    if ( object_id == CONTAINER ){
 
-        vec4 bbox_center = (bbox_min + bbox_max) / 2.0;
+        // Cubic mapping: project onto the face with the largest component
+        vec3 dir = normalize((position_model - (bbox_min + bbox_max) / 2.0).xyz);
+        vec3 absDir = abs(dir);
+        vec2 uv;
+        if (absDir.x >= absDir.y && absDir.x >= absDir.z) {
+            // X face
+            uv = vec2(dir.z, dir.y) / absDir.x;
+            U = (uv.x + 1.0) * 0.5;
+            V = (uv.y + 1.0) * 0.5;
+        } else if (absDir.y >= absDir.x && absDir.y >= absDir.z) {
+            // Y face
+            uv = vec2(dir.x, dir.z) / absDir.y;
+            U = (uv.x + 1.0) * 0.5;
+            V = (uv.y + 1.0) * 0.5;
+        } else {
+            // Z face
+            uv = vec2(dir.x, dir.y) / absDir.z;
+            U = (uv.x + 1.0) * 0.5;
+            V = (uv.y + 1.0) * 0.5;
+        }
 
-        float theta = atan(position_model.z - bbox_center.z, position_model.x - bbox_center.x);
-        float phi = asin((position_model.y - bbox_center.y) / length(position_model - bbox_center));
-
-        U = theta / (2.0 * M_PI) + 0.5; // Normalizando theta para [0,1]
-        V = (phi + M_PI_2) / M_PI; // Normalizando phi para [0,1]
+        Kd0 = texture(TextureImage4, vec2(U, V)).rgb;
     }
     else if ( object_id == PLANE ){
 
