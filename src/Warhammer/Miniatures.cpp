@@ -22,7 +22,7 @@ void Miniature::Draw() const {
 
     model = Matrix_Translate(position.x, position.y + 2.5f, position.z) *
             Matrix_To_View(viewVector) *
-            Matrix_Scale(0.5, 0.05, healthPercentage) *
+            Matrix_Scale(healthPercentage, 0.05, 0.5) *
             Matrix_Rotate_Y(1.57) *
             Matrix_Rotate_Z(1.57f);
     glUniformMatrix4fv(g_model_uniform, 1, GL_FALSE, glm::value_ptr(model));
