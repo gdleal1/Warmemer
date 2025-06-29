@@ -331,6 +331,28 @@ inline void PrintMatrixVectorProductDivW(glm::mat4 M, glm::vec4 v)
     printf("[ %+0.2f  %+0.2f  %+0.2f  %+0.2f ][ %+0.2f ]   [ %+0.2f ]            [ %+0.2f ]\n", M[0][3], M[1][3], M[2][3], M[3][3], v[3], r[3], r[3]/w);
 }
 
+inline glm::mat4 Matrix_To_View(glm::vec4 view_vector) {
+    // Function that aligns the -z axis of the camera with the view vector.
+    // Assumes view_vector is not zero.
+    glm::vec4 z = -view_vector / norm(view_vector); // Camera's -z axis
+    glm::vec4 up = glm::vec4(0.0f, 1.0f, 0.0f, 0.0f);
+
+    // If view_vector is parallel to up, choose another up vector
+    if (fabs(dotproduct(z, up)) > 0.999f) {
+        up = glm::vec4(1.0f, 0.0f, 0.0f, 0.0f);
+    }
+
+    glm::vec4 x = crossproduct(up, z);
+    x = x / norm(x);
+    glm::vec4 y = crossproduct(z, x);
+
+    return Matrix(
+        x.x, y.x, z.x, 0.0f,
+        x.y, y.y, z.y, 0.0f,
+        x.z, y.z, z.z, 0.0f,
+        0.0f, 0.0f, 0.0f, 1.0f
+    );
+}
 
 #endif // _MATRICES_H
 // vim: set spell spelllang=pt_br :

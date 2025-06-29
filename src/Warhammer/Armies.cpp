@@ -31,7 +31,7 @@ std::vector<Miniature> BuildDreadArmy() {
             1.2f,                                // size
             2,                                      // shaderID
             100,                                    // maxHealth
-            100                                     // currentHealth
+            50                                     // currentHealth
         );
         minis.push_back(mini);
     }

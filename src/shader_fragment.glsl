@@ -24,6 +24,8 @@ uniform mat4 projection;
 #define DREAD 2
 #define ORCMECH 3
 #define RUIN 4
+#define WHITE 5
+#define RED 6
 uniform int object_id;
 
 // Parameters of the model's axis-aligned bounding box (AABB)
@@ -173,6 +175,18 @@ void main()
         specular = 0.0; // RUIN não tem brilho
 
         
+    }
+    else if ( object_id == WHITE )
+    {
+        Kd0 = vec3(1.0, 1.0, 1.0);
+        lambert = 0.5;
+        specular = 0.0;
+    }
+    else if ( object_id == RED )
+    {
+        Kd0 = vec3(1.0, 0.0, 0.0);
+        lambert = 1.0;
+        specular = 0.0;
     }
 
 

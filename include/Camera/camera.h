@@ -2,26 +2,22 @@
 # include "Camera/LookAtCamera.hpp"
 # include "Camera/FreeCamera.hpp"
 
-// Variables that define the camera in spherical coordinates, controlled by the
-// user via the mouse (see CursorPosCallback() function). The effective
-// position of the camera is calculated within the main() function, inside the
-// rendering loop.
-float g_FreeCameraTheta = 0.0f; // Angle in the ZX plane with respect to the Z axis
-float g_FreeCameraPhi = 0.0f;   // Angle in relation to the Y axis
-float g_FreeCameraDistance = 3.5f; // Distance from camera to origin
+extern float g_FreeCameraTheta; // Angle in the ZX plane with respect to the Z axis
+extern float g_FreeCameraPhi;   // Angle in relation to the Y axis
+extern float g_FreeCameraDistance; // Distance from camera to origin
 
-float g_LookAtCameraTheta = 0.0f; 
-float g_LookAtCameraPhi = 1.0f;   
-float g_LookAtCameraDistance = 18.0f; 
+extern float g_LookAtCameraTheta;
+extern float g_LookAtCameraPhi;
+extern float g_LookAtCameraDistance;
 
 // Camera look at
-LookAtCamera g_lookAtCamera(g_LookAtCameraTheta, g_LookAtCameraPhi, g_LookAtCameraDistance);
+extern LookAtCamera g_lookAtCamera;
 
 // Free camera
-FreeCamera g_freeCameraMiniatures(g_FreeCameraTheta, g_FreeCameraPhi, g_FreeCameraDistance);
+extern FreeCamera g_freeCameraMiniatures;
 
 // Boolean that controls whether the look-at camera is being used
-bool g_isLookAtUsed = true;
+extern bool g_isLookAtUsed;
 
 // Free camera movement speed
-float g_speed_cam = 3.0f;
+extern float g_speed_cam;

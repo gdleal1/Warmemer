@@ -1,17 +1,33 @@
 #include "Warhammer/Miniatures.hpp"
 #include "Collision/collisions.h"
+#include "Camera/camera.h"
 
 Miniature::Miniature(const glm::vec4& pos,const std::string& obj, float theta, float scale, int shader, int maxHp, int currHp)
     : position(pos), object(obj),facingTheta(theta), size(scale), shaderID(shader), maxHealth(maxHp), currentHealth(currHp){}
 
 void Miniature::Draw() const {
 
+    //Draw miniature itseld
     glm::mat4 model = Matrix_Translate(position.x, position.y, position.z) *
                       Matrix_Scale(size, size, size) *
                       Matrix_Rotate_Y(facingTheta);
     glUniformMatrix4fv(g_model_uniform, 1, GL_FALSE, glm::value_ptr(model));
     glUniform1i(g_object_id_uniform, shaderID);
     DrawVirtualObject(object.c_str());
+
+
+    // Draw health bar
+    float healthPercentage = static_cast<float>(currentHealth) / maxHealth;
+    glm::vec4 viewVector = g_isLookAtUsed ? g_lookAtCamera.GetViewVector() : g_freeCameraMiniatures.GetViewVector();
+
+    model = Matrix_Translate(position.x, position.y + 2.5f, position.z) *
+            Matrix_To_View(viewVector) *
+            Matrix_Scale(0.5, 0.05, healthPercentage) *
+            Matrix_Rotate_Y(1.57) *
+            Matrix_Rotate_Z(1.57f);
+    glUniformMatrix4fv(g_model_uniform, 1, GL_FALSE, glm::value_ptr(model));
+    glUniform1i(g_object_id_uniform, 6); // RED color for health bar
+    DrawVirtualObject("the_plane");
 }
 
 bool Miniature::MiniatureMove(float delta_t, const std::vector<std::vector<Miniature>> &Armies, const std::vector<Miniature> &Structures) {
