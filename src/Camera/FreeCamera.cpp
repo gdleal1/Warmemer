@@ -27,8 +27,34 @@ void FreeCamera::UpdateCamera() {
 
 }
 
-BoundingSphere FreeCamera::GetBoundingSphereAt(const glm::vec4& pos) const {
-    return { glm::vec3(pos), 0.5f };
+
+// Checks if the free camera can move to a new position without colliding with armies or structures
+bool FreeCamera::CanMove(const glm::vec4& movementDelta,
+                         const std::vector<std::vector<Miniature>>& Armies,
+                         const std::vector<Miniature>& Structures) const
+{
+    glm::vec4 newPosition = cameraPositionC + movementDelta;
+    BoundingSphere camSphere = { glm::vec3(newPosition), 0.5f }; 
+
+    // Army colision
+    for (const auto& army : Armies) {
+        for (const auto& other : army) {
+            OBB obb = ComputeOBB(other);
+            if (SphereIntersectsOBB(camSphere, obb)) {
+                return false;
+            }
+        }
+    }
+
+    // Structure collision
+    for (const auto& structure : Structures) {
+        OBB obb = ComputeOBB(structure);
+        if (SphereIntersectsOBB(camSphere, obb)) {
+            return false;
+        }
+    }
+
+    return true;
 }
 
 void FreeCamera::MoveFoward(float camSpeed, float deltaTime){
@@ -40,7 +66,12 @@ void FreeCamera::MoveFoward(float camSpeed, float deltaTime){
     }
 
     else{
-        cameraPositionC += -1.0f * w * camSpeed * deltaTime; // Move the camera forward
+        glm::vec4 movementDelta = -1.0f * w * camSpeed * deltaTime;
+        
+        if (CanMove(movementDelta, Armies, Strucutres)) {
+            cameraPositionC += movementDelta; 
+        }
+        
     }
     
 }
@@ -53,8 +84,14 @@ void FreeCamera::MoveBackward(float camSpeed, float deltaTime){
         cameraPositionC += wXZ * camSpeed * deltaTime;
     }
 
-    else
-        cameraPositionC += w * camSpeed * deltaTime; // Move the camera backward
+    else{
+        glm::vec4 movementDelta = w * camSpeed * deltaTime;
+        
+        if (CanMove(movementDelta, Armies, Strucutres)) {
+            cameraPositionC += movementDelta; 
+        }
+    }
+
 }
 
 void FreeCamera::MoveLeft(float camSpeed, float deltaTime){
@@ -65,9 +102,13 @@ void FreeCamera::MoveLeft(float camSpeed, float deltaTime){
         cameraPositionC += -1.0f * uXZ * camSpeed * deltaTime;
     }
 
-    else
-        cameraPositionC += -1.0f * u * camSpeed * deltaTime; // Move the camera left
-    
+    else{
+        glm::vec4 movementDelta =  -1.0f * u * camSpeed * deltaTime;
+        if (CanMove(movementDelta, Armies, Strucutres)) {
+            cameraPositionC += movementDelta; 
+        } 
+    }
+        
 }
 
 void FreeCamera::MoveRight(float camSpeed, float deltaTime){
@@ -78,13 +119,19 @@ void FreeCamera::MoveRight(float camSpeed, float deltaTime){
         cameraPositionC += uXZ * camSpeed * deltaTime;
     }
 
-    else
-        cameraPositionC += u * camSpeed * deltaTime; // Move the camera right
-    
+    else{
+        glm::vec4 movementDelta = u * camSpeed * deltaTime;
+        if (CanMove(movementDelta, Armies, Strucutres)) {
+            cameraPositionC += movementDelta; 
+        } 
+    }  
 }
 
 void FreeCamera::MoveUp(float camSpeed, float deltaTime){
-    cameraPositionC += v * camSpeed * deltaTime;
+    glm::vec4 movementDelta = v * camSpeed * deltaTime;
+    if (CanMove(movementDelta, Armies, Strucutres)) {
+            cameraPositionC += movementDelta; 
+    } 
 }
 
 void FreeCamera::SetCameraTheta(float theta) {

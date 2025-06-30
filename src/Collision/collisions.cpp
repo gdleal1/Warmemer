@@ -10,6 +10,8 @@ float clamp(float value, float minValue, float maxValue)
         return value;
 }
 
+
+// Function to check if a bounding sphere intersects with an oriented bounding box (OBB)
 bool SphereIntersectsOBB(const BoundingSphere& sphere, const OBB& obb)
 {
     glm::vec3 d = sphere.center - obb.center;
@@ -31,7 +33,7 @@ bool SphereIntersectsOBB(const BoundingSphere& sphere, const OBB& obb)
 
 
 
-
+// Function to compute the Oriented Bounding Box (OBB) for a miniature
 OBB ComputeOBB(const Miniature& m)
 {
     const SceneObject& obj = g_VirtualScene[m.object];

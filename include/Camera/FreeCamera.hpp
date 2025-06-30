@@ -5,6 +5,7 @@
 #include <glm/mat4x4.hpp>
 #include <glm/vec4.hpp>
 #include "Warhammer/Armies.hpp"
+#include "Warhammer/Structures.hpp"
 #include "Collision/collisions.h"
 
 
@@ -13,6 +14,11 @@ glm::mat4 Matrix_Camera_View(glm::vec4 camera_position_c, glm::vec4 camera_view_
 glm::mat4 Matrix_Perspective(float field_of_view, float aspect, float near, float far);
 float norm(glm::vec4 v);
 glm::vec4 crossproduct(glm::vec4 u, glm::vec4 v);
+
+bool SphereIntersectsOBB(const BoundingSphere& sphere, const OBB& obb);
+OBB ComputeOBB(const Miniature& m);
+extern std::vector<Miniature> Strucutres;
+extern std::vector<std::vector<Miniature>> Armies;
 
 
 
@@ -58,7 +64,10 @@ public:
     void SetViewVector(glm::vec4 viewVector);
     glm::vec4 GetViewVector();
 
-    BoundingSphere GetBoundingSphereAt(const glm::vec4& pos) const;
+    bool CanMove(const glm::vec4& movementDelta,
+                         const std::vector<std::vector<Miniature>>& Armies,
+                         const std::vector<Miniature>& Structures) const;
+                         
     
         
 
