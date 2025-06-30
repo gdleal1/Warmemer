@@ -5,6 +5,7 @@
 #include <glm/mat4x4.hpp>
 #include <glm/vec4.hpp>
 #include "Warhammer/Armies.hpp"
+#include "Collision/collisions.h"
 
 
 // Declare functions for camera transformations
@@ -56,6 +57,9 @@ public:
 
     void SetViewVector(glm::vec4 viewVector);
     glm::vec4 GetViewVector();
+
+    BoundingSphere GetBoundingSphereAt(const glm::vec4& pos) const;
+    
         
 
     void MoveFoward(float camSpeed, float deltaTime);

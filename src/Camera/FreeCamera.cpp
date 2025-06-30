@@ -27,6 +27,10 @@ void FreeCamera::UpdateCamera() {
 
 }
 
+BoundingSphere FreeCamera::GetBoundingSphereAt(const glm::vec4& pos) const {
+    return { glm::vec3(pos), 0.5f };
+}
+
 void FreeCamera::MoveFoward(float camSpeed, float deltaTime){
 
     if (g_isMiniatureCamera){

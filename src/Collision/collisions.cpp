@@ -1,12 +1,35 @@
 #include "Collision/collisions.h"
 
-// Struct to represent an Oriented Bounding Box (OBB)
-struct OBB
+float clamp(float value, float minValue, float maxValue)
 {
-    glm::vec3 center;      // Center of the OBB in world coordinates
-    glm::vec3 axes[3];     // Normalized vectors (local x, y, z)
-    glm::vec3 halfSizes;   // Half-size along each axis
-};
+    if (value < minValue)
+        return minValue;
+    else if (value > maxValue)
+        return maxValue;
+    else
+        return value;
+}
+
+bool SphereIntersectsOBB(const BoundingSphere& sphere, const OBB& obb)
+{
+    glm::vec3 d = sphere.center - obb.center;
+    glm::vec3 closestPoint = obb.center;
+
+    for (int i = 0; i < 3; ++i) {
+        float dist = dotproduct(glm::vec4(d, 0.0f), glm::vec4(obb.axes[i], 0.0f));
+        dist = clamp(dist, -obb.halfSizes[i], obb.halfSizes[i]);
+        closestPoint += dist * obb.axes[i];
+    }
+
+    float distanceSquared = dotproduct(
+        glm::vec4(sphere.center - closestPoint, 0.0f),
+        glm::vec4(sphere.center - closestPoint, 0.0f)
+    );
+
+    return distanceSquared <= sphere.radius * sphere.radius;
+}
+
+
 
 
 OBB ComputeOBB(const Miniature& m)
