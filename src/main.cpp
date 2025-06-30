@@ -202,17 +202,32 @@ int main(int argc, char* argv[])
 
 
             else {
-                g_freeCameraMiniatures.SetPosition(interpolatedPosition);
-                g_freeCameraMiniatures.SetViewVector(interpolatedView);
+                if (g_isMiniatureCamera) {
+                    g_freeCameraMiniatures.SetPosition(interpolatedPosition);
+                    g_freeCameraMiniatures.SetViewVector(interpolatedView);
+                }
+
+                else {
+                    g_freeCamera.SetPosition(interpolatedPosition);
+                    g_freeCamera.SetViewVector(interpolatedView);
+                }
+
             }
         }
 
 
-        // Free camera movement with the miniatures
+        
         if (g_isLookAtUsed == false)
         {
-            if (Armies[0][0].MiniatureMove(delta_t, Armies, Strucutres)) {
-                FreeCamMove(delta_t);
+            // Free camera movement with the miniatures
+            if (g_isMiniatureCamera){
+                if (Armies[0][0].MiniatureMove(delta_t, Armies, Strucutres)) {
+                    MiniatureFreeCamMove(delta_t);
+                }
+            }
+
+            else{
+                FreeCamMove(delta_t); // Free camera movement
             }
         }
 
@@ -224,7 +239,11 @@ int main(int argc, char* argv[])
         }
 
         else{
-            view = g_freeCameraMiniatures.GetMatrixCameraView(); // Free camera view matrix
+            if (g_isMiniatureCamera)
+                view = g_freeCameraMiniatures.GetMatrixCameraView(); // Miniature camera view matrix
+            else
+                view = g_freeCamera.GetMatrixCameraView(); // Free camera view matrix
+            
         }
         
 
@@ -236,8 +255,13 @@ int main(int argc, char* argv[])
 
         // Perspective Projection.
         float field_of_view = 3.141592 / 3.0f;
-        projection = g_freeCameraMiniatures.GetMatrixPerspective(nearplane, farplane, field_of_view, g_ScreenRatio);
+
+        if(g_isMiniatureCamera)
+            projection = g_freeCameraMiniatures.GetMatrixPerspective(nearplane, farplane, field_of_view, g_ScreenRatio);
         
+        else
+            projection = g_freeCamera.GetMatrixPerspective(nearplane, farplane, field_of_view, g_ScreenRatio);
+
         // We send the "view" and "projection" matrices to the video card
         // (GPU). See the "shader_vertex.glsl" file, where these are
         // effectively applied to all points.

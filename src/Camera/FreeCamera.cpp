@@ -1,6 +1,7 @@
 // FreeCamera.cpp
 #include "Camera/FreeCamera.hpp"
 #include <cmath>
+# include "Camera/camera.h"
 
 // Constructor initializes the camera parameters 
 FreeCamera::FreeCamera(float theta, float phi, float distance)
@@ -27,27 +28,55 @@ void FreeCamera::UpdateCamera() {
 }
 
 void FreeCamera::MoveFoward(float camSpeed, float deltaTime){
-    glm::vec4 wXZ = glm::vec4(w.x, 0.0f, w.z, 0.0f);           // projects w onto the XZ plane
-    wXZ = glm::normalize(wXZ);                                 // re-normalize
-    cameraPositionC += -1.0f * wXZ * camSpeed * deltaTime;
+
+    if (g_isMiniatureCamera){
+        glm::vec4 wXZ = glm::vec4(w.x, 0.0f, w.z, 0.0f);           // projects w onto the XZ plane
+        wXZ = glm::normalize(wXZ);                                 // re-normalize
+        cameraPositionC += -1.0f * wXZ * camSpeed * deltaTime;
+    }
+
+    else{
+        cameraPositionC += -1.0f * w * camSpeed * deltaTime; // Move the camera forward
+    }
+    
 }
 
 void FreeCamera::MoveBackward(float camSpeed, float deltaTime){
-    glm::vec4 wXZ = glm::vec4(w.x, 0.0f, w.z, 0.0f);
-    wXZ = glm::normalize(wXZ);
-    cameraPositionC += wXZ * camSpeed * deltaTime;
+
+    if (g_isMiniatureCamera){
+        glm::vec4 wXZ = glm::vec4(w.x, 0.0f, w.z, 0.0f);           // projects w onto the XZ plane
+        wXZ = glm::normalize(wXZ);                                 // re-normalize
+        cameraPositionC += wXZ * camSpeed * deltaTime;
+    }
+
+    else
+        cameraPositionC += w * camSpeed * deltaTime; // Move the camera backward
 }
 
 void FreeCamera::MoveLeft(float camSpeed, float deltaTime){
-    glm::vec4 uXZ = glm::vec4(u.x, 0.0f, u.z, 0.0f);
-    uXZ = glm::normalize(uXZ);
-    cameraPositionC += -1.0f * uXZ * camSpeed * deltaTime;
+
+    if (g_isMiniatureCamera){
+        glm::vec4 uXZ = glm::vec4(u.x, 0.0f, u.z, 0.0f);
+        uXZ = glm::normalize(uXZ);
+        cameraPositionC += -1.0f * uXZ * camSpeed * deltaTime;
+    }
+
+    else
+        cameraPositionC += -1.0f * u * camSpeed * deltaTime; // Move the camera left
+    
 }
 
 void FreeCamera::MoveRight(float camSpeed, float deltaTime){
-    glm::vec4 uXZ = glm::vec4(u.x, 0.0f, u.z, 0.0f);
-    uXZ = glm::normalize(uXZ);
-    cameraPositionC += uXZ * camSpeed * deltaTime;
+
+    if (g_isMiniatureCamera){
+        glm::vec4 uXZ = glm::vec4(u.x, 0.0f, u.z, 0.0f);
+        uXZ = glm::normalize(uXZ);
+        cameraPositionC += uXZ * camSpeed * deltaTime;
+    }
+
+    else
+        cameraPositionC += u * camSpeed * deltaTime; // Move the camera right
+    
 }
 
 void FreeCamera::MoveUp(float camSpeed, float deltaTime){

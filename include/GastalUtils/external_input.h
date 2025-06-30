@@ -4,6 +4,7 @@
 #include "Camera/FreeCamera.hpp"
 #include "Camera/cameraTransition.h"
 #include "Warhammer/Armies.hpp"
+#include "Camera/camera.h"
 
 
 double g_LastCursorPosX, g_LastCursorPosY;
@@ -11,16 +12,19 @@ bool g_LeftMouseButtonPressed = false;
 bool g_RightMouseButtonPressed = false; 
 bool g_MiddleMouseButtonPressed = false; 
 
-extern LookAtCamera g_lookAtCamera; // Declaration of the look-at camera, defined in the LookAtCamera.cpp file
-extern FreeCamera g_freeCameraMiniatures; // Declaration of the free camera, defined in the FreeCamera.cpp file
+extern LookAtCamera g_lookAtCamera; 
+extern FreeCamera g_freeCameraMiniatures; 
 extern CameraTransition g_cameraTransition;
-extern bool g_isLookAtUsed; // Declaration of the boolean that controls whether the look-at camera is active
+extern FreeCamera g_freeCamera;
+extern bool g_isMiniatureCamera; 
+extern bool g_isLookAtUsed; 
 
 extern bool g_KeyWPressed; // W key pressed (forward movement)
 extern bool g_KeySPressed; // S key pressed (backward movement)
 extern bool g_KeyAPressed; // Key A pressed (movement to the left)
 extern bool g_KeyDPressed; // D key pressed (movement to the right)
 extern bool g_KeySpacePressed; // Space key pressed (upward movement)
+extern bool g_KeyMPressed; 
 
 extern std::vector<std::vector<Miniature>> Armies;
 extern bool g_isDreadArmy; 
@@ -101,12 +105,19 @@ void CursorPosCallback(GLFWwindow* window, double xpos, double ypos)
             g_lookAtCamera.SetCameraPhi(g_lookAtCamera.GetCameraPhi() + 0.01f*dy);
         }
 
-        else{
-            g_freeCameraMiniatures.SetCameraTheta(g_freeCameraMiniatures.GetCameraTheta() - 0.01f*dx);
-            g_freeCameraMiniatures.SetCameraPhi(g_freeCameraMiniatures.GetCameraPhi() - 0.01f*dy);
-            
-            // Updates theta of the miniatures too
-            Armies[0][0].facingTheta = g_freeCameraMiniatures.GetCameraTheta();
+        else{ 
+            if (g_isMiniatureCamera){
+                g_freeCameraMiniatures.SetCameraTheta(g_freeCameraMiniatures.GetCameraTheta() - 0.01f*dx);
+                g_freeCameraMiniatures.SetCameraPhi(g_freeCameraMiniatures.GetCameraPhi() - 0.01f*dy);
+                
+                // Updates theta of the miniatures too
+                Armies[0][0].facingTheta = g_freeCameraMiniatures.GetCameraTheta();
+            }
+
+            else{
+                g_freeCamera.SetCameraTheta(g_freeCamera.GetCameraTheta() - 0.01f*dx);
+                g_freeCamera.SetCameraPhi(g_freeCamera.GetCameraPhi() - 0.01f*dy);
+            }
         }
         
         // In spherical coordinates, the phi angle must be between -pi/2 and +pi/2.
@@ -121,15 +132,25 @@ void CursorPosCallback(GLFWwindow* window, double xpos, double ypos)
                 g_lookAtCamera.SetCameraPhi(phimin);
         }
 
-        else{
-            if (g_freeCameraMiniatures.GetCameraPhi() > phimax)
-                g_freeCameraMiniatures.SetCameraPhi(phimax);
+        else{ 
+            if (g_isMiniatureCamera){
+                if (g_freeCameraMiniatures.GetCameraPhi() > phimax)
+                    g_freeCameraMiniatures.SetCameraPhi(phimax);
 
-            if (g_freeCameraMiniatures.GetCameraPhi() < phimin)
-                g_freeCameraMiniatures.SetCameraPhi(phimax);
-            
-            // Updates theta of the miniatures too
-            Armies[0][0].facingTheta = g_freeCameraMiniatures.GetCameraTheta();
+                if (g_freeCameraMiniatures.GetCameraPhi() < phimin)
+                    g_freeCameraMiniatures.SetCameraPhi(phimax);
+                
+                // Updates theta of the miniatures too
+                Armies[0][0].facingTheta = g_freeCameraMiniatures.GetCameraTheta();
+            }
+
+            else{
+                if (g_freeCamera.GetCameraPhi() > phimax)
+                    g_freeCamera.SetCameraPhi(phimax);
+
+                if (g_freeCamera.GetCameraPhi() < phimin)
+                    g_freeCamera.SetCameraPhi(phimax);
+            }
         }
 
 
@@ -187,11 +208,6 @@ void KeyCallback(GLFWwindow* window, int key, int scancode, int action, int mod)
         glfwSetWindowShouldClose(window, GL_TRUE);
 
 
-    if (key == GLFW_KEY_X && action == GLFW_PRESS)
-    {
-        //do something we tdont know yet
-    }
-
     // If the user presses the L key, the boolean variable g_isLookAtUsed is set to true and a camera transition is initiated.
     if (key == GLFW_KEY_L && action == GLFW_PRESS && !g_isLookAtUsed) {
         g_isLookAtUsed = true;
@@ -199,7 +215,14 @@ void KeyCallback(GLFWwindow* window, int key, int scancode, int action, int mod)
         g_cameraTransition.t = 0.0f;
         
         // Position
-        g_cameraTransition.p0 = g_freeCameraMiniatures.GetPosition(); // current position
+        if (g_isMiniatureCamera) {
+            g_cameraTransition.p0 = g_freeCameraMiniatures.GetPosition(); // current position
+        } 
+
+        else {
+            g_cameraTransition.p0 = g_freeCamera.GetPosition(); // current position
+        }
+        
         g_cameraTransition.p3 = g_lookAtCamera.GetPosition(); // destination
 
         glm::vec4 dir = g_cameraTransition.p3 - g_cameraTransition.p0;
@@ -207,7 +230,12 @@ void KeyCallback(GLFWwindow* window, int key, int scancode, int action, int mod)
         g_cameraTransition.p2 = g_cameraTransition.p0 + 0.75f * dir;
 
         // Direction
-        g_cameraTransition.v0 = g_freeCameraMiniatures.GetViewVector();
+        if (g_isMiniatureCamera){
+            g_cameraTransition.v0 = g_freeCameraMiniatures.GetViewVector();}
+        
+        else{
+            g_cameraTransition.v0 = g_freeCamera.GetViewVector();}
+        
         g_cameraTransition.v3 = g_lookAtCamera.GetViewVector();
 
         // Control points for the intermediate direction curve
@@ -215,9 +243,11 @@ void KeyCallback(GLFWwindow* window, int key, int scancode, int action, int mod)
         g_cameraTransition.v2 = glm::normalize(glm::mix(g_cameraTransition.v0, g_cameraTransition.v3, 0.75f));
     }
 
-    // If the user presses the F key, the boolean variable g_isLookAtUsed is set to false and a camera transition is initiated
-    if (key == GLFW_KEY_F && action == GLFW_PRESS && g_isLookAtUsed) {
+    // If the user presses the M key, the boolean variable g_isLookAtUsed is set to false and a camera transition is initiated to the miniature free camera.
+    if (key == GLFW_KEY_M && action == GLFW_PRESS && g_isLookAtUsed) {
         g_isLookAtUsed = false;
+        g_isMiniatureCamera = true; // Set the camera to be the miniature camera
+        
         g_cameraTransition.isTransitioning = true;
         g_cameraTransition.t = 0.0f;
         glm::vec4 minPosition;
@@ -251,6 +281,32 @@ void KeyCallback(GLFWwindow* window, int key, int scancode, int action, int mod)
         // Direction
         g_cameraTransition.v0 = g_lookAtCamera .GetViewVector();
         g_cameraTransition.v3 = g_freeCameraMiniatures.GetViewVector();
+
+        // Intermediate control points for the direction curve
+        g_cameraTransition.v1 = glm::normalize(glm::mix(g_cameraTransition.v0, g_cameraTransition.v3, 0.25f));
+        g_cameraTransition.v2 = glm::normalize(glm::mix(g_cameraTransition.v0, g_cameraTransition.v3, 0.75f));
+
+    }
+
+    // If the user presses the F key, the boolean variable g_isLookAtUsed is set to false and a camera transition is initiated to the free camera.
+    if (key == GLFW_KEY_F && action == GLFW_PRESS && g_isLookAtUsed){
+        g_isLookAtUsed = false;
+        g_isMiniatureCamera = false;
+
+        g_cameraTransition.isTransitioning = true;
+        g_cameraTransition.t = 0.0f;
+
+        // Position
+        g_cameraTransition.p0 = g_lookAtCamera.GetPosition(); // current position
+        g_cameraTransition.p3 = g_freeCamera.GetPosition(); // destination
+
+        glm::vec4 dir = g_cameraTransition.p3 - g_cameraTransition.p0;
+        g_cameraTransition.p1 = g_cameraTransition.p0 + 0.25f * dir;
+        g_cameraTransition.p2 = g_cameraTransition.p0 + 0.75f * dir;
+
+        // Direction
+        g_cameraTransition.v0 = g_lookAtCamera .GetViewVector();
+        g_cameraTransition.v3 = g_freeCamera.GetViewVector();
 
         // Intermediate control points for the direction curve
         g_cameraTransition.v1 = glm::normalize(glm::mix(g_cameraTransition.v0, g_cameraTransition.v3, 0.25f));
@@ -327,5 +383,20 @@ void KeyCallback(GLFWwindow* window, int key, int scancode, int action, int mod)
             ;
         }
     }
+
+    if (key == GLFW_KEY_M){
+        if (action == GLFW_PRESS){
+            g_KeyMPressed = true;
+        }
+
+        else if (action == GLFW_RELEASE){
+            g_KeyMPressed = false;
+        }
+
+        else if (action == GLFW_REPEAT){
+            ;
+        } 
+    }
+
 
 }

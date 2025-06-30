@@ -20,12 +20,13 @@ private:
     float cameraTheta;
     float cameraPhi;
     float cameraDistance;
+
     
     float viewX;
     float viewY;
     float viewZ;
 
-    glm::vec4 cameraPositionC =glm::vec4(0.0f, 0.0f, 0.0f, 1.0f); //Initial camera position
+    glm::vec4 cameraPositionC =glm::vec4(0.0f, 5.0f, 0.0f, 1.0f); //Initial camera position
 
     glm::vec4 cameraViewVector;
     glm::vec4 cameraUpVector;

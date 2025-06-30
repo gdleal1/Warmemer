@@ -12,14 +12,24 @@ float g_LookAtCameraTheta = 0.0f;
 float g_LookAtCameraPhi = 1.0f;   
 float g_LookAtCameraDistance = 18.0f; 
 
+// Boolean to check if the camera is the miniature camera
+bool g_isMiniatureCamera = true;
+
 // Camera look at
 LookAtCamera g_lookAtCamera(g_LookAtCameraTheta, g_LookAtCameraPhi, g_LookAtCameraDistance);
 
-// Free camera
+// Free camera for miniatures
 FreeCamera g_freeCameraMiniatures(g_FreeCameraTheta, g_FreeCameraPhi, g_FreeCameraDistance);
+
+// Free camera
+FreeCamera g_freeCamera(g_FreeCameraTheta, g_FreeCameraPhi, g_FreeCameraDistance);
 
 // Boolean that controls whether the look-at camera is being used
 bool g_isLookAtUsed = true;
 
 // Free camera movement speed
-float g_speed_cam = 3.0f;
+float g_speed_cam = 5.0f;
+
+// Miniature Free camera movement speed
+float g_speed_cam_miniature = 3.0f;
+

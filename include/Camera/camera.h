@@ -13,11 +13,20 @@ extern float g_LookAtCameraDistance;
 // Camera look at
 extern LookAtCamera g_lookAtCamera;
 
-// Free camera
+// Free camera for miniatures
 extern FreeCamera g_freeCameraMiniatures;
+
+// Free camera
+extern FreeCamera g_freeCamera;
 
 // Boolean that controls whether the look-at camera is being used
 extern bool g_isLookAtUsed;
 
+// Miniature Free camera movement speed
+extern float g_speed_cam_miniature;
+
 // Free camera movement speed
 extern float g_speed_cam;
+
+// Boolean to check if the camera is the miniature camera
+extern bool g_isMiniatureCamera; 

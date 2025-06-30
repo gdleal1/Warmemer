@@ -3,7 +3,7 @@
 std::vector<Miniature> Strucutres;
 
 void InitializeStructures() {
-    // Essa funciona
+    
     Strucutres.push_back(Miniature(
         glm::vec4(2.6f, -0.4f, 0.6f, 1.0f), // position
         "the_wall",                         // object
@@ -24,7 +24,7 @@ void InitializeStructures() {
         100                                   // currentHealth
     ));
 
-    // Essa funciona
+    
     Strucutres.push_back(Miniature(
         glm::vec4(-2.6f, -0.4f, -0.6f, 1.0f), // position
         "the_wall",                         // object
