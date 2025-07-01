@@ -3,7 +3,10 @@
 #include <string>
 
 #include <glad/glad.h>
+#include <vector>
+#include <string>
 #include <GLFW/glfw3.h>
+#include <iostream> 
 
 #include <glm/mat4x4.hpp>
 #include <glm/vec4.hpp>
@@ -27,13 +30,16 @@ const GLchar* const textvertexshader_source = ""
 const GLchar* const textfragmentshader_source = ""
 "#version 330\n"
 "uniform sampler2D tex;\n"
+"uniform vec4 text_color;\n"  
 "in vec2 texCoords;\n"
 "out vec4 fragColor;\n"
 "void main()\n"
 "{\n"
-    "fragColor = vec4(0, 0, 0, texture(tex, texCoords).r);\n"
+"    float alpha = texture(tex, texCoords).r;\n"
+"    fragColor = vec4(text_color.rgb, text_color.a * alpha);\n"
 "}\n"
 "\0";
+
 
 void TextRendering_LoadShader(const GLchar* const shader_string, GLuint shader_id)
 {
@@ -197,6 +203,8 @@ void TextRendering_PrintString(GLFWwindow* window, const std::string &str, float
         glBindBuffer(GL_ARRAY_BUFFER, 0);
 
         glUseProgram(textprogram_id);
+        GLint colorLoc = glGetUniformLocation(textprogram_id, "text_color");
+        glUniform4f(colorLoc, 1.0f, 1.0f, 1.0f, 1.0f); // branco opaco
         glBindVertexArray(textVAO);
 
         glDrawArrays(GL_TRIANGLES, 0, 6);
@@ -336,4 +344,33 @@ void TextRendering_ShowFramesPerSecond(GLFWwindow* window)
     float charwidth = TextRendering_CharWidth(window);
 
     TextRendering_PrintString(window, buffer, 1.0f-(numchars + 1)*charwidth, 1.0f-lineheight, 1.0f);
+}
+
+void ShowHelpText(GLFWwindow* window)
+{
+    std::vector<std::string> helpText = {
+            "L: Change to Look At Camera",
+            "F: Change to Free Camera",
+            "M: Change to Miniature Camera",
+            "W: Move Forward",
+            "S: Move Backward",
+            "A: Move Left", 
+            "D: Move Right",
+            "Space: Move Up",
+            "Esc: Quit"
+        };
+
+
+        float lineheight = TextRendering_LineHeight(window);
+        
+
+        // Margem esquerda na coordenada NDC
+        float x = -0.98f;  // perto da borda esquerda
+        float y = 1.0f - lineheight; // primeira linha, logo abaixo do topo
+
+        for (const auto& line : helpText)
+        {
+            TextRendering_PrintString(window, line, x, y, 1.0f);
+            y -= lineheight;  // descer para a próxima linha
+        }
 }

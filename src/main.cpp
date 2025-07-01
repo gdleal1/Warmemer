@@ -162,7 +162,7 @@ int main(int argc, char* argv[])
     glEnable(GL_CULL_FACE);
     glCullFace(GL_BACK);
     glFrontFace(GL_CCW);
-    
+
     // Previous time for delta time calculation
     float prev_time = (float)glfwGetTime();
     
@@ -285,10 +285,13 @@ int main(int argc, char* argv[])
         glUniform1i(g_object_id_uniform, PLANE); // Plane
         DrawVirtualObject("the_plane");
 
-        // We print information on the screen about the number of frames rendered
-        // per second (frames per second).
+        // Functions for text rendering
         TextRendering_ShowFramesPerSecond(window);
+        ShowHelpText(window);
 
+        
+
+        
         // The framebuffer where OpenGL performs the rendering operations is not
         // the same as the one being shown to the user, otherwise
         // it would be possible to see artifacts known as "screen tearing". The
