@@ -254,13 +254,22 @@ int main(int argc, char* argv[])
         float farplane  = -100.0f; // Far plane position
 
         // Perspective Projection.
-        float field_of_view = 3.141592 / 3.0f;
+        float field_of_view_miniature_cam = 3.141592 / 2.0f;
+        float field_of_view = 3.141592 / 3.0f; 
 
-        if(g_isMiniatureCamera)
-            projection = g_freeCameraMiniatures.GetMatrixPerspective(nearplane, farplane, field_of_view, g_ScreenRatio);
-        
-        else
+        if (g_isLookAtUsed)
             projection = g_freeCamera.GetMatrixPerspective(nearplane, farplane, field_of_view, g_ScreenRatio);
+
+
+        else {
+            if(g_isMiniatureCamera)
+                projection = g_freeCameraMiniatures.GetMatrixPerspective(nearplane, farplane, field_of_view_miniature_cam, g_ScreenRatio);
+        
+            else
+                projection = g_freeCamera.GetMatrixPerspective(nearplane, farplane, field_of_view, g_ScreenRatio);
+
+        }
+        
 
         // We send the "view" and "projection" matrices to the video card
         // (GPU). See the "shader_vertex.glsl" file, where these are

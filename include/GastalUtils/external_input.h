@@ -256,7 +256,7 @@ void KeyCallback(GLFWwindow* window, int key, int scancode, int action, int mod)
         // Free camera position values for Dread Army
         if (g_isDreadArmy){
             minPosition = Armies[0][0].position;
-            minPosition.y = minPosition.y + 2.0f;
+            minPosition.y = minPosition.y + 1.5f;
             cameraTheta = Armies[0][0].facingTheta;
         }
 
