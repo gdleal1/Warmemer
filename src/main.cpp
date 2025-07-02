@@ -202,6 +202,9 @@ int main(int argc, char* argv[])
 
                 if (g_miniatureCameraShootTransition.isTransitioning) {
                     StartShootCameraAnimation(delta_t);
+                    if (ShootIntersectsOBB(Armies[0][0], Armies, Strucutres)) {
+                        
+                    }
                 }
 
             }

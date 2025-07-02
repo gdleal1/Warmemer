@@ -25,6 +25,7 @@ struct BoundingSphere {
 };
 
 bool MiniaturesAreColliding(const Miniature& a, const Miniature& b);
+bool ShootIntersectsOBB(const Miniature& shooter, std::vector<std::vector<Miniature>>& Armies, std::vector<Miniature> &Structures);
 
 
                       

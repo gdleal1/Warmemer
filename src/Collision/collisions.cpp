@@ -103,6 +103,93 @@ bool TestOBBCollision(const OBB& a, const OBB& b)
     return true;
 }
 
+// Function to check if a ray intersects with an OBB 
+bool RayIntersectsOBB(const glm::vec3& rayOrigin,
+                      const glm::vec4& rayDir,
+                      const OBB& obb,
+                      float& tHit)
+{
+    float tMin = -INFINITY;
+    float tMax = INFINITY;
+
+    glm::vec3 p = obb.center - rayOrigin;
+
+    for (int i = 0; i < 3; ++i)
+    {
+        float e = dotproduct(glm::vec4(obb.axes[i], 0.0f), glm::vec4(p, 0.0f));
+        float f = dotproduct(glm::vec4(obb.axes[i], 0.0f), rayDir);
+
+
+        if (std::abs(f) > 0.0001f) // The ray is not parallel to the plane
+        {
+            float t1 = (e + obb.halfSizes[i]) / f;
+            float t2 = (e - obb.halfSizes[i]) / f;
+
+            if (t1 > t2) std::swap(t1, t2);
+
+            tMin = std::max(tMin, t1);
+            tMax = std::min(tMax, t2);
+
+            if (tMin > tMax)
+                return false; 
+        }
+        else
+        {
+            // The ray is parallel to the plane, but still need to check if the ray is within the bounds of the OBB
+            if (-e - obb.halfSizes[i] > 0.0f || -e + obb.halfSizes[i] < 0.0f){
+                return false;
+
+            }
+                
+        }
+    }
+
+    tHit = tMin;
+    return true;
+}
+
+bool ShootIntersectsOBB(const Miniature& shooter,std::vector<std::vector<Miniature>>& Armies,std::vector<Miniature> &Structures)
+{
+    float phi = 0.0;
+    float viewX = cos(phi)*sin(shooter.facingTheta);
+    float viewY = sin(phi);
+    float viewZ = cos(phi)*cos(shooter.facingTheta);
+
+    glm::vec4 rayDir = glm::normalize(glm::vec4(viewX, viewY, viewZ,0.0f));
+    glm::vec3 rayOrigin = glm::vec3(shooter.position);
+    float tHit; 
+
+    for (auto& army : Armies)
+    {
+        for (auto& other : army)
+        {
+            if (&other != &shooter)
+            {
+                OBB targetOBB = ComputeOBB(other);
+                if (RayIntersectsOBB(rayOrigin, rayDir, targetOBB, tHit))
+                {
+                    other.currentHealth = 0; 
+                    return true;
+                }
+            }
+        }
+    }
+
+
+    for (auto& structure : Structures)
+    {
+        OBB targetOBB = ComputeOBB(structure);
+        if (RayIntersectsOBB(rayOrigin, rayDir, targetOBB, tHit)){
+            structure.currentHealth = 0;
+            return true;
+
+        }
+            
+    }
+
+    return false; 
+
+}
 
 bool MiniaturesAreColliding(const Miniature& a, const Miniature& b)
 {
