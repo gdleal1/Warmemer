@@ -312,7 +312,7 @@ void KeyCallback(GLFWwindow* window, int key, int scancode, int action, int mod)
         g_cameraTransition.v1 = glm::normalize(glm::mix(g_cameraTransition.v0, g_cameraTransition.v3, 0.25f));
         g_cameraTransition.v2 = glm::normalize(glm::mix(g_cameraTransition.v0, g_cameraTransition.v3, 0.75f));
 
-    }
+    }   
 
     // W, A, S, D, SPACE keys for camera movement
     if (key == GLFW_KEY_W){

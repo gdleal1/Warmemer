@@ -27,7 +27,7 @@
 #include "Camera/LookAtCamera.hpp"
 #include "Camera/FreeCamera.hpp"
 #include "Camera/cameraTransition.h"
-#include "Camera/freeCamMove.h"
+#include "Camera/freeCamAction.h"
 
 #include "Warhammer/Miniatures.hpp"
 #include "Warhammer/Armies.hpp"
@@ -187,32 +187,7 @@ int main(int argc, char* argv[])
 
         // Updates the LookAt camera or the free camera, depending on the current state
         if (g_cameraTransition.isTransitioning) {
-            
-            // Updates the camera transition, if it is in progress
-            g_cameraTransition.t += delta_t / g_cameraTransition.duration;
-            
-            glm::vec4 interpolatedPosition = BezierCubicPos();
-            glm::vec4 interpolatedView = BezierCubicView();
-            
-            
-            if (g_isLookAtUsed) {
-                g_lookAtCamera.SetPosition(interpolatedPosition);
-                g_lookAtCamera.SetViewVector(interpolatedView);
-            } 
-
-
-            else {
-                if (g_isMiniatureCamera) {
-                    g_freeCameraMiniatures.SetPosition(interpolatedPosition);
-                    g_freeCameraMiniatures.SetViewVector(interpolatedView);
-                }
-
-                else {
-                    g_freeCamera.SetPosition(interpolatedPosition);
-                    g_freeCamera.SetViewVector(interpolatedView);
-                }
-
-            }
+            StartCameraTransition(delta_t);
         }
 
 
@@ -222,7 +197,7 @@ int main(int argc, char* argv[])
             // Free camera movement with the miniatures
             if (g_isMiniatureCamera){
                 if (Armies[0][0].MiniatureMove(delta_t, Armies, Strucutres)) {
-                    MiniatureFreeCamMove(delta_t);
+                    MiniatureFreeCamAction(delta_t);
                 }
             }
 

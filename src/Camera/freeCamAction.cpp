@@ -1,6 +1,6 @@
-# include "Camera/freeCamMove.h"
+# include "Camera/freeCamAction.h"
 
-void MiniatureFreeCamMove(float delta_t){
+void MiniatureFreeCamAction(float delta_t){
     
     if (g_KeyWPressed)
     {
@@ -21,6 +21,7 @@ void MiniatureFreeCamMove(float delta_t){
     {
         g_freeCameraMiniatures.MoveRight(g_speed_cam_miniature,delta_t); // Movement of the camera to the right
     }
+
     
 }
 
