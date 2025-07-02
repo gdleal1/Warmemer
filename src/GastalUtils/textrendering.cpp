@@ -358,6 +358,7 @@ void ShowHelpText(GLFWwindow* window)
             "D: Move Right",
             "Space: Move Up",
             "B: Shoot",
+            "J: Wireframe mode",
             "Esc: Quit"
         };
 

@@ -11,6 +11,7 @@ double g_LastCursorPosX, g_LastCursorPosY;
 bool g_LeftMouseButtonPressed = false;
 bool g_RightMouseButtonPressed = false; 
 bool g_MiddleMouseButtonPressed = false; 
+extern bool g_ShowBoundingBoxes;
 
 extern LookAtCamera g_lookAtCamera; 
 extern FreeCamera g_freeCameraMiniatures; 
@@ -399,6 +400,11 @@ void KeyCallback(GLFWwindow* window, int key, int scancode, int action, int mod)
         else if (action == GLFW_REPEAT){
             ;
         }
+    }
+
+    if (key == GLFW_KEY_J && action == GLFW_PRESS)
+    {
+        g_ShowBoundingBoxes = !g_ShowBoundingBoxes;
     }
 
 
