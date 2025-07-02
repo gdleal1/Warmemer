@@ -314,6 +314,7 @@ void KeyCallback(GLFWwindow* window, int key, int scancode, int action, int mod)
 
     }   
 
+    // If the user presses the B key, a camera transition is initiated to the miniature camera for simulating a recoil.
     if (key == GLFW_KEY_B && action == GLFW_PRESS && g_isMiniatureCamera && !g_isLookAtUsed) {
         // Start the camera shoot animation
         g_miniatureCameraShootTransition.isTransitioning = true;
@@ -321,6 +322,8 @@ void KeyCallback(GLFWwindow* window, int key, int scancode, int action, int mod)
         g_miniatureCameraShootTransition.duration = 1.0f;
 
         glm::vec4 originalView = g_freeCameraMiniatures.GetViewVector();
+        
+        // Set the control points for the Bézier curve
         g_miniatureCameraShootTransition.v0 = originalView;
         g_miniatureCameraShootTransition.v3 = originalView;
         glm::vec4 upward = glm::vec4(0.0f, 0.3f, 0.0f, 0.0f);

@@ -364,14 +364,12 @@ void ShowHelpText(GLFWwindow* window)
 
         float lineheight = TextRendering_LineHeight(window);
         
-
-        // Margem esquerda na coordenada NDC
-        float x = -0.98f;  // perto da borda esquerda
-        float y = 1.0f - lineheight; // primeira linha, logo abaixo do topo
+        float x = -0.98f;  
+        float y = 1.0f - lineheight; 
 
         for (const auto& line : helpText)
         {
             TextRendering_PrintString(window, line, x, y, 1.0f);
-            y -= lineheight;  // descer para a próxima linha
+            y -= lineheight;  
         }
 }
