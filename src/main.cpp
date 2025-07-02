@@ -199,6 +199,11 @@ int main(int argc, char* argv[])
                 if (Armies[0][0].MiniatureMove(delta_t, Armies, Strucutres)) {
                     MiniatureFreeCamAction(delta_t);
                 }
+
+                if (g_miniatureCameraShootTransition.isTransitioning) {
+                    StartShootCameraAnimation(delta_t);
+                }
+
             }
 
             else{

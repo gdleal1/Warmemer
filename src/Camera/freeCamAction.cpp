@@ -1,5 +1,6 @@
 # include "Camera/freeCamAction.h"
 
+
 void MiniatureFreeCamAction(float delta_t){
     
     if (g_KeyWPressed)

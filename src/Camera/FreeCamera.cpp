@@ -2,6 +2,7 @@
 #include "Camera/FreeCamera.hpp"
 #include <cmath>
 # include "Camera/camera.h"
+extern CameraTransition g_miniatureCameraShootTransition;
 
 // Constructor initializes the camera parameters 
 FreeCamera::FreeCamera(float theta, float phi, float distance)
@@ -132,6 +133,20 @@ void FreeCamera::MoveUp(float camSpeed, float deltaTime){
     if (CanMove(movementDelta, Armies, Strucutres)) {
             cameraPositionC += movementDelta; 
     } 
+}
+
+void FreeCamera::ShootAnimation(float delta_t) {
+    g_miniatureCameraShootTransition.v0 = GetViewVector();
+    g_miniatureCameraShootTransition.v3 = GetViewVector();
+
+    // Intermediate control points for the direction curve
+    g_miniatureCameraShootTransition.v1 = glm::normalize(glm::mix(g_miniatureCameraShootTransition.v0, g_miniatureCameraShootTransition.v3, 0.25f));
+    g_miniatureCameraShootTransition.v2 = glm::normalize(glm::mix(g_miniatureCameraShootTransition.v0, g_miniatureCameraShootTransition.v3, 0.75f));
+
+    g_miniatureCameraShootTransition.t += delta_t / g_miniatureCameraShootTransition.duration;
+    glm::vec4 interpolatedView = BezierCubicView(g_miniatureCameraShootTransition);
+    SetViewVector(interpolatedView);
+
 }
 
 void FreeCamera::SetCameraTheta(float theta) {

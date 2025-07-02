@@ -7,6 +7,8 @@
 #include "Warhammer/Armies.hpp"
 #include "Warhammer/Structures.hpp"
 #include "Collision/collisions.h"
+#include "Camera/cameraTransition.h"
+
 
 
 // Declare functions for camera transformations
@@ -19,6 +21,7 @@ bool SphereIntersectsOBB(const BoundingSphere& sphere, const OBB& obb);
 OBB ComputeOBB(const Miniature& m);
 extern std::vector<Miniature> Strucutres;
 extern std::vector<std::vector<Miniature>> Armies;
+
 
 
 
@@ -76,6 +79,9 @@ public:
     void MoveLeft(float camSpeed, float deltaTime);
     void MoveRight(float camSpeed, float deltaTime);
     void MoveUp(float camSpeed, float deltaTime);
+    void ShootAnimation(float delta_t);
+        
+    
         
 };
 

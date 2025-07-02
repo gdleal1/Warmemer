@@ -6,4 +6,3 @@ bool g_KeySPressed = false;
 bool g_KeyAPressed = false; 
 bool g_KeyDPressed = false; 
 bool g_KeySpacePressed = false; 
-bool g_KeyMPressed = false; 

@@ -15,6 +15,7 @@ bool g_MiddleMouseButtonPressed = false;
 extern LookAtCamera g_lookAtCamera; 
 extern FreeCamera g_freeCameraMiniatures; 
 extern CameraTransition g_cameraTransition;
+extern CameraTransition g_miniatureCameraShootTransition;
 extern FreeCamera g_freeCamera;
 extern bool g_isMiniatureCamera; 
 extern bool g_isLookAtUsed; 
@@ -24,7 +25,6 @@ extern bool g_KeySPressed; // S key pressed (backward movement)
 extern bool g_KeyAPressed; // Key A pressed (movement to the left)
 extern bool g_KeyDPressed; // D key pressed (movement to the right)
 extern bool g_KeySpacePressed; // Space key pressed (upward movement)
-extern bool g_KeyMPressed; 
 
 extern std::vector<std::vector<Miniature>> Armies;
 extern bool g_isDreadArmy; 
@@ -314,6 +314,20 @@ void KeyCallback(GLFWwindow* window, int key, int scancode, int action, int mod)
 
     }   
 
+    if (key == GLFW_KEY_B && action == GLFW_PRESS && g_isMiniatureCamera && !g_isLookAtUsed) {
+        // Start the camera shoot animation
+        g_miniatureCameraShootTransition.isTransitioning = true;
+        g_miniatureCameraShootTransition.t = 0.0f;
+        g_miniatureCameraShootTransition.duration = 1.0f;
+
+        glm::vec4 originalView = g_freeCameraMiniatures.GetViewVector();
+        g_miniatureCameraShootTransition.v0 = originalView;
+        g_miniatureCameraShootTransition.v3 = originalView;
+        glm::vec4 upward = glm::vec4(0.0f, 0.3f, 0.0f, 0.0f);
+        g_miniatureCameraShootTransition.v1 = glm::normalize(originalView + upward);
+        g_miniatureCameraShootTransition.v2 = glm::normalize(originalView + upward);
+    }
+
     // W, A, S, D, SPACE keys for camera movement
     if (key == GLFW_KEY_W){
         if (action == GLFW_PRESS){
@@ -384,19 +398,6 @@ void KeyCallback(GLFWwindow* window, int key, int scancode, int action, int mod)
         }
     }
 
-    if (key == GLFW_KEY_M){
-        if (action == GLFW_PRESS){
-            g_KeyMPressed = true;
-        }
-
-        else if (action == GLFW_RELEASE){
-            g_KeyMPressed = false;
-        }
-
-        else if (action == GLFW_REPEAT){
-            ;
-        } 
-    }
 
 
 }

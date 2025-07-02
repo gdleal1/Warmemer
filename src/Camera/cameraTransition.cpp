@@ -1,7 +1,8 @@
 #include "Camera/cameraTransition.h"
 
+
 CameraTransition g_cameraTransition;
-CameraTransition g_cameraShootTransition;
+CameraTransition g_miniatureCameraShootTransition;
 extern bool g_isLookAtUsed; 
 extern bool g_isMiniatureCamera;
 extern LookAtCamera g_lookAtCamera;
@@ -9,34 +10,39 @@ extern FreeCamera g_freeCameraMiniatures;
 extern FreeCamera g_freeCamera;
 
 // Function that interpolates a cubic Bézier curve to the camera position
-glm::vec4 BezierCubicPos(){
+glm::vec4 BezierCubicPos(CameraTransition& cameraTransition){
             
-    if (g_cameraTransition.t >= 1.0f) {
-        g_cameraTransition.t = 1.0f;
-        g_cameraTransition.isTransitioning = false;
+    if (cameraTransition.t >= 1.0f) {
+        cameraTransition.t = 1.0f;
+        cameraTransition.isTransitioning = false;
     }
 
-    float t = g_cameraTransition.t;
+    float t = cameraTransition.t;
     float oneMinusT = 1.0f - t;
 
     glm::vec4 interpolatedPosition =
-        oneMinusT * oneMinusT * oneMinusT * g_cameraTransition.p0 +
-        3.0f * oneMinusT * oneMinusT * t * g_cameraTransition.p1 +
-        3.0f * oneMinusT * t * t * g_cameraTransition.p2 +
-        t * t * t * g_cameraTransition.p3;
+        oneMinusT * oneMinusT * oneMinusT * cameraTransition.p0 +
+        3.0f * oneMinusT * oneMinusT * t * cameraTransition.p1 +
+        3.0f * oneMinusT * t * t * cameraTransition.p2 +
+        t * t * t * cameraTransition.p3;
             
     interpolatedPosition.w = 1.0f; // Ensure that the position is homogeneous (w = 1)
     return interpolatedPosition;
 }
 
 // Function that interpolates a cubic Bézier curve to the camera's direction vector
-glm::vec4 BezierCubicView()
+glm::vec4 BezierCubicView(CameraTransition& cameraTransition)
 {
-    float t = g_cameraTransition.t;
-    glm::vec4 v0 = g_cameraTransition.v0;
-    glm::vec4 v1 = g_cameraTransition.v1;
-    glm::vec4 v2 = g_cameraTransition.v2;
-    glm::vec4 v3 = g_cameraTransition.v3;
+    if (cameraTransition.t >= 1.0f) {
+        cameraTransition.t = 1.0f;
+        cameraTransition.isTransitioning = false;
+    }
+
+    float t = cameraTransition.t;
+    glm::vec4 v0 = cameraTransition.v0;
+    glm::vec4 v1 = cameraTransition.v1;
+    glm::vec4 v2 = cameraTransition.v2;
+    glm::vec4 v3 = cameraTransition.v3;
     float oneMinusT = 1.0f - t;
 
     glm::vec4 interpolatedView =
@@ -55,8 +61,8 @@ void StartCameraTransition(float delta_t)
     // Updates the camera transition, if it is in progress
     g_cameraTransition.t += delta_t / g_cameraTransition.duration;
             
-    glm::vec4 interpolatedPosition = BezierCubicPos();
-    glm::vec4 interpolatedView = BezierCubicView();
+    glm::vec4 interpolatedPosition = BezierCubicPos(g_cameraTransition);
+    glm::vec4 interpolatedView = BezierCubicView(g_cameraTransition);
             
             
     if (g_isLookAtUsed) {
@@ -78,4 +84,13 @@ void StartCameraTransition(float delta_t)
 
     }
 
+}
+
+void StartShootCameraAnimation(float delta_t)
+{
+    // Updates the camera transition for the shooting animation
+    g_miniatureCameraShootTransition.t += delta_t / g_miniatureCameraShootTransition.duration;
+
+    glm::vec4 interpolatedView = BezierCubicView(g_miniatureCameraShootTransition);
+    g_freeCameraMiniatures.SetViewVector(interpolatedView);
 }
