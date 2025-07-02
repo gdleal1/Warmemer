@@ -1,13 +1,13 @@
-#include <glad/glad.h>    // Ou glew.h, dependendo do que você usa
+#include <glad/glad.h>    
 #include <glm/glm.hpp>
 #include <iostream>
 #include "Collision/collisions.h"
 
-// IDs globais para VAO/VBO/EBO do bounding box e shader
+// FONTE: CHATGPT --> Functions for bounding box rendering
 GLuint boxVAO = 0, boxVBO = 0, boxEBO = 0;
 GLuint boxShaderProgram = 0;
 
-// Código fonte do vertex shader simples
+
 const char* vertexShaderSrc = R"(
 #version 330 core
 layout(location = 0) in vec3 aPos;
@@ -22,7 +22,7 @@ void main()
 }
 )";
 
-// Código fonte do fragment shader simples
+
 const char* fragmentShaderSrc = R"(
 #version 330 core
 out vec4 FragColor;
@@ -52,7 +52,7 @@ GLuint CompileShader(GLenum type, const char* src)
 
 void InitBoundingBoxRenderer()
 {
-    // Vértices da caixa unitária (extensões de -0.5 a +0.5)
+    
     glm::vec3 boxVertices[8] = {
         {-0.5f, -0.5f, -0.5f}, // 0
         { 0.5f, -0.5f, -0.5f}, // 1
@@ -64,14 +64,14 @@ void InitBoundingBoxRenderer()
         {-0.5f,  0.5f,  0.5f}  // 7
     };
 
-    // Indices para linhas das arestas da caixa
+    
     GLuint boxIndices[24] = {
-        0,1, 1,2, 2,3, 3,0, // face traseira
-        4,5, 5,6, 6,7, 7,4, // face dianteira
-        0,4, 1,5, 2,6, 3,7  // conexões laterais
+        0,1, 1,2, 2,3, 3,0, 
+        4,5, 5,6, 6,7, 7,4, 
+        0,4, 1,5, 2,6, 3,7  
     };
 
-    // Criar VAO/VBO/EBO
+    
     glGenVertexArrays(1, &boxVAO);
     glGenBuffers(1, &boxVBO);
     glGenBuffers(1, &boxEBO);
@@ -89,7 +89,7 @@ void InitBoundingBoxRenderer()
 
     glBindVertexArray(0);
 
-    // Compilar shaders e linkar programa
+    
     GLuint vertexShader = CompileShader(GL_VERTEX_SHADER, vertexShaderSrc);
     GLuint fragmentShader = CompileShader(GL_FRAGMENT_SHADER, fragmentShaderSrc);
 
@@ -98,7 +98,7 @@ void InitBoundingBoxRenderer()
     glAttachShader(boxShaderProgram, fragmentShader);
     glLinkProgram(boxShaderProgram);
 
-    // Checar linkagem
+    
     int success;
     glGetProgramiv(boxShaderProgram, GL_LINK_STATUS, &success);
     if (!success)
@@ -116,21 +116,19 @@ void DrawOBB(const OBB& obb, GLuint shaderProgram, GLuint boxVAO, const glm::mat
 {
     glUseProgram(shaderProgram);
 
-    // Monta a matriz model da OBB:
-    // Translada para o centro, rotaciona e escala pela halfSize * 2
+    
     glm::mat4 model(1.0f);
 
-    // Matriz que coloca a caixa unitária no lugar da OBB:
-    // - eixo X da OBB (escala e orientação)
+    
     model[0] = glm::vec4(obb.axes[0] * obb.halfSizes.x * 2.0f, 0.0f);
-    // - eixo Y da OBB
+    
     model[1] = glm::vec4(obb.axes[1] * obb.halfSizes.y * 2.0f, 0.0f);
-    // - eixo Z da OBB
+    
     model[2] = glm::vec4(obb.axes[2] * obb.halfSizes.z * 2.0f, 0.0f);
-    // - posição
+    
     model[3] = glm::vec4(obb.center, 1.0f);
 
-    // Envia uniforms
+    
     GLint modelLoc = glGetUniformLocation(shaderProgram, "model");
     GLint viewLoc = glGetUniformLocation(shaderProgram, "view");
     GLint projLoc = glGetUniformLocation(shaderProgram, "projection");
@@ -139,7 +137,7 @@ void DrawOBB(const OBB& obb, GLuint shaderProgram, GLuint boxVAO, const glm::mat
     glUniformMatrix4fv(viewLoc, 1, GL_FALSE, &view[0][0]);
     glUniformMatrix4fv(projLoc, 1, GL_FALSE, &projection[0][0]);
 
-    // Bind VAO e desenha linhas
+    
     glBindVertexArray(boxVAO);
     glDrawElements(GL_LINES, 24, GL_UNSIGNED_INT, 0);
     glBindVertexArray(0);
