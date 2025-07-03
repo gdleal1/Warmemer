@@ -112,7 +112,7 @@ void CursorPosCallback(GLFWwindow* window, double xpos, double ypos)
                 g_freeCameraMiniatures.SetCameraPhi(g_freeCameraMiniatures.GetCameraPhi() - 0.01f*dy);
                 
                 // Updates theta of the miniatures too
-                Armies[0][0].facingTheta = g_freeCameraMiniatures.GetCameraTheta();
+                Armies[1][0].facingTheta = g_freeCameraMiniatures.GetCameraTheta();
             }
 
             else{
@@ -142,7 +142,7 @@ void CursorPosCallback(GLFWwindow* window, double xpos, double ypos)
                     g_freeCameraMiniatures.SetCameraPhi(phimax);
                 
                 // Updates theta of the miniatures too
-                Armies[0][0].facingTheta = g_freeCameraMiniatures.GetCameraTheta();
+                Armies[1][0].facingTheta = g_freeCameraMiniatures.GetCameraTheta();
             }
 
             else{
@@ -256,9 +256,9 @@ void KeyCallback(GLFWwindow* window, int key, int scancode, int action, int mod)
         
         // Free camera position values for Dread Army
         if (g_isDreadArmy){
-            minPosition = Armies[0][0].position;
+            minPosition = Armies[1][0].position;
             minPosition.y = minPosition.y + 1.5f;
-            cameraTheta = Armies[0][0].facingTheta;
+            cameraTheta = Armies[1][0].facingTheta;
         }
 
         // Free camera position values for OrcMech Army

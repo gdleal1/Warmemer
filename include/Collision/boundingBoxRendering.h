@@ -145,3 +145,20 @@ void DrawOBB(const OBB& obb, GLuint shaderProgram, GLuint boxVAO, const glm::mat
     glUseProgram(0);
 }
 
+void InitWireFrameMode(const std::vector<std::vector<Miniature>> &Armies, const std::vector<Miniature> &Structures, 
+                       const glm::mat4& view, const glm::mat4& projection){
+    glPolygonMode(GL_FRONT_AND_BACK, GL_LINE); // wireframe
+
+    for (const auto& army : Armies) {
+        for (const auto& mini : army) {
+            OBB obb = ComputeOBB(mini);
+            DrawOBB(obb, boxShaderProgram, boxVAO, view, projection);
+        }
+    }
+
+    for (const auto& structure : Strucutres) {
+        OBB obb = ComputeOBB(structure);
+        DrawOBB(obb, boxShaderProgram, boxVAO, view, projection);
+    }
+
+}

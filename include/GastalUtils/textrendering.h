@@ -11,3 +11,4 @@ void TextRendering_PrintString(GLFWwindow* window, const std::string &str, float
 void TextRendering_ShowFramesPerSecond(GLFWwindow* window);
 void TextRendering_PrintMatrix(GLFWwindow* window, glm::mat4 M, float x, float y, float scale = 1.0f);
 void ShowHelpText(GLFWwindow* window);
+void DrawCrosshair(GLFWwindow* window);

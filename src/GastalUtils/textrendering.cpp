@@ -374,3 +374,22 @@ void ShowHelpText(GLFWwindow* window)
             y -= lineheight;  
         }
 }
+
+void DrawCrosshair(GLFWwindow* window)
+{
+    const char* crosshair = "+";
+    
+    // Text scale
+    float scale = 2.0f;
+
+    // Window center
+    int width, height;
+    glfwGetFramebufferSize(window, &width, &height);
+
+    float lineheight = TextRendering_LineHeight(window);
+
+    float x = -TextRendering_CharWidth(window) / 2.0f;
+    float y = -lineheight / 2.0f;
+
+    TextRendering_PrintString(window, crosshair, x, y, scale);
+}

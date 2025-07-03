@@ -40,6 +40,7 @@
 #include "Collision/collisions.h"
 
 #include "Collision/boundingBoxRendering.h"
+
 // The virtual scene is a list of named objects, stored in a dictionary
 // (map).  See inside the BuildTrianglesAndAddToVirtualScene() function how
 // objects are included inside the g_VirtualScene variable, and see in the main() function how
@@ -56,6 +57,7 @@ bool g_UsePerspectiveProjection = true;
 bool g_ShowInfoText = true;
 
 bool g_ShowBoundingBoxes = false;
+
 
 int main(int argc, char* argv[])
 {
@@ -201,17 +203,18 @@ int main(int argc, char* argv[])
         {
             // Free camera movement with the miniatures
             if (g_isMiniatureCamera){
-                if (Armies[0][0].MiniatureMove(delta_t, Armies, Strucutres)) {
+                if (Armies[1][0].MiniatureMove(delta_t, Armies, Strucutres)) {
                     MiniatureFreeCamAction(delta_t);
                 }
 
                 if (g_miniatureCameraShootTransition.isTransitioning) {
                     StartShootCameraAnimation(delta_t);
-                    if (ShootIntersectsOBB(Armies[0][0], Armies, Strucutres)) {
+                    if (ShootIntersectsOBB(Armies[1][0], Armies, Strucutres)) {
+                        // do something when the shoot hits an object
                         
                     }
                 }
-
+                 
             }
 
             else{
@@ -270,6 +273,7 @@ int main(int argc, char* argv[])
         #define DREAD 2
         #define ORCMECH 3
         #define RUINS 4
+        #define CROSSHAIR 5
 
         DrawArmies(); //Draws the armies in the scene
         DrawStructures(); //Draws the structures in the scene
@@ -285,25 +289,18 @@ int main(int argc, char* argv[])
         // Functions for text rendering
         TextRendering_ShowFramesPerSecond(window);
         ShowHelpText(window);
-        
 
+        if(g_isMiniatureCamera && !g_isLookAtUsed && !g_cameraTransition.isTransitioning)
+        {
+            // Draw the crosshair in the center of the screen
+            DrawCrosshair(window);
+        }
+        
+        
         // Mode to visualize the bounding boxes of the miniatures and structures
         if (g_ShowBoundingBoxes)
         {
-            glPolygonMode(GL_FRONT_AND_BACK, GL_LINE); // wireframe
-
-            for (const auto& army : Armies) {
-                for (const auto& mini : army) {
-                    OBB obb = ComputeOBB(mini);
-                    DrawOBB(obb, boxShaderProgram, boxVAO, view, projection);
-                }
-            }
-
-            for (const auto& structure : Strucutres) {
-                OBB obb = ComputeOBB(structure);
-                DrawOBB(obb, boxShaderProgram, boxVAO, view, projection);
-            }
-
+            InitWireFrameMode(Armies, Strucutres, view, projection);
         }
 
         
@@ -329,4 +326,3 @@ int main(int argc, char* argv[])
 }
 // set makeprg=cd\ ..\ &&\ make\ run\ >/dev/null
 // vim: set spell spelllang=pt_br :
-
