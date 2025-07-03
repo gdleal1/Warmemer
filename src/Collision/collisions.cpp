@@ -44,6 +44,11 @@ OBB ComputeOBB(const Miniature& m)
     glm::vec3 centerLocal = (min + max) * 0.5f; // Center in local coordinates
     glm::vec3 halfSizes = (max - min) * 0.5f; // Half-sizes in local coordinates
 
+    if (m.object == "the_wall")
+    {
+        float scaleFactor = 1.5f; // Aumenta 50% em todas as direções
+        halfSizes *= scaleFactor;}
+
     glm::mat4 rotation = Matrix_Rotate(m.facingTheta, glm::vec4(0, 1, 0, 0)); // Rotate around Y-axis according to facing angle
 
     glm::vec3 axes[3] = {
