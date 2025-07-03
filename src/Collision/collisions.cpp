@@ -108,7 +108,7 @@ bool TestOBBCollision(const OBB& a, const OBB& b)
     return true;
 }
 
-// Function to check if a ray intersects with an OBB 
+// Function to check if a ray intersects with an OBB using the slab method
 bool RayIntersectsOBB(const glm::vec3& rayOrigin,
                       const glm::vec4& rayDir,
                       const OBB& obb,
@@ -153,17 +153,23 @@ bool RayIntersectsOBB(const glm::vec3& rayOrigin,
     return true;
 }
 
-bool ShootIntersectsOBB(const Miniature& shooter,std::vector<std::vector<Miniature>>& Armies,std::vector<Miniature> &Structures)
+bool ShootIntersectsOBB(const Miniature& shooter,
+                        std::vector<std::vector<Miniature>>& Armies,
+                        std::vector<Miniature>& Structures)
 {
     float phi = 0.0;
-    float viewX = cos(phi)*sin(shooter.facingTheta);
+    float viewX = cos(phi) * sin(shooter.facingTheta);
     float viewY = sin(phi);
-    float viewZ = cos(phi)*cos(shooter.facingTheta);
+    float viewZ = cos(phi) * cos(shooter.facingTheta);
 
-    glm::vec4 rayDir = glm::normalize(glm::vec4(viewX, viewY, viewZ,0.0f));
+    glm::vec4 rayDir = glm::normalize(glm::vec4(viewX, viewY, viewZ, 0.0f));
     glm::vec3 rayOrigin = glm::vec3(shooter.position);
-    float tHit; 
+    
+    // Initialize the closest hit distance and target
+    float closestTHit = INFINITY;
+    Miniature* closestTarget = nullptr;
 
+    // Verify the miniatures in the armies
     for (auto& army : Armies)
     {
         for (auto& other : army)
@@ -171,30 +177,44 @@ bool ShootIntersectsOBB(const Miniature& shooter,std::vector<std::vector<Miniatu
             if (&other != &shooter)
             {
                 OBB targetOBB = ComputeOBB(other);
+                float tHit;
                 if (RayIntersectsOBB(rayOrigin, rayDir, targetOBB, tHit))
                 {
-                    other.currentHealth = 0; 
-                    return true;
+                    if (tHit < closestTHit && tHit > 0.0f) 
+                    {
+                        closestTHit = tHit;
+                        closestTarget = &other;
+                    }
                 }
             }
         }
     }
 
-
+    // Verify the structures
     for (auto& structure : Structures)
     {
         OBB targetOBB = ComputeOBB(structure);
-        if (RayIntersectsOBB(rayOrigin, rayDir, targetOBB, tHit)){
-            structure.currentHealth = 0;
-            return true;
-
+        float tHit;
+        if (RayIntersectsOBB(rayOrigin, rayDir, targetOBB, tHit))
+        {
+            if (tHit < closestTHit && tHit > 0.0f)
+            {
+                closestTHit = tHit;
+                closestTarget = &structure;
+            }
         }
-            
     }
 
-    return false; 
+    // Apply damage to the closest target
+    if (closestTarget)
+    {
+        closestTarget->currentHealth = 0;
+        return true;
+    }
 
+    return false;
 }
+
 
 bool MiniaturesAreColliding(const Miniature& a, const Miniature& b)
 {
