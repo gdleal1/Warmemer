@@ -46,7 +46,7 @@ OBB ComputeOBB(const Miniature& m)
 
     if (m.object == "the_wall")
     {
-        float scaleFactor = 1.5f; // Aumenta 50% em todas as direções
+        float scaleFactor = 1.5f; // Scale factor for the wall
         halfSizes *= scaleFactor;}
 
     glm::mat4 rotation = Matrix_Rotate(m.facingTheta, glm::vec4(0, 1, 0, 0)); // Rotate around Y-axis according to facing angle
