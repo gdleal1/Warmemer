@@ -32,7 +32,8 @@ std::vector<Miniature> BuildDreadArmy() {
             2,                                      // shaderID
             100,                                    // maxHealth
             100,                                         // currentHealth
-            100.0f                                    // maxMovement
+            7.0f                                    // maxMovement
+
         );
         minis.push_back(mini);
     }
@@ -50,7 +51,7 @@ std::vector<Miniature> BuildOrcMechArmy() {
             3,                                      // shaderID
             100,                                    // maxHealth
             100,                                    // currentHealth
-            100.0f                                 // maxMovement
+            7.0f                                    // maxMovement
         );
         minis.push_back(mini);
     }

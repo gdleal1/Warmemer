@@ -9,7 +9,7 @@ Miniature::Miniature(const glm::vec4& pos, const std::string& obj, float theta, 
     , shaderID(shader)
     , maxHealth(maxHp)
     , currentHealth(currHp)
-    , alreadyMoved(movement)
+    ,maxMovement(movement)
 {}
 
 void Miniature::Draw() const {
@@ -73,9 +73,13 @@ bool Miniature::MiniatureMove(float delta_t, const std::vector<std::vector<Minia
     }
 
     
-    if (CanMove(movement, Armies, Structures)) {
-        position += movement;
-        return true; // Movement was successful
+    if (CanMove(movement, Armies, Structures)){
+        if( alreadyMoved < maxMovement) { 
+            position += movement;
+            alreadyMoved += glm::length(movement);
+            return true; // Movement was successful
+        }
+        return false; // Movement blocked by max movement limit
     }
 
     return false; // Movement was blocked by collision
