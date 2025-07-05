@@ -205,14 +205,14 @@ bool ShootIntersectsOBB(const Miniature& shooter,
         }
     }
 
+    
+    EndMiniTurn();
     // Apply damage to the closest target
     if (closestTarget)
     {
-        closestTarget->currentHealth = 0;
+        closestTarget->currentHealth = closestTarget->currentHealth -40;
         return true;
     }
-
-    EndMiniTurn(); //After shooting enf miniature turn
 
     return false;
 }

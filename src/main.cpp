@@ -58,6 +58,8 @@ bool g_ShowInfoText = true;
 
 bool g_ShowBoundingBoxes = false;
 
+bool g_shotFiredInThisTransition = false; // Variable to control if a shot was fired during the transition
+
 
 int main(int argc, char* argv[])
 {
@@ -203,18 +205,24 @@ int main(int argc, char* argv[])
         {
             // Free camera movement with the miniatures
             if (g_isMiniatureCamera){
-                if (Armies[1][0].MiniatureMove(delta_t, Armies, Strucutres)) {
+                
+                if (GetCurrentMiniature().MiniatureMove(delta_t, Armies, Strucutres)) {
                     MiniatureFreeCamAction(delta_t);
                 }
 
                 if (g_miniatureCameraShootTransition.isTransitioning) {
                     StartShootCameraAnimation(delta_t);
-                    if (ShootIntersectsOBB(Armies[1][0], Armies, Strucutres)) {
-                        // do something when the shoot hits an object
-                        
+
+                    if (!g_shotFiredInThisTransition) {
+                        ShootIntersectsOBB(GetCurrentMiniature(), Armies, Strucutres);
+                        g_shotFiredInThisTransition = true; 
                     }
                 }
-                 
+
+                else {
+                    g_shotFiredInThisTransition = false; 
+                }
+  
             }
 
             else{
