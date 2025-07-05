@@ -27,9 +27,11 @@ public:
     int shaderID;
     int maxHealth;
     int currentHealth;
+    float maxMovement;
+    float alreadyMoved = 0.0f;
     float speed = 3.0f; 
 
-    Miniature(const glm::vec4& pos, const std::string& obj, float theta, float scale, int shader, int maxHp, int currHp);
+    Miniature(const glm::vec4& pos, const std::string& obj, float theta, float scale, int shader, int maxHp, int currHp, float movement);
 
     void Draw() const;
     bool MiniatureMove(float delta_t, const std::vector<std::vector<Miniature>>&Armies, const std::vector<Miniature>&Structures);

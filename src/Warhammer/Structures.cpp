@@ -11,7 +11,8 @@ void InitializeStructures() {
         1.5f,                                 // size
         4,                                    // shaderID
         100,                                  // maxHealth
-        100                                   // currentHealth
+        100,                                   // currentHealth
+        0.0f                                  // maxMovement
     ));
 
     Strucutres.push_back(Miniature(
@@ -21,7 +22,8 @@ void InitializeStructures() {
         1.5f,                                 // size
         4,                                    // shaderID
         100,                                  // maxHealth
-        100                                   // currentHealth
+        100,                                   // currentHealth
+        0.0f                                  // maxMovement
     ));
 
     
@@ -32,7 +34,8 @@ void InitializeStructures() {
         1.5f,                                 // size
         4,                                    // shaderID
         100,                                  // maxHealth
-        100                                   // currentHealth
+        100,                                   // currentHealth
+        0.0f                                  // maxMovement
     ));
 
     
@@ -43,7 +46,8 @@ void InitializeStructures() {
         1.5f,                                 // size
         4,                                    // shaderID
         100,                                  // maxHealth
-        100                                   // currentHealth
+        100,                                   // currentHealth
+        0.0f                                  // maxMovement
     ));
 
     Strucutres.push_back(Miniature(
@@ -53,7 +57,8 @@ void InitializeStructures() {
         1.0f,                                 // size
         0,                                    // shaderID
         100,                                  // maxHealth
-        100                                   // currentHealth
+        100,                                   // currentHealth
+        0.0f                                  // maxMovement
     ));
 
     Strucutres.push_back(Miniature(
@@ -63,7 +68,8 @@ void InitializeStructures() {
         1.0f,                                 // size
         0,                                    // shaderID
         100,                                  // maxHealth
-        100                                   // currentHealth
+        100,                                   // currentHealth
+        0.0f                                  // maxMovement
     ));
 }
 

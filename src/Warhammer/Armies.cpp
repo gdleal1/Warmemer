@@ -31,7 +31,8 @@ std::vector<Miniature> BuildDreadArmy() {
             1.2f,                                // size
             2,                                      // shaderID
             100,                                    // maxHealth
-            5                                     // currentHealth
+            100,                                         // currentHealth
+            100.0f                                    // maxMovement
         );
         minis.push_back(mini);
     }
@@ -45,10 +46,11 @@ std::vector<Miniature> BuildOrcMechArmy() {
             glm::vec4(11.0f, -0.4f, 5.5f, 1.0f),    // position
             "the_orcMech",                          // object
             -2.0f,                                  //Facing angle
-            1.0f,                                // size
+            1.0f,                                   // size
             3,                                      // shaderID
             100,                                    // maxHealth
-            100                                     // currentHealth
+            100,                                    // currentHealth
+            100.0f                                 // maxMovement
         );
         minis.push_back(mini);
     }
