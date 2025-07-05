@@ -1,6 +1,7 @@
 #pragma once
 #include "Warhammer/Miniatures.hpp"
 #include "Warhammer/Armies.hpp"
+#include "Warhammer/Turns.hpp"
 #include "GastalUtils/SceneObject.h" 
 #include <glm/glm.hpp>
 #include <string>

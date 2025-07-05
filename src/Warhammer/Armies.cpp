@@ -3,8 +3,6 @@
 
 int g_ArmySize = 1;
 bool g_isDreadArmy = true; // Flag to indicate if the Dreadnought army is being used
-int current_mini_idx;
-int current_player_idx;
 
 std::vector<std::vector<Miniature>> Armies(2);
 

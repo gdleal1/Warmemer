@@ -212,6 +212,8 @@ bool ShootIntersectsOBB(const Miniature& shooter,
         return true;
     }
 
+    EndMiniTurn(); //After shooting enf miniature turn
+
     return false;
 }
 
