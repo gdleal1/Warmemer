@@ -111,3 +111,7 @@ bool Miniature::CanMove(const glm::vec4& movementDelta, const std::vector<std::v
 
     return true;
 }
+
+void Miniature::EndTurn() {
+    alreadyMoved = 0.0f; // Reset the movement for the next turn
+}

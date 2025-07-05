@@ -211,6 +211,10 @@ bool ShootIntersectsOBB(const Miniature& shooter,
     if (closestTarget)
     {
         closestTarget->currentHealth = closestTarget->currentHealth -40;
+        if (closestTarget->currentHealth <= 0)
+        {
+            closestTarget->position += glm::vec4(0.0f, -200.0f, 0.0f, 0.0f); // Move the miniature off-screen
+        }
         return true;
     }
 

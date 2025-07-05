@@ -36,6 +36,6 @@ public:
     void Draw() const;
     bool MiniatureMove(float delta_t, const std::vector<std::vector<Miniature>>&Armies, const std::vector<Miniature>&Structures);
     bool CanMove(const glm::vec4& movementDelta, const std::vector<std::vector<Miniature>>& Armies,const std::vector<Miniature>&Structures) const;
-    
+    void EndTurn();
 };
 
