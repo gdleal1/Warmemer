@@ -103,7 +103,7 @@ void SetMiniatureToMiniatureTransition(){
     // Current position aand view vector
     g_miniatureToMiniatureTransition.p0 = g_freeCameraMiniatures.GetPosition(); // current position
     g_miniatureToMiniatureTransition.v0 = g_freeCameraMiniatures.GetViewVector(); // current view vector
-
+    
     glm::vec4 minPosition;
     float cameraTheta;
 
@@ -112,11 +112,12 @@ void SetMiniatureToMiniatureTransition(){
     minPosition.y = minPosition.y + 1.5f;
     cameraTheta = GetCurrentMiniature().facingTheta;
 
-    g_freeCameraMiniatures.SetPosition(minPosition);
     float cameraPhi = 0.0;
     float viewX = cos(cameraPhi)*sin(cameraTheta);
     float viewY = sin(cameraPhi);
     float viewZ = cos(cameraPhi)*cos(cameraTheta);
+
+    g_freeCameraMiniatures.SetPosition(minPosition);
     g_freeCameraMiniatures.SetViewVector(glm::vec4(viewX, viewY, viewZ, 0.0f));
 
     g_miniatureToMiniatureTransition.p3 = g_freeCameraMiniatures.GetPosition(); // destination
@@ -127,6 +128,7 @@ void SetMiniatureToMiniatureTransition(){
     g_miniatureToMiniatureTransition.p2 = g_miniatureToMiniatureTransition.p0 + 0.75f * dir;
 
     g_miniatureToMiniatureTransition.v3 = g_freeCameraMiniatures.GetViewVector(); // destination view vector
+
 
     // Intermediate control points for the direction curve
     g_miniatureToMiniatureTransition.v1 = glm::normalize(glm::mix(g_miniatureToMiniatureTransition.v0, g_miniatureToMiniatureTransition.v3, 0.25f));

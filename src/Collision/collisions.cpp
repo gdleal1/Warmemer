@@ -206,7 +206,7 @@ bool ShootIntersectsOBB(const Miniature& shooter,
     }
 
     
-    EndMiniTurn();
+
     // Apply damage to the closest target
     if (closestTarget)
     {
