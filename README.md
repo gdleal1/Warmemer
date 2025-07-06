@@ -1,5 +1,16 @@
 # <p align="center"> WARMEMER ⚒️ </p>
 
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/67600acd-af4f-4cd6-8027-a5ffb3732e47" width="45%"/>
+  <img src="https://github.com/user-attachments/assets/f594d7db-6937-405e-82b9-7583f122fba5" width="45%"/>
+</p>
+
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/f93f1a1d-5fba-4bd2-b7e3-8f4ececdd34f" width="45%"/>
+  <img src="https://github.com/user-attachments/assets/56ccb735-dc9e-4852-9093-7a4c77c93b3f" width="45%"/>
+</p>
+
+
 # 📖 About 
 
 This project was developed as the final work for the discipline of *Fundamentos de Computação Gráfica (INF01047)* - UFRGS. It consists of developing a 3D game in C++ using the [OpenGL API](https://www.opengl.org/), inspired by the *Warhammer* universe and incorporating elements of first-person shooter (FPS) games with turn-based dynamics. During development, various functionalities were implemented that meet the fundamental requirements for modern graphics systems, such as:
