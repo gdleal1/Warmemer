@@ -17,6 +17,7 @@ extern LookAtCamera g_lookAtCamera;
 extern FreeCamera g_freeCameraMiniatures; 
 extern CameraTransition g_cameraTransition;
 extern CameraTransition g_miniatureCameraShootTransition;
+extern CameraTransition g_miniatureToMiniatureTransition;
 extern FreeCamera g_freeCamera;
 extern bool g_isMiniatureCamera; 
 extern bool g_isLookAtUsed; 

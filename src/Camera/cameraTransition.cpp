@@ -3,6 +3,7 @@
 
 CameraTransition g_cameraTransition;
 CameraTransition g_miniatureCameraShootTransition;
+CameraTransition g_miniatureToMiniatureTransition;
 extern bool g_isLookAtUsed; 
 extern bool g_isMiniatureCamera;
 extern LookAtCamera g_lookAtCamera;
@@ -92,5 +93,56 @@ void StartShootCameraAnimation(float delta_t)
     g_miniatureCameraShootTransition.t += delta_t / g_miniatureCameraShootTransition.duration;
 
     glm::vec4 interpolatedView = BezierCubicView(g_miniatureCameraShootTransition);
+    g_freeCameraMiniatures.SetViewVector(interpolatedView);
+}
+
+void SetMiniatureToMiniatureTransition(){
+    g_miniatureToMiniatureTransition.isTransitioning = true;
+    g_miniatureToMiniatureTransition.t = 0.0f;
+
+    // Current position aand view vector
+    g_miniatureToMiniatureTransition.p0 = g_freeCameraMiniatures.GetPosition(); // current position
+    g_miniatureToMiniatureTransition.v0 = g_freeCameraMiniatures.GetViewVector(); // current view vector
+
+    glm::vec4 minPosition;
+    float cameraTheta;
+
+    // Free camera position values
+    minPosition = GetCurrentMiniature().position;
+    minPosition.y = minPosition.y + 1.5f;
+    cameraTheta = GetCurrentMiniature().facingTheta;
+
+    g_freeCameraMiniatures.SetPosition(minPosition);
+    float cameraPhi = 0.0;
+    float viewX = cos(cameraPhi)*sin(cameraTheta);
+    float viewY = sin(cameraPhi);
+    float viewZ = cos(cameraPhi)*cos(cameraTheta);
+    g_freeCameraMiniatures.SetViewVector(glm::vec4(viewX, viewY, viewZ, 0.0f));
+
+    g_miniatureToMiniatureTransition.p3 = g_freeCameraMiniatures.GetPosition(); // destination
+
+    // Intermidiate control points for the position curve
+    glm::vec4 dir = g_miniatureToMiniatureTransition.p3 - g_miniatureToMiniatureTransition.p0;
+    g_miniatureToMiniatureTransition.p1 = g_miniatureToMiniatureTransition.p0 + 0.25f * dir;
+    g_miniatureToMiniatureTransition.p2 = g_miniatureToMiniatureTransition.p0 + 0.75f * dir;
+
+    g_miniatureToMiniatureTransition.v3 = g_freeCameraMiniatures.GetViewVector(); // destination view vector
+
+    // Intermediate control points for the direction curve
+    g_miniatureToMiniatureTransition.v1 = glm::normalize(glm::mix(g_miniatureToMiniatureTransition.v0, g_miniatureToMiniatureTransition.v3, 0.25f));
+    g_miniatureToMiniatureTransition.v2 = glm::normalize(glm::mix(g_miniatureToMiniatureTransition.v0, g_miniatureToMiniatureTransition.v3, 0.75f));
+
+
+}
+
+void StartMiniatureToMiniatureTransition(float delta_t)
+{
+    // Updates the camera transition for the miniature to miniature transition
+    g_miniatureToMiniatureTransition.t += delta_t / g_miniatureToMiniatureTransition.duration;
+
+    glm::vec4 interpolatedPosition = BezierCubicPos(g_miniatureToMiniatureTransition);
+    glm::vec4 interpolatedView = BezierCubicView(g_miniatureToMiniatureTransition);
+
+    g_freeCameraMiniatures.SetPosition(interpolatedPosition);
     g_freeCameraMiniatures.SetViewVector(interpolatedView);
 }

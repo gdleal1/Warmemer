@@ -13,10 +13,12 @@ struct CameraTransition {
     glm::vec4 v0, v1, v2, v3; // Bézier curve for the direction vector (view)
 };
 
-glm::vec4 BezierCubicPos(CameraTransition& g_cameraTransition);
+glm::vec4 BezierCubicPos(CameraTransition& cameraTransition);
 glm::vec4 BezierCubicView(CameraTransition& cameraTransition);
 void StartCameraTransition(float delta_t);
 void StartShootCameraAnimation(float delta_t);
+void SetMiniatureToMiniatureTransition();
+void StartMiniatureToMiniatureTransition(float delta_t);
 
 
 

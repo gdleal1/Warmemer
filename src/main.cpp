@@ -28,6 +28,7 @@
 #include "Camera/FreeCamera.hpp"
 #include "Camera/cameraTransition.h"
 #include "Camera/freeCamAction.h"
+#include "Camera/MiniatureCameraController.h"
 
 #include "Warhammer/Miniatures.hpp"
 #include "Warhammer/Armies.hpp"
@@ -58,7 +59,6 @@ bool g_ShowInfoText = true;
 
 bool g_ShowBoundingBoxes = false;
 
-bool g_shotFiredInThisTransition = false; // Variable to control if a shot was fired during the transition
 
 
 int main(int argc, char* argv[])
@@ -203,26 +203,10 @@ int main(int argc, char* argv[])
         
         if (g_isLookAtUsed == false)
         {
-            // Free camera movement with the miniatures
-            if (g_isMiniatureCamera){
-                
-                if (GetCurrentMiniature().MiniatureMove(delta_t, Armies, Strucutres)) {
-                    MiniatureFreeCamAction(delta_t);
-                }
-
-                if (g_miniatureCameraShootTransition.isTransitioning) {
-                    StartShootCameraAnimation(delta_t);
-
-                    if (!g_shotFiredInThisTransition) {
-                        ShootIntersectsOBB(GetCurrentMiniature(), Armies, Strucutres);
-                        g_shotFiredInThisTransition = true; 
-                    }
-                }
-
-                else {
-                    g_shotFiredInThisTransition = false; 
-                }
-  
+            
+            if (g_isMiniatureCamera)
+            {
+                HandleMiniatureCameraActions(delta_t);
             }
 
             else{
