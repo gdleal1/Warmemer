@@ -7,15 +7,19 @@ Miniature& GetCurrentMiniature() {
     return Armies[current_player_idx][current_mini_idx];
 }
 
-bool EndMiniTurn(){
+void EndMiniTurn(){
     Armies[current_player_idx][current_mini_idx].EndTurn(); // End the turn for the current miniature
     
-    if (current_mini_idx + 1 < g_ArmySize) {
-        current_mini_idx++;
-        return true; // Proceed to the next miniature
-    } else {
-        current_mini_idx = 0; // Reset to the first miniature
-        current_player_idx = (current_player_idx + 1) % 2; // Switch players
-        return false; // End of turn, switch players
-    }
+    
+    do {
+        // Move to the next miniature
+        if (current_mini_idx + 1 < g_ArmySize) {
+            current_mini_idx++;
+        } else {
+            current_mini_idx = 0; // Reset to the first miniature
+            current_player_idx = (current_player_idx + 1) % 2; // Switch players
+        }
+    } while (Armies[current_player_idx][current_mini_idx].currentHealth <= 0);
+
+    return;
 }
