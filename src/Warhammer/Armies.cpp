@@ -1,7 +1,7 @@
 #include "Warhammer/Armies.hpp"
 
 
-int g_ArmySize = 1;
+int g_ArmySize = 2;
 
 std::vector<std::vector<Miniature>> Armies(2);
 
@@ -22,14 +22,14 @@ std::vector<Miniature> BuildDreadArmy() {
     std::vector<Miniature> minis;
     for (int i = 0; i < g_ArmySize; ++i) {
         Miniature mini(
-            glm::vec4(-9.0f, -0.4f, -5.5f, 1.0f), // position
+            glm::vec4(-10.0f, -0.4f, -6.5f + 2*i, 1.0f), // position
             "the_dread",                            // object
             1.0f,                                 //Facing angle
             1.2f,                                // size
             2,                                      // shaderID
-            100,                                    // maxHealth
+            120,                                    // maxHealth
             100,                                         // currentHealth
-            7.0f                                    // maxMovement
+            5.0f                                    // maxMovement
 
         );
         minis.push_back(mini);
@@ -41,7 +41,7 @@ std::vector<Miniature> BuildOrcMechArmy() {
     std::vector<Miniature> minis;
     for (int i = 0; i < g_ArmySize; ++i) {
         Miniature mini(
-            glm::vec4(11.0f, -0.4f, 5.5f, 1.0f),    // position
+            glm::vec4(11.0f + 2*i, -0.4f, 5.5f + 2*i, 1.0f),    // position
             "the_orcMech",                          // object
             -2.0f,                                  //Facing angle
             1.0f,                                   // size

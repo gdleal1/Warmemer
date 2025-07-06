@@ -10,7 +10,6 @@ Miniature& GetCurrentMiniature() {
 void EndMiniTurn(){
     Armies[current_player_idx][current_mini_idx].EndTurn(); // End the turn for the current miniature
     
-    
     do {
         // Move to the next miniature
         if (current_mini_idx + 1 < g_ArmySize) {
